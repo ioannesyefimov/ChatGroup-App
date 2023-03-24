@@ -1,0 +1,43 @@
+.landing-component{
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+
+    gap:2.2rem;
+    padding: 1rem;
+    position: relative;
+    .wrapper{
+        display: grid;
+        gap:1rem;
+
+        flex:1;
+        h3{
+            line-height: 1.2;
+        }
+        p{
+            font-size: clamp(0.9rem, 0.794rem + 0.451vw, 1.2rem);
+        }
+        &:nth-child(1){
+
+            &::after{
+                position: absolute;
+                content: '';
+                background-color: gray;
+                width: 100%;
+                left: 0;
+                height: 1px;
+                top:50%
+            }
+        }
+    }
+    h3{
+        max-width: 45ch;
+        font-size: clamp(0.9rem, 0.794rem + 0.451vw, 1.2rem);
+    }
+        
+    button{
+        margin: 0 auto;
+        padding: .3rem 2rem; 
+        font-size: .9rem;
+    }
+}

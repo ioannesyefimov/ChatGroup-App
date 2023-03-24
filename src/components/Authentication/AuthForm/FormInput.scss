@@ -1,0 +1,30 @@
+.inner-wrapper{
+    display: grid;
+    gap:.2rem;
+    text-align: left;
+
+    .form-wrapper {
+        display: flex;
+        border: 1px solid gray;
+        border-radius: 8px;
+        img{
+            max-width: 25px;
+            margin: 0 1rem;
+            top:50%;
+            bottom:50%;
+            left: 8px;
+        }
+    }
+    label {
+        text-transform: capitalize;
+    }
+    input {
+        
+        order: 1;
+        background-color: transparent;
+        border: none;
+        padding: .85rem 0rem .85rem 1.2rem;
+        // border: 1px solid gray;
+        color: rgb(67, 183, 203);
+    }
+}

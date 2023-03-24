@@ -1,0 +1,21 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.box-shadow--gray{
+  box-shadow: 1px 1px 6px 1px gray;
+}
+
+
+.notFound {
+   display: grid;
+   width: 100%;
+
+   img{
+    width: 100%;
+    // width: 300px;
+   }
+}
