@@ -217,7 +217,33 @@ const isTrue = (arg:any) =>{
   }
   return {arg, is: !!arg}
 }
+
+function countWords(str:string) {
+  const arr = str.split(' ');
+
+  return arr.filter(word => word !== '').length;
+}
+
+function getFirstLetter(str:string,words?:number){
+  if(!str) return Errors.MISSING_ARGUMENTS
+  let letters
+  if(countWords(str) > 1){
+    let arr = str.split(' ')
+    letters = arr.map(word=>word.charAt(0))
+    if(words){
+      return letters.slice(0,words).join('')
+
+    }
+    return letters.join('')
+
+  } else if(countWords(str) == 1){
+    letters = str.charAt(0)
+    return letters
+  }
+
+}
  
   export {
+    countWords,getFirstLetter,
     convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword,validateInput, isTrue,isObj,APIFetch
   }

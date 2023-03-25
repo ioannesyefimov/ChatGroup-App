@@ -1,12 +1,26 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  // max-width: 1280px;
+  // margin: 0 auto;
   padding: 2rem;
+  display: grid;
+  min-width:320px;
+  width: 100%;
+  min-height: 100dvh;
   text-align: center;
 }
 
+.App {
+  display: grid;
+}
 .box-shadow--gray{
   box-shadow: 1px 1px 6px 1px gray;
+}
+
+.flex{
+  display: flex;
+}
+.flex.flex--between{
+  justify-content: space-between;
 }
 
 

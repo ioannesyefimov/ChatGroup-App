@@ -1,26 +1,14 @@
 import React,{FC, ReactNode, useState} from 'react'
 import {useCookies} from  'react-cookie'
-interface User {
-    name:string
-    email:string
-    photo?:string
-    id:string
-}
-interface ProviderProps{
-    children: ReactNode
-}
+import { Channel,User,ProviderProps,ContextAuth } from '../../types'
 
-interface ContextType {
-    user?: User,
-    loading:boolean,
-    cookies?: string[]
-}
+
 const defaulValue ={
     user: {name:'',email:'',photo:'',id:''},
     loading: false,
     cookies: ['user','accessToken']
 }
-export const AuthContext = React.createContext<ContextType >(defaulValue)
+export const AuthContext = React.createContext<ContextAuth>(defaulValue)
 
 export const useAuth  = ()=>  {
     return React.useContext(AuthContext)

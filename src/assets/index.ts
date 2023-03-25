@@ -14,12 +14,13 @@ import correctUploadIco from './correctUploadIco.svg'
 import loadingGif from './Loading.gif'
 import questionIco from './questionIco.svg'
 import notFoundIco from './notFoundIco.svg'
+import searchIco from './searchIco.svg'
 
 export interface Icons {
   icon: File
 }
 export  {
-  questionIco,  loadingGif,
+  questionIco, searchIco,  loadingGif,
     triangleIco, logoutIco, backIco,cameraIco,correctUploadIco,
       groupIco,
         facebookIco, GithubIco, GoogleIco,

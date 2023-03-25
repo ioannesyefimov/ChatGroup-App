@@ -1,0 +1,41 @@
+body[theme="dark"]{
+    
+}
+body[theme="ligth"]{
+
+}
+.App{
+    .dashboard-component{
+        .left-wrapper{
+            background: #120F13;
+            .search-wrapper{
+                .inner-wrapper{
+                    .form-wrapper{
+                        background-color: #3C393F;
+                    }
+                }
+                // border-radius: inherit;
+             
+                input {
+                    border: none;
+                }
+
+            }
+            .channels {
+    
+                .channel{
+                    .link-tag  {
+                        color:whitesmoke ;
+                    }
+                    &-logo{
+                        background-color:#252329 ;
+                    
+                    }
+    
+                }
+    
+    
+            }
+        }
+    }
+}

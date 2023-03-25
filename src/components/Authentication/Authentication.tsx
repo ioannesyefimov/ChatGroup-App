@@ -3,7 +3,7 @@ import {Navigate, Outlet, RouteObject, useLocation} from 'react-router-dom'
 import AuthForm from './AuthForm/AuthForm'
 import { useAuth } from './Provider/AuthProvider'
 
-const AuthenticationForm = ():JSX.Element<T> => {
+const AuthenticationForm = () => {
   const {user} = useAuth()
   let location = useLocation()
 
@@ -14,7 +14,8 @@ const AuthenticationForm = ():JSX.Element<T> => {
   }, [])
 
   if(location.pathname === '/auth') return <Navigate to='/auth/signin' replace/>
-  if(!user?.email) return <Outlet/>
+  if(!user?.email) return <Outlet/> 
+  if(user?.email) return <Navigate to='/dashboard' replace/>
 
   
   

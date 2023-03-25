@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.scss'
+import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Authentication, NotFound,AuthForm, Dashboard} from './components'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
@@ -16,11 +17,11 @@ let router = createBrowserRouter([
   },
   {
     element: <ProtectedRoute />,
-    // path: '/',
+    path: '/chat',
     children: [
       {
        element: <Dashboard />,
-       path: '/dashboard'
+       path: ':channel',
 
       }
     ]
