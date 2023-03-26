@@ -1,7 +1,7 @@
 export interface Message {
     profileLogo?: string
     userName: string
-    date: string | Date
+    date: string 
     message: string
 
 }
@@ -11,6 +11,7 @@ export interface Channel {
     messages: Message[] | Message
     id:string | number
 }
+
 export interface ProviderProps{
     children: React.ReactNode
 }

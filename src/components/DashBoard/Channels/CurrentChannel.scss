@@ -1,0 +1,60 @@
+.main-wrapper {
+    outline: 1px solid white;
+    display: grid;
+    position: relative;
+    grid-template-rows: 15%;
+    gap:1rem;
+    .channel-title{
+        outline: 1px solid blue;
+    }
+    .messages-wrapper{
+        display: flex;
+        flex-direction: column;
+
+        .message{
+            display: grid;
+            padding: 1rem 2rem ;
+            grid-template-areas: 
+
+            'img wrapper wrapper'
+            'img text text '
+            ;
+            margin-right: auto;
+            gap:.2rem;
+            outline: 1px solid green;
+            &-logo{
+                margin-right:  1rem;
+
+                grid-area: img;
+                max-width: 40px;
+                max-height: 40px;
+                border-radius: 5px;
+                background-color: red;
+            }
+            &-wrapper{
+                grid-area: wrapper;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap:1.5rem;
+                .message-name, .message-date{
+                    color: #828282;
+                }
+                .message-name{
+                    font-weight: 700;
+                }
+                .message-date{
+                    font-size: max(.9rem);
+                    font-weight: lighter;
+                }
+            }
+
+            &-text{
+                grid-area: text;
+                text-align: left;
+            }
+            
+        }
+
+    }
+}

@@ -17,11 +17,11 @@ let router = createBrowserRouter([
   },
   {
     element: <ProtectedRoute />,
-    path: '/chat',
+    // path: '/chat/?:channel',
     children: [
       {
        element: <Dashboard />,
-       path: ':channel',
+       path: '/chat?/:channel',
 
       }
     ]

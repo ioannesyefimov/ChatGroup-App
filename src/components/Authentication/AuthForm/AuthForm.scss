@@ -7,13 +7,15 @@
 
 }
 .auth-form-component{
+    display: flex;
+    flex-direction: column;
     border-radius: 20px;
+    gap:1rem;
     @include respond-to(small){
         width: 100%;
         padding: 0;
     }
-padding:1rem clamp(3rem, 1.944rem + 4.507vw, 6rem) 3rem;
-    width: 100%;
+padding:2rem clamp(3rem, 1.944rem + 4.507vw, 6rem) ;
  .hint{
     text-align: center;
     margin: 0 auto;

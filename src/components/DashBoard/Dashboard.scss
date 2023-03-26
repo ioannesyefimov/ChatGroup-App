@@ -4,7 +4,7 @@
 
 
 .dashboard-component{
-    outline: 1px solid red;
+    // outline: 1px solid red;
     display: grid;
     grid-template-columns: 25% 1fr;
     // width: 100%;
@@ -25,7 +25,7 @@ position: relative;
     flex-direction: column;
     gap:.8rem;
         padding: 1rem 1.6rem;
-        outline: 1px solid yellow;
+        // outline: 1px solid yellow;
 
         .flex.flex--between{
             margin-bottom: 1rem;
@@ -88,7 +88,5 @@ position: relative;
 
        
     }
-    .main-wrapper{
-        outline: 1px solid blue;
-    }
+ 
 }

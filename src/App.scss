@@ -9,6 +9,10 @@
   text-align: center;
 }
 
+.App:has(.landing-component,.auth-form-component){
+  place-content: center;
+}
+
 .App {
   display: grid;
 }
