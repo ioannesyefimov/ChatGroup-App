@@ -1,7 +1,8 @@
-import React,{FC, ReactNode, useState} from 'react'
+import React,{FC, ReactNode, useEffect, useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { profileIco } from '../../assets'
 import { Channel,ProviderProps,ContextChat } from '../types'
+import { APIFetch } from '../utils'
 
 const defaultValue = {
     channels: [],
@@ -15,14 +16,24 @@ export const useChatContext  = ()=>  {
 }
 
 const ChatProvider : FC<ProviderProps>  = ({children}) => {
-    const [channels,setChannels] = useState<Channel[] >([
-        {name:'front-end developers', id:1, messages: [{date: 'yesterday at 2:29 AM', userName: 'Nellie Francis', message: 'Suspendisse enim tel....', profileLogo: profileIco}]},
-        {name:'random', id:2, messages: [{date: 'yesterday at 2:29 AM', userName: 'Nellie Francis', message: 'Suspendisse enim tel....', profileLogo: profileIco}, ]},
-        {name:'back-end', id:3, messages: [{date: 'yesterday at 2:29 AM', userName: 'Nellie Francis', message: 'Suspendisse enim tel....', profileLogo: profileIco}, ],},
-        {name:'cats and dogs', id:4, messages: [{date: 'yesterday at 2:29 AM', userName: 'Nellie Francis', message: 'Suspendisse enim tel....', profileLogo: profileIco}, ],},
-        {name:'welcome', id:5, messages: [{date: 'yesterday at 2:29 AM', userName: 'Nellie Francis', message: 'Suspendisse enim tel....', profileLogo: profileIco}, ],},
-    ])
+    const [channels,setChannels] = useState<Channel[] >([])
     
+    useEffect(
+        ()=>{
+            let controller = new AbortController()
+            let fetchChannels = async()=>{
+                let signal = controller.signal
+                return await fetch('./ChatData.json',{
+                    headers: {
+                        'Accept': 'application/json'
+                      }
+                }).then(resp=>resp.json())
+            }
+            let data = fetchChannels()
+            console.log(data)
+            return () => controller.abort()
+        },[]
+    )
 
     const value:any = React.useMemo(
         ()=>(

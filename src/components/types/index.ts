@@ -6,6 +6,10 @@ export interface Message {
 
 }
 
+export interface MessageType {
+    message: Object | null
+    success: boolean | null
+}
 export interface Channel {
     name:string
     messages: Message[] | Message
@@ -21,16 +25,49 @@ export interface  ContextChat{
 
 }
 export interface ContextAuth {
-    user: User,
+    user: UserType,
     loading:boolean,
     cookies: string[]
+    Message: MessageType
 
 }
 
+export interface LogType {
+    userName: string | undefined 
+    accessToken: string
+    email: string
+    password?: string
+}
 
-export interface User {
-    name:string
+export interface UserType {
+    userName:string
     email:string
     photo?:string
     id:string
+    loggedThrough?: string
+    bio?: string
 }
+export interface ChangesType {
+    picture: unknown
+    userName?:string
+    email?:string
+    photo?:string
+    id?:string
+    loggedThrough?: string
+    bio?: string
+}
+export interface LoginType {
+    userName:string 
+    email:string
+    id?:string
+    loggedThrough?: string
+    password?: string
+}
+
+export interface HandleFetchProps{
+    data?: FormData,
+    user: UserType | any,
+    accessToken: string
+    deletedThrough: string
+  
+  }

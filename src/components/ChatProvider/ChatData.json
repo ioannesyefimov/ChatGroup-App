@@ -1,0 +1,156 @@
+
+[
+    {
+      "name": "front-end developers",
+      "id": 1,
+      "messages": [
+        {
+          "date": "yesterday at 2:29 AM",
+          "userName": "Nellie Francis",
+          "message": "Suspendisse enim tel....",
+          "profileLogo": "icon"
+        },
+        {
+            "date": "yesterday at 2:35 AM",
+            "userName": "Nellie Francis",
+            "message": "4124141DAD enim tel....",
+            "profileLogo": "icon"
+          },
+          {
+            "date": "yesterday at 2:44 AM",
+            "userName": ";Lalal Francis",
+            "message": "fdsfsdfs enim tel....",
+            "profileLogo": "icon"
+          },
+          {
+            "date": "yesterday at 2:49 AM",
+            "userName": "Nellie Dada",
+            "message": "Suspendisse enim tel....",
+            "profileLogo": "icon"
+          }
+      ]
+    },
+    {
+        "name": "random",
+        "id": 2,
+        "messages": [
+          {
+            "date": "yesterday at 2:29 AM",
+            "userName": "Nellie Francis",
+            "message": "Suspendisse enim tel....",
+            "profileLogo": "icon"
+          },
+          {
+              "date": "yesterday at 2:35 AM",
+              "userName": "Nellie Francis",
+              "message": "4124141DAD enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:44 AM",
+              "userName": ";Lalal Francis",
+              "message": "fdsfsdfs enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:49 AM",
+              "userName": "Nellie Dada",
+              "message": "Suspendisse enim tel....",
+              "profileLogo": "icon"
+            }
+        ]
+      },
+      {
+        "name": "back-end",
+        "id": 3,
+        "messages": [
+          {
+            "date": "yesterday at 2:29 AM",
+            "userName": "Nellie Francis",
+            "message": "Suspendisse enim tel....",
+            "profileLogo": "icon"
+          },
+          {
+              "date": "yesterday at 2:35 AM",
+              "userName": "Nellie Francis",
+              "message": "4124141DAD enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:44 AM",
+              "userName": ";Lalal Francis",
+              "message": "fdsfsdfs enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:49 AM",
+              "userName": "Nellie Dada",
+              "message": "Suspendisse enim tel....",
+              "profileLogo": "icon"
+            }
+        ]
+      },
+      
+      {
+        "name": "cats and dogs",
+        "id": 3,
+        "messages": [
+          {
+            "date": "yesterday at 2:29 AM",
+            "userName": "Nellie Francis",
+            "message": "Suspendisse enim tel....",
+            "profileLogo": "icon"
+          },
+          {
+              "date": "yesterday at 2:35 AM",
+              "userName": "Nellie Francis",
+              "message": "4124141DAD enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:44 AM",
+              "userName": ";Lalal Francis",
+              "message": "fdsfsdfs enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:49 AM",
+              "userName": "Nellie Dada",
+              "message": "Suspendisse enim tel....",
+              "profileLogo": "icon"
+            }
+        ]
+      },
+      {
+        "name": "welcome",
+        "id": 4,
+        "messages": [
+          {
+            "date": "yesterday at 2:29 AM",
+            "userName": "Nellie Francis",
+            "message": "Suspendisse enim tel....",
+            "profileLogo": "icon"
+          },
+          {
+              "date": "yesterday at 2:35 AM",
+              "userName": "Nellie Francis",
+              "message": "4124141DAD enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:44 AM",
+              "userName": ";Lalal Francis",
+              "message": "fdsfsdfs enim tel....",
+              "profileLogo": "icon"
+            },
+            {
+              "date": "yesterday at 2:49 AM",
+              "userName": "Nellie Dada",
+              "message": "Suspendisse enim tel....",
+              "profileLogo": "icon"
+            }
+        ]
+      }
+
+   
+  ]

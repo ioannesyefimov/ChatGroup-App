@@ -11,66 +11,6 @@ interface validateProps {
   secondRef: RefObject<any>
   thirdRef: RefObject<any>
 }
- const validateInput = ({ firstRef,secondRef,thirdRef}:validateProps)=>{
-  
-  let firstVal = firstRef?.current.value
-  let secondVal = secondRef?.current.value
-  let thirdVal = thirdRef?.current.value
-  interface ErrorArr {
-    email?: string
-    password?: string
-    name?: string
-  }
-  let err:ErrorArr = {}
-
-
-    if(!firstVal){
-      firstRef?.current.classList.add('error')
-      err.email = Errors.INVALID_EMAIL
-    }else if (firstVal && !validateEmail(firstVal)){
-      firstRef?.current.classList.add('error')
-         err.email = Errors.INVALID_EMAIL
-    } else {
-      firstRef?.current.classList.remove('error')
-
-      delete err.email 
-    }
-
-
-    if(!secondVal && secondRef !== undefined){
-      secondRef?.current.classList.add('error')
-      err.name = Errors.CANNOT_BE_EMPTY
-
-    } else if (secondRef !== undefined  && /\d/.test(secondVal)){
-      secondRef?.current.classList.add('error')
-       err.name = Errors.CANNOT_CONTAIN_NUMBERS
-    } else {
-      secondRef?.current.classList.remove('error')
-
-      delete err.name 
-    }
-    if(!thirdVal ){
-      thirdRef.current.classList.add('error')
-      err.password = Errors.CANNOT_BE_EMPTY
-    }else if (secondRef && secondVal !== '' && validatePassword(thirdVal, secondVal) !== 'valid'){
-      let currentErr = validatePassword(thirdVal,secondVal)
-        secondRef?.current.classList.add('error')
-        err.password = currentErr
-
-    } else {
-      delete err.password 
-      secondRef?.current.classList.remove('error')
-
-    }
-    console.log(isTrue(err))
-    if(isTrue(err).is) {
-      return {success:false, message: err}
-    } 
-    return {success:true, message: err}
-  }
-
-
-
 
   
  function validatePassword(password:string, name:string){
@@ -179,27 +119,34 @@ const convertBase64 = (file:File) => {
 }
 interface FetchProps {
   url: string
-  method: 'get' | 'post' | 'delete' | 'update'
-  body: BodyInit
-  headers: HeadersInit | undefined 
+  method?: 'get' | 'post' | 'delete' | 'update' | 'POST' | 'GET' | 'DELETE' | 'UPDATE'
+  body?: Object
+  headers?: HeadersInit | undefined 
+  signal?: AbortSignal
 }
- const APIFetch = async({url,method,headers, body}:FetchProps) => {
+ const APIFetch = async({url,
+  method='get',
+ headers={
+  "Content-Type": "application/json",
+}, 
+body,
+signal}:FetchProps) => {
   console.log(`headers: `, headers);
   console.log(`body: `, body);
   console.log(`url: `, url)
  return !method?.toLowerCase().includes('get')   ? (
   await fetch(url, {
     method: method,
-    headers: {
-      "Content-Type": "application/json",
-    },
+    signal,
+    headers,
     body: JSON.stringify(body)
   }).then(response=>response.json())
  ) : (
   
   await fetch(url, {
     method: method,
-    headers
+    headers,
+    signal,
   }).then(response=>response.json())
  )
 }
@@ -245,5 +192,5 @@ function getFirstLetter(str:string,words?:number){
  
   export {
     countWords,getFirstLetter,
-    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword,validateInput, isTrue,isObj,APIFetch
+    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch
   }
