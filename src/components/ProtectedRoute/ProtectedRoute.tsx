@@ -6,7 +6,7 @@ import ChatProvider from '../ChatProvider/ChatProvider'
 const ProtectedRoute = () => {
     const {user} = useAuth()
 
-    // if(!user?.email) return <Navigate to="/auth/signin" replace/>
+    if(!user?.email) return <Navigate to="/auth/signin" replace/>
 
   return (
    <ChatProvider>

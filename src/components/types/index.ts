@@ -1,45 +1,46 @@
-export interface Message {
-    profileLogo?: string
+import { ReactElement } from "react"
+
+export type Message =  {
+    profileImg?: string
     userName: string
     date: string 
     message: string
 
 }
 
-export interface MessageType {
+export type ResponseType  = {
     message: Object | null
     success: boolean | null
 }
-export interface Channel {
+
+export type Member = UserType
+
+export type Channel = {
     name:string
     messages: Message[] | Message
+    members: Member[]| Member
     id:string | number
 }
 
-export interface ProviderProps{
+export type ProviderProps = {
     children: React.ReactNode
 }
 
-export interface  ContextChat{
-    channels?: Channel[] | Channel,
 
-}
-export interface ContextAuth {
-    user: UserType,
-    loading:boolean,
-    cookies: string[]
-    Message: MessageType
 
+
+export type ChildrenType = {
+    children?: ReactElement 
 }
 
-export interface LogType {
+export type LogType  = {
     userName: string | undefined 
     accessToken: string
     email: string
     password?: string
 }
 
-export interface UserType {
+export type UserType = {
     userName:string
     email:string
     photo?:string
@@ -47,7 +48,7 @@ export interface UserType {
     loggedThrough?: string
     bio?: string
 }
-export interface ChangesType {
+export type ChangesType =  {
     picture: unknown
     userName?:string
     email?:string
@@ -56,7 +57,7 @@ export interface ChangesType {
     loggedThrough?: string
     bio?: string
 }
-export interface LoginType {
+export type LoginType  = {
     userName:string 
     email:string
     id?:string
@@ -64,7 +65,7 @@ export interface LoginType {
     password?: string
 }
 
-export interface HandleFetchProps{
+export type HandleFetchProps = {
     data?: FormData,
     user: UserType | any,
     accessToken: string

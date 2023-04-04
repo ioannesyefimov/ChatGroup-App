@@ -1,56 +1,55 @@
 import React,{FC, ReactNode, useEffect, useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { profileIco } from '../../assets'
-import { Channel,ProviderProps,ContextChat } from '../types'
+import { Channel, ChildrenType } from '../types'
 import { APIFetch } from '../utils'
 
-const defaultValue = {
+
+export type InitialChatStateType = {
+    channels: Channel[] | Channel
+    setChannels: React.Dispatch<React.SetStateAction<Channel | Channel[]>>
+
+}
+  
+  type useChatContextType = ReturnType<typeof useChatContext>
+  
+  export const initChatContextState: InitialChatStateType ={
     channels: [],
-
-}
-
-export const ChatContext = React.createContext<ContextChat >(defaultValue)
-
-export const useChatContext  = ()=>  {
-    return React.useContext(ChatContext)
-}
-
-const ChatProvider : FC<ProviderProps>  = ({children}) => {
-    const [channels,setChannels] = useState<Channel[] >([])
-    
-    useEffect(
-        ()=>{
-            let controller = new AbortController()
-            let fetchChannels = async()=>{
-                let signal = controller.signal
-                return await fetch('./ChatData.json',{
-                    headers: {
-                        'Accept': 'application/json'
-                      }
-                }).then(resp=>resp.json())
-            }
-            let data = fetchChannels()
-            console.log(data)
-            return () => controller.abort()
-        },[]
+    setChannels: ()=>{}
+  }
+  export const ChatContext = React.createContext<useChatContextType>(initChatContextState)
+  
+  export const useChatContext = (initChatContextState:InitialChatStateType)=>{
+    const [channels,setChannels] = useState<Channel[]|Channel>([])
+    // useEffect(
+    //     ()=>{
+    //       // add sscripts
+    //       const addScript = async(callback:CallableFunction)=>{
+    //         try {
+    //           return await callback()
+    //         } catch (error) {
+    //           console.log(error)
+    //         }
+    //       }
+    //       addScript(addPolicyScript3)
+    //       addScript(addPolicyScript2)
+    //       addScript(addPolicyScript)
+    //     },[]
+    //   )
+    return {channels,setChannels}
+  }
+  
+ 
+  
+   const ChatProvider  = (
+    {children,...initState} :ChildrenType & InitialChatStateType 
+  ) => {
+    return (
+      <ChatContext.Provider value={useChatContext(initState)}>
+          {children}
+      </ChatContext.Provider>
     )
-
-    const value:any = React.useMemo(
-        ()=>(
-            {
-                channels,setChannels,
-            }
-            )
-            
-    ,[channels]
-    )
-
-  return (
-    <ChatContext.Provider value={value}>
-        {children}
-    </ChatContext.Provider>
-  )
-}
+  }
 
 
 

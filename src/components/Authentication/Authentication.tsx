@@ -15,7 +15,7 @@ const AuthenticationForm = () => {
 
   if(location.pathname === '/auth') return <Navigate to='/auth/signin' replace/>
   if(!user?.email) return <Outlet/> 
-  if(user?.email) return <Navigate to='/dashboard' replace/>
+  return <Navigate to='/dashboard' replace/>
 
   
   

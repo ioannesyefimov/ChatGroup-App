@@ -18,15 +18,18 @@ const AuthForm = ({type}:AuthProps) => {
     }
   }
 
+  const handleSubmit = (type)=>{
+
+  }
+
  const EmailRef =React.createRef<HTMLInputElement>()
  const PasswordRef =React.createRef<HTMLInputElement>()
  const UserNameRef =React.createRef<HTMLInputElement>()
 
-  return (
-    <div className='auth-form-component box-shadow--gray'>
-      {type === 'register' ? (
-        <>
-        <h2>Register</h2>
+ let registerContent = (
+  <div className='auth-form-component box-shadow--gray'>
+      <>
+      <h2>Register</h2>
         <FormInput value={userName} onChange={(e)=>handleOnChange(e,setUserName)}
         labelName='Username'
           name='username'
@@ -36,20 +39,25 @@ const AuthForm = ({type}:AuthProps) => {
           fRef={UserNameRef}
           photo={profileIco} 
         />
-        </>
-      ) : (
-        <h2>Login</h2>
-      )}
-
+      </>
       <FormInput value={email} onChange={(e)=>handleOnChange(e,setEmail)} labelName='email' name="Email" id="emailInput" type="email" placeholder='Type in email...' fRef={EmailRef} photo={mailIco} />
       <FormInput value={password} onChange={(e)=>handleOnChange(e,setPassword)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' fRef={PasswordRef} photo={lockerIco} />
-        {type === 'register' ? (
-          <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
-        ) : (
-          <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span>
-        )}
+      <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
+      <button onClick={(e)=>handleSubmit(e)}>Register</button>
+      </div>
+ )
+
+ let signinContent = (
+    <div className='auth-form-component box-shadow--gray'>
+      <h2>Login</h2>
+      <FormInput value={email} onChange={(e)=>handleOnChange(e,setEmail)} labelName='email' name="Email" id="emailInput" type="email" placeholder='Type in email...' fRef={EmailRef} photo={mailIco} />
+      <FormInput value={password} onChange={(e)=>handleOnChange(e,setPassword)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' fRef={PasswordRef} photo={lockerIco} />
+       <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span>
+       <button onClick={(e)=>handleSubmit(e)}>Signin</button>
     </div>
-  )
+ )
+
+  return type === 'signin' ? signinContent : registerContent
 }
 
 export default AuthForm

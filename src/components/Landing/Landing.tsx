@@ -1,7 +1,8 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import './Landing.scss'
 const Landing: React.FC = () => {
+  let location = useLocation()
     const navigate = useNavigate()
   return (
     <div className='landing-component box-shadow--gray'>
