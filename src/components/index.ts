@@ -2,11 +2,17 @@ import Authentication from "./Authentication/Authentication";
 import NotFound from './NotFound'
 import AuthForm from "./Authentication/AuthForm/AuthForm";
 import FormInput from "./Authentication/AuthForm/FormInput";
-import AuthProvider,{useAuth} from "./Authentication/Provider/AuthProvider";
+import AuthSocialButtons from "./AuthButtons/AuthSocialButtons";
 
 import Dashboard from "./DashBoard/Dashboard";
-import ChatProvider,{useChatContext} from "./ChatProvider/ChatProvider";
+import RedirectComponent from "./RedirectComponent/RedirectComponent";
+
+
+
+import ChatProvider from "./ChatProvider/ChatProvider";
+import ErrorProvider from "./ErrorProvider/ErrorProvider";
+import AuthProvider from "./Authentication/Provider/AuthProvider";
 export 
 {
-    ChatProvider,useChatContext,AuthProvider,useAuth,  Authentication, FormInput, NotFound,AuthForm,Dashboard,
+    ChatProvider,AuthProvider,ErrorProvider,  Authentication, FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons
 }

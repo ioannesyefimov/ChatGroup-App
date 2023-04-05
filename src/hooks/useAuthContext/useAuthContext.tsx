@@ -1,17 +1,14 @@
 import { useCallback, useContext } from "react"
 import { AuthContext, initAuthContextState } from "../../components/Authentication/Provider/AuthProvider"
 import { NavigateFunction } from "react-router-dom"
-import { useCookies } from "react-cookie"
-import useAuthCookies from "../useCookies/useAuthCookies"
-type UseAuthHookType={
+import useAuthCookies from "../useAuthCookies/useAuthCookies"
 
-}
 
-export const useAuth = () =>{
+export default () =>{
     const {user,loading,response,setUser,setLoading,setResponse} = useContext(AuthContext)
     const {removeCookie} = useAuthCookies()
-    
-    const clearState = useCallback((replace:string, navigate:NavigateFunction) => {
+
+    const clearState = useCallback((replace:string, navigate?:NavigateFunction) => {
         // console.log('CLEARNING STATE')
         setUser(initAuthContextState.user)
         setResponse(initAuthContextState.response)

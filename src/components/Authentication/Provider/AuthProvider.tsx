@@ -11,9 +11,9 @@ export type InitialStateType = {
   response?: ResponseType 
 }
 
-type useAuthContextType = ReturnType<typeof useAuthContext>
+type UseAuthContextType = ReturnType<typeof useAuthContext>
 
-export const initAuthContextState: useAuthContextType ={
+export const initAuthContextState: UseAuthContextType ={
   user: { userName: '', email: '', photo: '', id: '', loggedThrough: '' },
   loading: false,
   response: { success: false, message: null },
@@ -21,7 +21,7 @@ export const initAuthContextState: useAuthContextType ={
   setLoading: () => { },
   setResponse: () => { },
 }
-export const AuthContext = React.createContext<useAuthContextType>(initAuthContextState)
+export const AuthContext = React.createContext<UseAuthContextType>(initAuthContextState)
 
 export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   const [loading, setLoading] = useState<boolean>(false)
@@ -49,9 +49,6 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   return {user,loading,response,setUser,setLoading,setResponse}
 }
 
-export const useAuth  = ()=>  {
-    return React.useContext(AuthContext)
-}
 
  const AuthProvider  = (
   {children,...initState} :ChildrenType & InitialStateType 

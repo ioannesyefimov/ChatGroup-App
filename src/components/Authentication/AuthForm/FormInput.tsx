@@ -9,11 +9,11 @@ interface FormProps {
     name:string,
     id:string,
     photo: string,
-    fRef?: React.Ref<HTMLInputElement>
+
     onChange: (e:ChangeEvent<HTMLInputElement> ) => void 
     value:string
 }
-const FormInput =  React.forwardRef((props: FormProps) => (
+const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLInputElement>) => (
   // const {name,placeholder, type} = props
 
     <div className="inner-wrapper">
@@ -26,7 +26,7 @@ const FormInput =  React.forwardRef((props: FormProps) => (
         null
       )}
       <div className='form-wrapper'>
-        <input onChange={props.onChange} value={props.value} placeholder={props.placeholder} type={props.type}  ref={props.fRef ? props.fRef : null} name={props.name} id={props.name} aria-label={`${props.name} `} />
+        <input onChange={props.onChange} value={props.value} placeholder={props.placeholder} type={props.type}  ref={ref} name={props.name} id={props.name} aria-label={`${props.name} `} />
         {props?.photo ? (
             <img src={props.photo} alt="input-icon" />
         ) : (

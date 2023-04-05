@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react'
 import ReactFacebookLogin, { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
-import { useAuth } from '../../components';
+import { useAddScript, useAuth, useAuthCookies, useError } from '../index';
 import { Errors,APIFetch } from '../../components/utils';
-import { addFacebookScript } from '../../scripts/scripts';
 import useFetch from '../useFetch';
 
 const useFacebook = (type:string) => {
-    const {setCookie,setLoading,setMessage,logout} = useAuth()
+    const {setError,setHasError} = useError()
+    const {setCookie} = useAuthCookies()
+    const {clearState,setLoading} = useAuth()
     const {handleDelete} = useFetch()
+
+   
     useEffect(
         ()=>{
-            const addScript = async()=>{
+            const appendScript = async()=>{
                 try {
                     const params = {
                         appId: import.meta.env.VITE_APP_FACEBOOK_APP_ID,
@@ -18,10 +21,9 @@ const useFacebook = (type:string) => {
                         xfbml: true,
                         version: 'v16.0'
                     }
-                    await addFacebookScript();
 
-                    FB.init(params);
-                    FB.getLoginStatus((resp:ReactFacebookFailureResponse)  =>{
+                    FB?.init(params);
+                    FB?.getLoginStatus((resp:ReactFacebookFailureResponse)  =>{
                         console.log(`FB:status: ${resp.status}`)
                     })
                 } catch (error:any) {
@@ -29,7 +31,7 @@ const useFacebook = (type:string) => {
                     
                 }
             }
-            addScript()
+            appendScript()
         }, []
     )
 
@@ -44,38 +46,37 @@ const useFacebook = (type:string) => {
             const response = await APIFetch({url: `${url}auth/facebook/register`, method:'POST', body: {credentials}});
             console.log(response)
             if(!response.success){
-                logout(false)
-                return setMessage({message: response?.message, loggedThrough:response?.loggedThrough})
+                clearState('')
+                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
             }
             
-            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: '2000'})
+            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: 2000})
             localStorage.setItem('LOGIN_TYPE', 'signin')
 
         } catch (error) {
-            return setMessage({message: error})
+             setError({message: error})
 
         } finally {
             setLoading(false)
         }
     }
 
-    const handleFacebookLogin = async(credentials:ReactFacebookLoginInfo,type:string) =>{
+    const handleFacebookLogin = async({credentials,type}:{credentials:any,type:string}) =>{
         try {
             setLoading(true)
             console.log(`FB SIGNIN IN`)
             const response = await APIFetch({url: `${url}auth/facebook/${type}`, method:'POST', body: {credentials}});
             console.log(response)
             if(!response.success){
-                logout(false)
-                return setMessage({message: response?.message, loggedThrough:response?.loggedThrough})
+                clearState('')
+                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
             }
             
-            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: '2000'})
+            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: 2000})
             localStorage.setItem('LOGIN_TYPE', 'signin')
 
         } catch (error) {
-            logout()
-            return setMessage({message: error})
+               setError({message: error})
 
         } finally {
             setLoading(false)
@@ -101,7 +102,7 @@ const useFacebook = (type:string) => {
                 console.log('invalid type')
             }
         } catch (error) {
-            return setMessage({message:error})
+            return setError({message:error})
         }
     }
     
@@ -115,19 +116,20 @@ const useFacebook = (type:string) => {
             }; 
 
             console.log(`FACEBOOK HANDLING`)
-            FB.getLoginStatus((resp:any)=>{
-                console.log(`FB:status: ${resp.status}`)
-                if(resp.status === 'connected'){
-                    params.fbAccessToken = resp.authResponse.accessToken 
-                    FB.api('/me', response=>{
-                        console.log(`successful login for: ${response?.name}`)
-                        console.log(`RESPONSE:` ,response)
 
-                        // params.credentials = response
-
-                    });
-                }
-            });
+                FB.getLoginStatus((resp:any)=>{
+                    console.log(`FB:status: ${resp.status}`)
+                    if(resp.status === 'connected'){
+                        params.fbAccessToken = resp.authResponse.accessToken 
+                        FB.api('/me', response=>{
+                            console.log(`successful login for: ${response?.name}`)
+                            console.log(`RESPONSE:` ,response)
+    
+                            // params.credentials = response
+    
+                        });
+                    }
+                });
 
           
                 
@@ -165,24 +167,24 @@ const useFacebook = (type:string) => {
     const handleFacebookDelete = async(credentials:ReactFacebookLoginInfo)=>{
         try {
             console.log(`credentials: `, credentials);
-            if(!credentials) return setMessage({message:Errors.MISSING_ARGUMENTS})
+            if(!credentials) return setError({message:Errors.MISSING_ARGUMENTS})
             setLoading(true)
             const response = await APIFetch({url: `${url}auth/facebook/signin`, method:'POST', body: {credentials}});
             console.log(`deleting facebook`)
             console.log(response)
             if(!response.success){
-                logout(false)
-                return setMessage({message: response?.message, loggedThrough:response?.loggedThrough})
+                clearState('')
+                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
             }
 
          
             let  deleteUser =await handleDelete({accessToken: response?.data?.accessToken, user: credentials, deletedThrough: 'Facebook'});
-            if(!deleteUser?.success) return setMessage({message: deleteUser.message});
+            if(!deleteUser?.success) return setError({message: deleteUser.message});
 
-            logout('/auth/signin')
+            clearState('')
               
         } catch (error) {
-            return setMessage({message: error})
+            return setError({message: error})
         } finally{
             setLoading(false)
         }
@@ -193,3 +195,7 @@ const useFacebook = (type:string) => {
 }
 
 export default useFacebook
+
+function setLoading(arg0: boolean) {
+    throw new Error('Function not implemented.');
+}

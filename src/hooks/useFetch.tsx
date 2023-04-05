@@ -1,103 +1,24 @@
-import { RefObject } from 'react';
-import { useAuth } from '../components';
-import { LogType, UserType,HandleFetchProps } from '../components/types';
-import { APIFetch, Errors } from '../components/utils/index';
+import { useAuth, useAuthCookies, useError } from './index'
+import {HandleFetchProps } from '../components/types';
+import { APIFetch } from '../components/utils/index';
 import { convertBase64} from '../components/utils/index';
+import { useCallback } from 'react';
 
 
 
 
 
 const useFetch = () => {
-
-    const {setCookie, setMessage,setLoading,removeCookie,setIsLogged, clearState} = useAuth()
-    const url = `https://authentic-app-backend.onrender.com/api/`
+    const {removeCookie,setCookie} = useAuthCookies()
+    const {setResponse,setLoading, clearState} = useAuth()
+    const {setError}= useError()
+    const url = `http://localhost:5050/api`
     let newURL = location.href.split("?")[0];
-
-  
-
-    const fetchRegister = async ({userName,password,email}:LogType) => {
-      // do clean up before 
-      try {
-        removeCookie('user', {path: '/'})
-        removeCookie('accessToken', {path: '/'})
-        if(!userName) return {success:false,message:{err:Errors.MISSING_ARGUMENTS,arg:userName}}
-        else if(!password) return {success:false,message:{err:Errors.MISSING_ARGUMENTS,arg:'password'}}
-        else if(!email) return {success:false,message:{err:Errors.MISSING_ARGUMENTS,arg:`email`}}
-        setLoading(true)
-        
-        const response = await APIFetch({
-          url:`${url}auth/register`, 
-          method:'post',
-          body: { 
-          userName:userName ,
-          password: password,
-          email: email,
-          loggedThrough: 'Internal'
-        }})
-      
-       
-    
-
-      // console.log(response)
-
-      if(!response.success ) {
-        clearState()
-          return setMessage({message:response.message, loggedThrough: response?.loggedThrough})
-      } 
-        setCookie('accessToken', response.data.accessToken, {path: '/', maxAge: 2000})
-        setCookie('refreshToken', response.data.refreshToken, {path: '/', maxAge: 2000})
-
-        localStorage.setItem('LOGGED_THROUGH', response.data.loggedThrough)
-
-        } catch (error) {
-          return setMessage({message:error})
-
-        } finally{
-          setLoading(false)
-        }
-
-    }
-
-    const fetchSignin = async (email:string,password:string) => {
-        
-        try {
-        setLoading(true)
-        if(!email)return {success:false,message:{err:Errors.MISSING_ARGUMENTS,arg:'email'}}
-        if(!password)return {success:false,message:{err:Errors.MISSING_ARGUMENTS,arg:'password'}}
-        const response = await APIFetch({
-           url: `${url}auth/signin`, 
-           method: 'post', 
-           body: {
-            email: email,
-            password: password,
-            loggedThrough: 'Internal',
-          }}) 
-             
-        
-            if(!response.success ) {
-              clearState()
-               return  setMessage({message:response?.message, loggedThrough: response?.loggedThrough})
-            } 
-              // setCookie('user',response.data.user, {path: '/', maxAge: '2000'})
-              setCookie('accessToken', response.data.accessToken, {path: '/', maxAge: 2000})
-              localStorage.setItem('LOGGED_THROUGH', response.data.loggedThrough)
-  
-        } catch (error) {
-          return setMessage({message:error})
-
-        } finally {
-          setLoading(false)
-        }
-
-
-    }
-
-   const getUserData= async(accessToken:string, loggedThrough:string  | null) =>{
+   const getUserData= useCallback(async(accessToken:string, loggedThrough:string | null) =>{
      try {
       setLoading(true)
       const response = await APIFetch({
-        url: `${url}auth/signin`,
+        url: `${url}auth/user`,
         method: 'POST', 
         body: {
         accessToken: accessToken,
@@ -105,9 +26,9 @@ const useFetch = () => {
         }})
 
         if(!response?.success ){
-          clearState()
-          return setMessage({message:response.message, loggedThrough:response?.loggedThrough})
-           
+          clearState('')
+           setError({message:response.message, loggedThrough:response?.loggedThrough})
+           return
         }
         // console.log(response)
         if(response?.data.user){
@@ -128,19 +49,18 @@ const useFetch = () => {
             if(response?.data.accessToken){
               setCookie('accessToken', response?.data.accessToken,{path: '/', maxAge: 2000})
             }
-            setIsLogged(true)
-      return {token: response?.data?.accessToken}
+      
 
             // window.localStorage.clear()
         }
 
     } catch (error) {
-      return setMessage({message:error})
+      setError({message:error})
     } finally {
       setLoading(false)
 
     }
-  }
+  }, [])
     
   const uploadPicture = async (file:File,accessToken:string) => {
    
@@ -205,7 +125,7 @@ const useFetch = () => {
 
   }
 
-  const handleChangeFetch = async ({data,user, accessToken}:HandleFetchProps) => {
+  const handleChangeFetch = useCallback(async ({data,user, accessToken}:HandleFetchProps) => {
   // change users information.
   console.log(user);
   let email = data?.get('email')
@@ -258,29 +178,29 @@ const useFetch = () => {
     // console.log(response);
     if(!response?.success) {
 
-      return setMessage({message: response?.message})
+      return setError({message: response?.message})
     };
     if(!response?.data?.accessToken){
 
-      return setMessage({message:response?.message})  
+      return setError({message:response?.message})  
     }
     setCookie('accessToken', response?.data?.accessToken, {path:'/', maxAge: 2000})
 
-    setMessage({message: response?.data?.message, changes: response?.data?.changes});
+    setError({message: response?.data?.message, changes: response?.data?.changes});
     if(response?.data?.loggedThrough){
       return  await getUserData(response?.data?.accessToken, user?.loggedThrough!);
     }
-    return  await getUserData(response?.data?.accessToken, window.localStorage.getItem('LOGGED_THROUGH'))
+    return  await getUserData(response?.data?.accessToken, window?.localStorage?.getItem('LOGGED_THROUGH'))
 
 
 
   } catch (error) {
-    return setMessage({message:error})      
+    return setError({message:error})      
   } finally{
     setLoading(false)
   }
-}
-  return { getUserData, fetchSignin,fetchRegister,handleChangeFetch,handleDelete,
+},[])
+  return { getUserData,handleChangeFetch,handleDelete,
   }
 }
 

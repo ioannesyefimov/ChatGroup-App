@@ -1,13 +1,16 @@
 import React, {useEffect} from 'react'
 import { Search } from 'react-router-dom';
-import { useAuth } from '../../components';
-import { HandleFetchProps,LogType } from '../../components/types';
+import { useAuth, useAuthCookies, useError } from '../index'
+import { HandleFetchProps,LogType } from '../../components/types'
 import { APIFetch } from '../../components/utils';
 import useFetch from '../useFetch';
 
 const useGithub = (TYPE:string) => {
-    const {getUserData,handleDelete} = useFetch()
-    const {cookies,setCookie,setMessage,setLoading,clearState,isLogged} = useAuth()
+    const {getUserData} = useFetch()
+    const {setError,setHasError} = useError()
+    const {setCookie,cookies} = useAuthCookies()
+    const {clearState,setLoading,user} = useAuth()
+    const {handleDelete} = useFetch()
     const url = `https://authentic-app-backend.onrender.com/api/`
 
     let newURL = location.href.split("?")[0];
@@ -16,7 +19,7 @@ const useGithub = (TYPE:string) => {
     useEffect(() => {
         let accessToken = cookies.accessToken
         
-        if(!isLogged ){
+        if(!user?.email ){
           const queryString = window.location.search
         //   console.log(queryString.length)
                 const checkQueryString = async(queryString:string) => {
@@ -33,7 +36,7 @@ const useGithub = (TYPE:string) => {
                         //  return console.log('query is empty')
                        }
                    } catch (error) {
-                     return setMessage({message:error})
+                     return setError({message:error})
            
                    } finally{
                      setLoading(false)
@@ -58,14 +61,14 @@ const useGithub = (TYPE:string) => {
         try {
             const response = await APIFetch({url:`${url}auth/github/register`,method:'POST', body:{accessToken} });
             if(!response.success){
-                clearState(false)
-                return setMessage({message: response?.message, loggedThrough:response?.loggedThrough})
+                clearState('')
+                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
             }
-            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: '2000'})
+            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: 2000})
             localStorage.setItem('LOGIN_TYPE', 'signin')
         } catch (error) {
-            clearState()
-            return setMessage({message: error})
+            clearState('')
+            return setError({message: error})
 
         } finally{
             setLoading(false)
@@ -82,18 +85,18 @@ const useGithub = (TYPE:string) => {
 
               if(!response?.success ){
                 // console.log(response.message)
-                return setMessage({message: response.message, loggedThrough: response.loggedThrough})
+                return setError({message: response.message, loggedThrough: response.loggedThrough})
              }
 
              let  deleteUser =await handleDelete({accessToken: response?.data?.accessToken, user,deletedThrough:'Github'});
-             if(!deleteUser?.success) return setMessage({message: deleteUser.message});
+             if(!deleteUser?.success) return setError({message: deleteUser.message});
              
 
              clearState('/auth/signin')
             
            
         } catch (error) {
-            return setMessage({message: error})
+            return setError({message: error})
 
         } finally{
             setLoading(false)
@@ -109,15 +112,15 @@ const useGithub = (TYPE:string) => {
             if(!reponse.success){
                 window.history.pushState(null, document.title, newURL);
 
-               return setMessage({message: reponse?.message})
+               return setError({message: reponse?.message})
             }
             //  console.log(reponse)
-            setCookie('accessToken', reponse.data.accessToken, {path: '/', maxAge: '2000'})
+            setCookie('accessToken', reponse.data.accessToken, {path: '/', maxAge: 2000})
              window.history.pushState(null, document.title, newURL);
         // console.log(type)
         } catch (error) {
 
-            return setMessage({message: error})
+            return setError({message: error})
 
         } finally{
             setLoading(false)
@@ -143,8 +146,8 @@ const useGithub = (TYPE:string) => {
               let dbResponse = await responseToken.json();
               if(!dbResponse?.success ){
                 // console.log(dbResponse.message)
-                clearState()
-                return setMessage({message: dbResponse.message, loggedThrough: dbResponse.loggedThrough})
+                clearState('')
+                return setError({message: dbResponse.message, loggedThrough: dbResponse.loggedThrough})
                 }
                 localStorage.clear()
                 await getUserData(dbResponse?.data?.accessToken, 'Github')
@@ -153,7 +156,7 @@ const useGithub = (TYPE:string) => {
 
         } catch (error) {
             // console.log(error)
-            return setMessage({message:error})
+            return setError({message:error})
 
         } finally{
             setLoading(false)

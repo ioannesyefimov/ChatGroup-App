@@ -1,10 +1,67 @@
-import { RefObject } from "react";
+import { Ref, RefObject } from "react";
 
  const  validateEmail = function(email:string) {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
        return regex.test(email)
 };
 
+const throwErr =  (err:any) =>{
+ 
+  if(err?.name ){
+    let ERR:{[index:string]: any} = new Error
+    ERR.name = err?.name
+    ERR.code = err?.code
+    ERR.arguments = err?.arguments
+    throw ERR
+
+  }
+  else {
+    throw new Error(err)
+  }
+}
+
+type FieldsType = {
+  [index:string]: string 
+}
+type ErrorsType = {
+  [index:string]: string 
+}
+type RefsType ={
+  [index:string]: RefObject<HTMLInputElement>
+}
+
+export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=>{
+  return new Promise<{success:boolean,errors?: ErrorsType}>((resolve, reject) => {
+    let errors:ErrorsType = {}
+    console.log(refs)
+    for(let obj in fields){
+      if(!fields[obj]) {
+          refs[obj]?.current?.classList.add('error')
+          errors[obj] = Errors.CANNOT_BE_EMPTY
+      }
+      else if(obj==='email'){
+        let isValid = validateEmail(fields[obj]);
+        console.log(isValid);
+        
+        if(!isValid) {
+          refs[obj]?.current?.classList.add('error')
+          errors[obj] = Errors.INVALID_EMAIL
+        }
+      } else if (fields[obj].length < 3){
+        refs[obj]?.current?.classList.add('error')
+        errors[obj] = Errors.SHORT_LENGTH
+      }
+    }
+    console.log(`ERRORS:` , errors)
+    if(Object.keys(errors).length > 0) {
+      for(let ref in refs){
+        refs[ref]?.current?.classList.remove('error')
+      }
+      return reject({success:false,errors})
+    }
+    return resolve({success:true})
+  })
+}
 
 interface validateProps {
   firstRef: RefObject<any>
@@ -65,30 +122,28 @@ interface validateProps {
 }
 
  const Errors = {
-  INVALID_PASSWORD: `must be in English and contains at least one uppercase and lowercase character, one number, and one special character`,
-  PASSWORD_CONTAINS_NAME: `MUST_NOT_CONTAIN_USER'S_INPUT`,
-  USER_EXIST: 'USER_ALREADY_EXISTS',
-  EMAIL_EXIST: 'EMAIL_ALREADY_EXISTS',
-  NOT_FOUND: 'NOT_FOUND',
-  WRONG_PASSWORD: `WRONG_PASSWORD`,
-  INVALID_EMAIL: `INVALID_EMAIL`,
-  WRONG_EMAIL: `WRONG_EMAIL`,
-  CANNOT_CONTAIN_NUMBERS: `CANNOT_CONTAIN_NUMBERS`,
-  LOGGED_THROUGH_SOCIAL: "LOGGED_THROUGH_SOCIAL",
-  CANNOT_BE_EMPTY: `CANNOT_BE_EMPTY`,
-  NOT_SIGNED_UP: `NOT_SIGNED_UP`,
-  SIGNED_UP_DIFFERENTLY: `SIGNED_UP_DIFFERENTLY`,
-  ALREADY_EXISTS: `ALREADY_EXISTS`,
-  INVALID_NUMBER: `INVALID_NUMBER`,
-  CHANGES_APPLIED: `CHANGES_APPLIED`,
-  CHANGES_NOT_APPLIED: `CHANGES_NOT_APPLIED`,
+  SHORT_LENGTH: `SHORT LENGTH`,
+  INVALID_PASSWORD: `password must be in English and contains at least one uppercase and lowercase character, one number, and one special character`,
+  PASSWORD_CONTAINS_NAME: `MUST NOT CONTAIN USER'S INPUT`,
+  USER_EXIST: 'USER ALREADY EXISTS',
+  EMAIL_EXIST: 'EMAIL ALREADY EXISTS',
+  NOT_FOUND: 'NOT FOUND',
+  WRONG_PASSWORD: `WRONG PASSWORD`,
+  INVALID_EMAIL: `INVALID EMAIL`,
+  WRONG_EMAIL: `WRONG EMAIL`,
+  CANNOT_CONTAIN_NUMBERS: `CANNOT CONTAIN NUMBERS`,
+  LOGGED_THROUGH_SOCIAL: "LOGGED THROUGH SOCIAL",
+  CANNOT_BE_EMPTY: `CANNOT BE EMPTY`,
+  NOT_SIGNED_UP: `NOT SIGNED UP`,
+  SIGNED_UP_DIFFERENTLY: `SIGNED UP DIFFERENTLY`,
+  ALREADY_EXISTS: `ALREADY EXISTS`,
+  INVALID_NUMBER: `INVALID NUMBER`,
+  CHANGES_APPLIED: `CHANGES APPLIED`,
+  CHANGES_NOT_APPLIED: `CHANGES NOT APPLIED`,
   JWT_MALFORMED: `jwt malformed` ,
-  MISSING_ARGUMENTS: `MISSING_ARGUMENTS`,
+  MISSING_ARGUMENTS: `MISSING ARGUMENTS`,
   JWT_EXPIRED: `jwt expired`,
-  ABORTED_TRANSACTION: `ABORTED_TRANSACTION`,
-
-
-  
+  ABORTED_TRANSACTION: `ABORTED TRANSACTION`,
 }
 
 
@@ -192,5 +247,5 @@ function getFirstLetter(str:string,words?:number){
  
   export {
     countWords,getFirstLetter,
-    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch
+    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,
   }

@@ -1,11 +1,14 @@
-import React, {useEffect} from 'react'
-import { useAuth } from '../../components';
+import React, {useEffect, useLayoutEffect} from 'react'
+import { useAddScript, useAuth, useAuthCookies, useError } from '../index';
 import useFetch from '../useFetch';
-import { APIFetch } from '../../components/utils';
+import { APIFetch, timeout } from '../../components/utils';
 
-const useGoogle = (TYPE:string) => {
-    const {setCookie,setMessage,setLoading, User,clearState} = useAuth()
+const useGoogle = (loginType:string) => {
+    const {setError,setHasError} = useError()
+    const {setCookie} = useAuthCookies()
+    const {clearState,setLoading,user} = useAuth()
     const {handleDelete} = useFetch()
+
     
     const handleGoogle = (response:any)=>{
         let loginType = window.localStorage.getItem('LOGIN_TYPE')
@@ -19,14 +22,16 @@ const useGoogle = (TYPE:string) => {
             default: return console.log(`NOT MATCHED TYPE `)
         }
     }
-    useEffect(() => {
+    useEffect(
+        () => {
         if(window?.google){
+            console.log(`firing`)
             window.localStorage.setItem('LOGIN_TYPE', loginType)
-            google.accounts.id.initialize({
+            window.google.accounts.id.initialize({
                 client_id: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID,
                 callback: handleGoogle
             })
-            google.accounts.id.renderButton(document.getElementById('googleBtn'), {
+            window.google.accounts.id.renderButton(document.getElementById('googleBtn'), {
                 shape: "circle",
                 type: "icon",
             })
@@ -47,17 +52,17 @@ const useGoogle = (TYPE:string) => {
     
     
             if(!response?.success){
-                clearState()
-                setMessage({message: response.message, loggedThrough: response?.loggedThrough})
+                clearState('')
+                setError({message: response.message, loggedThrough: response?.loggedThrough})
                 return console.log(response?.message)
             }
             console.log(response)
-            setCookie("accessToken", response?.data?.accessToken, {path: '/'}, {maxAge : "1200"} );
+            setCookie("accessToken", response?.data?.accessToken, {path: '/',maxAge : 1200} );
                 localStorage.setItem('LOGIN_TYPE', 'signin')
                 localStorage.setItem('LOGGED_THROUGH', 'Google')
                 console.log(`GETTING GOOGLE USER `)
         } catch (error) {
-            return setMessage({message: error})
+            return setError({message: error})
 
         }finally {
             setLoading(false)
@@ -70,20 +75,20 @@ const useGoogle = (TYPE:string) => {
             let response = await APIFetch({url:`${url}google/register`, method:'POST',body: {credential: googleResponse?.credential} });
 
             if(!response?.success ){
-               return setMessage({message:response.message, loggedThrough: response?.loggedThrough})
+               return setError({message:response.message, loggedThrough: response?.loggedThrough})
 
             }
             console.log(`google response: ${response}`)
             let dbResponse = response?.data
             
                 
-            setCookie("accessToken", dbResponse?.accessToken,  {path: '/'}, {maxAge : "1200"});
+            setCookie("accessToken", dbResponse?.accessToken,  {path: '/',maxAge : 1200});
             localStorage.setItem('LOGGED_THROUGH', 'Google')
             localStorage.setItem('LOGIN_TYPE', 'register')
             
         } catch (error) {
             
-            return setMessage({message:error})
+            return setError({message:error})
 
         }finally {
             setLoading(false)
@@ -100,12 +105,12 @@ const useGoogle = (TYPE:string) => {
             // console.log(data)
             if(!response?.success && response?.message){
                 // console.log(response)
-                setMessage({message:response.message, loggedThrough: response?.loggedThrough})
+                setError({message:response.message, loggedThrough: response?.loggedThrough})
             }
     
             let dbResponse = response.data
-            // if(!dbResponse?.accessToken)return setMessage({message:``})
-            let deleteUser = await handleDelete({accessToken: dbResponse?.accessToken, user: User, deletedThrough:'Google'})
+            // if(!dbResponse?.accessToken)return setError({message:``})
+            let deleteUser = await handleDelete({accessToken: dbResponse?.accessToken, user, deletedThrough:'Google'})
             // console.log(deleteUser)
             if(!deleteUser?.success){
                 // return console.log('USER IS NOT DELETED')
@@ -116,7 +121,7 @@ const useGoogle = (TYPE:string) => {
             setLoading(false)
             
         } catch (error) {
-            return  setMessage({message:error})
+            return  setError({message:error})
         } finally{
             setLoading(false)
         }
