@@ -1,0 +1,29 @@
+.navbar-component {
+    display: flex;
+    padding: .3rem 1.5rem;
+    justify-content: space-between;
+    gap:1rem;
+    // position: absolute;
+    right: 5px;
+    z-index: 1;
+    top:5px;
+    margin:0rem 0rem .3rem 0;
+
+    div.flex {
+        gap:1rem;
+    }
+    .logo {
+        max-width: 35rem;
+        transform: scale(1.4);
+        filter: invert(100%)
+    }
+
+    .nav-btn {
+        // background: ;
+        padding:.5rem ;
+
+        &:hover{
+            background-color: aquamarine;
+        }
+    }
+}

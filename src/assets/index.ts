@@ -15,14 +15,17 @@ import loadingGif from './Loading.gif'
 import questionIco from './questionIco.svg'
 import notFoundIco from './notFoundIco.svg'
 import searchIco from './searchIco.svg'
+import hamburgerIco from './hamburgerIco.svg'
 
+import chatifyIco from './chatify-logo.svg'
 export interface Icons {
   icon: File
 }
 export  {
   questionIco, searchIco,  loadingGif,
     triangleIco, logoutIco, backIco,cameraIco,correctUploadIco,
-      groupIco,
+      groupIco, hamburgerIco,
         facebookIco, GithubIco, GoogleIco,
-        TwitterIco, mailIco, lockerIco,profileIco,notFoundIco
+        TwitterIco, mailIco, lockerIco,profileIco,notFoundIco,
+        chatifyIco
 } 

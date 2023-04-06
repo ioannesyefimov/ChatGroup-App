@@ -1,9 +1,24 @@
-
+@use '../../utils/utils.scss' as * ;
 .App{
 
     .left-wrapper{
+        @include respond-to(small){
+            &[aria-checked="true"]{
+                display: grid;
+                gap:1rem;
 
+                outline: 1px solid red;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                z-index: 10;
+            
+            }
+            
+
+        }
         .channels {
+        
             display: grid;
             gap:.8rem;
             .channel{

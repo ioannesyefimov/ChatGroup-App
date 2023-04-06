@@ -1,6 +1,14 @@
+@use '../../utils/utils.scss' as *;
 .dashboard-component{
 
     .left-wrapper{
+
+        .hamburger{
+            @include respond-to(medium){
+                display: none;
+            }
+        }
+
         display: flex;
         flex-direction: column;
         gap:.8rem;

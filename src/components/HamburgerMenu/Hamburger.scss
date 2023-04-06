@@ -1,0 +1,13 @@
+.hamburger {
+
+    background-color: rgba(0, 255, 255, 0.237);
+    border-radius:6px;
+    margin: 0 auto;
+    &-btn {
+        max-width: 50px;
+        filter: invert(100%);
+        background: transparent;
+        transform: scale(1.4);
+    }
+
+}

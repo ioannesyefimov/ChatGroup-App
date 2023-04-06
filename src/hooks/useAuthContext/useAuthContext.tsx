@@ -35,7 +35,7 @@ export default () =>{
 
       const value = useMemo(
         ()=>({
-          user,loading,response,setUser,setResponse,setLoading
+          user,loading,response,setUser,setResponse,setLoading,clearState
         }),
         [user,loading,response]
       )

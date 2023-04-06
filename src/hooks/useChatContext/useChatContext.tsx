@@ -43,7 +43,7 @@ import { UserType } from "../../components/types"
 
     const value = useMemo(
         ()=>({
-            channels,setChannels
+            channels,currentChannel,setCurrentChannel , setChannels
         }),[channels]
     )
     return value

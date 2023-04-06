@@ -7,17 +7,32 @@
     // outline: 1px solid red;
     display: grid;
     grid-template-columns: 25% 1fr;
+    grid-template-rows: 10% 1fr;
     // width: 100%;
-position: relative;
-    &::after{
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 1px;
-        top:15%;
-        box-shadow: 0 2px 4px 1px #120F13;
-        // background-color:#020202 ;
+    grid-template-areas: 
+    'navbar navbar navbar'
+    'main main main'
+    ;
+
+    .navbar-component{
+        grid-area: navbar;
     }
+
+    .main-wrapper {
+        position: relative;
+
+        &::before{
+            content: '';
+            left: -33.5%;
+            position: absolute;
+            width: calc(100% + 33.5% );
+            height: 1px;
+            top:11.5%;
+            box-shadow: 0 1px 2px 0px #fbfafa;
+            // background-color:#020202 ;
+        }
+    }
+
 
 
    

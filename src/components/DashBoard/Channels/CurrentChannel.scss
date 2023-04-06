@@ -6,7 +6,7 @@
     gap:1rem;
     .channel-title{
         margin-top: 1rem;
-    }
+        font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);    }
     .messages-wrapper{
         display: flex;
         flex-direction: column;

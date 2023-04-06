@@ -37,14 +37,24 @@ const AuthForm = ({type}:AuthProps) => {
     e.preventDefault()
 
     try {
+      if(!type){
+        return console.log(`TYPE IS MISSING`)
+      }
       setLoading(true)
-      if(type){
-        let isValidInput = await validateInput({fields: {email,password,userName}, refs: {email:EmailRef,password:PasswordRef,userName:UserNameRef}});
+      let params 
+      if(type==='register'){
+        params = {fields: {email,userName,password},refs:{email:EmailRef,password:PasswordRef,userName:UserNameRef}}
+      } else if (type==='signin'){
+        params = {fields: {email,password},refs:{email:EmailRef,password:PasswordRef}}
+
+      }
+      if(!params) return
+        let isValidInput = await validateInput({fields: params.fields, refs: params.refs});
         if(!isValidInput.success) return 
         let controller = new AbortController() 
         let  signal = controller.signal;
         
-        let response = await APIFetch({url:`${URL}/${type}`, method:'POST', body: {email,password,userName,loggedThrough:`INTERNAL`,signal}});
+        let response = await APIFetch({url:`${URL}/${type}`, method:'POST', body: {...params?.fields,loggedThrough:`INTERNAL`,signal}});
         console.log(`RESPONSE: `, response)
         if(!response?.success) {
           throwErr(response?.message)
@@ -54,7 +64,6 @@ const AuthForm = ({type}:AuthProps) => {
           navigate(`/auth/redirect/?type=auth/user&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
         }
         
-      }
 
     } catch (error:any) {
       setError(error)
