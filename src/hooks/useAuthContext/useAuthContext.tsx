@@ -1,4 +1,4 @@
-import { useCallback, useContext } from "react"
+import { useCallback, useContext, useEffect, useMemo } from "react"
 import { AuthContext, initAuthContextState } from "../../components/Authentication/Provider/AuthProvider"
 import { NavigateFunction } from "react-router-dom"
 import useAuthCookies from "../useAuthCookies/useAuthCookies"
@@ -6,8 +6,16 @@ import useAuthCookies from "../useAuthCookies/useAuthCookies"
 
 export default () =>{
     const {user,loading,response,setUser,setLoading,setResponse} = useContext(AuthContext)
-    const {removeCookie} = useAuthCookies()
+    const {removeCookie,cookies} = useAuthCookies()
 
+    useEffect(
+      ()=>{
+        let isLogged = cookies?.user
+        if(isLogged){
+          setUser(isLogged)
+        }
+      },[cookies?.user]
+    )
     const clearState = useCallback((replace:string, navigate?:NavigateFunction) => {
         // console.log('CLEARNING STATE')
         setUser(initAuthContextState.user)
@@ -24,5 +32,12 @@ export default () =>{
         window.localStorage.clear()
         removeCookie('user', {path:'/'})
       },[])
-    return {user,loading,response,setUser,setLoading,setResponse,clearState}
+
+      const value = useMemo(
+        ()=>({
+          user,loading,response,setUser,setResponse,setLoading
+        }),
+        [user,loading,response]
+      )
+    return value
 }

@@ -23,7 +23,7 @@ const AuthSocialButtons = ({authType, loggedThroughBtn=''}:{authType :string,log
         <SocialBtn execFunc={handleTwitter} icon={TwitterIco} socialType={`Twitter`} authType={authType} id={`twitterBtn`}  />
         <SocialBtn execFunc={handleGitHub} icon={GithubIco} socialType={`Github`} authType={authType} id={`githubBtn`}  />
     </div>
-      </>
+      </> 
     )
   
     // if(loggedThroughBtn?.social){

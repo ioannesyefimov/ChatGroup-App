@@ -4,26 +4,30 @@
     text-align: left;
 
     .form-wrapper {
+        position: relative;
         display: flex;
         border: 1px solid gray;
         border-radius: 8px;
         img{
-            max-width: 25px;
-            margin: 0 1rem;
+            position: absolute;
+            max-width: 22px;
+            margin: auto .5rem;
             top:50%;
+            bottom: 50%;
+
             bottom:50%;
-            left: 8px;
+            // left: 8px;
         }
     }
     label {
         text-transform: capitalize;
     }
     input {
-        
+        width: 100%;
         order: 1;
         background-color: transparent;
         border: none;
-        padding: .85rem 0rem .85rem 1.2rem;
+        padding: .85rem 0rem .85rem 2.55rem ;
         // border: 1px solid gray;
         color: rgb(67, 183, 203);
     }

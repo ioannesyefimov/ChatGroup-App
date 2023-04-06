@@ -4,7 +4,7 @@ import {lockerIco, mailIco, profileIco}   from '../../../assets/index'
 import './AuthForm.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { APIFetch, throwErr, validateInput } from '../../utils'
-import { useAuth } from '../../../hooks'
+import { useAuth, useError } from '../../../hooks'
 import useAuthCookies from '../../../hooks/useAuthCookies/useAuthCookies'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 type AuthProps = {
@@ -18,6 +18,7 @@ const AuthForm = ({type}:AuthProps) => {
 
   const {setResponse,setLoading} = useAuth()
   const {setCookie} = useAuthCookies()
+  const {setError} = useError()
 
   const navigate = useNavigate()
 
@@ -50,13 +51,13 @@ const AuthForm = ({type}:AuthProps) => {
         }
   
         if(response?.data?.accessToken){
-          navigate(`/auth/redirect/?type=signin&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
+          navigate(`/auth/redirect/?type=auth/user&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
         }
         
       }
 
     } catch (error:any) {
-      setResponse(error)
+      setError(error)
     } finally{
       setLoading(false)
     }
@@ -80,10 +81,10 @@ const AuthForm = ({type}:AuthProps) => {
         <FormInput value={email} onChange={(e)=>handleOnChange(e,setEmail,'email')} labelName='email' name="Email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
         <FormInput value={password} onChange={(e)=>handleOnChange(e,setPassword,'password')} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
       </div>
-      <button className='submit-btn' onClick={(e)=>handleSubmit(e,'register')}>Register</button>
-      <AuthSocialButtons authType='signin' />
+        <button className='submit-btn' onClick={(e)=>handleSubmit(e,'register')}>Register</button>
+        <AuthSocialButtons authType='signin' />
 
-      <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
+        <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
       </div>
  )
 

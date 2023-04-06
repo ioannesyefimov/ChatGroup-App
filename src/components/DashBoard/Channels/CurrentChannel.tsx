@@ -9,43 +9,51 @@ const CurrentChannel:React.FC = ({...props}) => {
   const [currentChannel,setCurrentChannel] =useState<Channel>()
   const {filteredChannels} = useSearchChannels()
   useEffect(()=>{
-    let currentChanel = location.pathname.replace('/chat/', '')
-    console.log(currentChanel)
-    let filterCurrent = filteredChannels.filter(channel => channel?.name?.toLocaleLowerCase().replaceAll(' ', '-').includes(currentChanel))
-    if(filterCurrent){
-      setCurrentChannel(filterCurrent[0])
+    let filterCurrentChannel = () =>{
+      let currentChanel = location.pathname.replace('/chat/', '')
+      console.log(currentChanel)
+      let filterCurrent = filteredChannels.filter(channel => channel?.name?.toLocaleLowerCase().replaceAll(' ', '-').includes(currentChanel))
+      if(filterCurrent){
+        setCurrentChannel(filterCurrent[0])
+      }
+      console.log(filterCurrent)
     }
-    console.log(filterCurrent)
+    if(location.pathname.includes('chat')){
+      filterCurrentChannel()
+    }
   },[location.pathname])
+  let title = <h2 className='channel-title'>{currentChannel?.name ?? "Choose your channel"}</h2>
+
+    let channels =
+    (
+      <div className="channels-wrapper">
+        {
+            currentChannel?.messages instanceof Array ? 
+           (
+            currentChannel?.messages.map((message,i)=>{
+              return (
+                <div key={message.date} className='message'>
+                  <img className='message-logo' src={message.profileImg} alt="profile-logo" />
+                  <div className="message-wrapper">
+                    <span className="message-name">{message?.userName}</span>
+                    <span className="message-date">{message?.date}</span>
+                  </div>
+                  <p className="message-text">{message?.message}</p>
+                </div>
+              )
+            })
+           )
+        : (
+          null
+          ) 
+        }
+      </div>
+  )
   return (
     <div className="main-wrapper">
-      {currentChannel ? (
-        <h2 className='channel-title'>{currentChannel?.name}</h2>
-
-      ) : (
-        <h2 className='channel-title'>Choose your channel</h2>
-
-      )}
-      <div className="messages-wrapper">
-        { currentChannel?.messages && currentChannel.messages instanceof Array ? 
-         (
-          currentChannel?.messages.map((message,i)=>{
-            return (
-              <div key={i} className='message'>
-                <img className='message-logo' src={message.profileLogo} alt="profile-logo" />
-                <div className="message-wrapper">
-                  <span className="message-name">{message?.userName}</span>
-                  <span className="message-date">{message?.date}</span>
-                </div>
-                <p className="message-text">{message?.message}</p>
-              </div>
-            )
-          })
-        ): (
-          null
-        ) }
-      
-      </div>
+      {title}
+     
+     {channels}
       </div>
     )
 }

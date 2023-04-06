@@ -9,6 +9,7 @@ const useGoogle = (loginType:string) => {
     const {clearState,setLoading,user} = useAuth()
     const {handleDelete} = useFetch()
 
+   
     
     const handleGoogle = (response:any)=>{
         let loginType = window.localStorage.getItem('LOGIN_TYPE')
@@ -24,20 +25,28 @@ const useGoogle = (loginType:string) => {
     }
     useEffect(
         () => {
-        if(window?.google){
-            console.log(`firing`)
-            window.localStorage.setItem('LOGIN_TYPE', loginType)
-            window.google.accounts.id.initialize({
-                client_id: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID,
-                callback: handleGoogle
-            })
-            window.google.accounts.id.renderButton(document.getElementById('googleBtn'), {
-                shape: "circle",
-                type: "icon",
-            })
-        }
-    
-        
+            let googleBnt = document.getElementById('googleBtn') as HTMLButtonElement
+            googleBnt.disabled = true
+            let initializeGoogle = ()=>{
+                let google = (window as any).google
+                if(google ){
+                    console.log(`ggogle`, google)
+                    console.log(`initializing google ouath`)
+                    window.localStorage.setItem('LOGIN_TYPE', loginType)
+                    google.accounts.id.initialize({
+                        client_id: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID,
+                        callback: handleGoogle
+                    })
+                    google.accounts.id.renderButton(document.getElementById('googleBtn'), {
+                        shape: "circle",
+                        type: "icon",
+                    })
+                    googleBnt.disabled = false
+                }
+            }
+            let timeout = setTimeout(initializeGoogle,2000)
+
+            return ()=>clearTimeout(timeout)
     }, [handleGoogle]
     )
     const url = `https://authentic-app-backend.onrender.com/api/auth/`

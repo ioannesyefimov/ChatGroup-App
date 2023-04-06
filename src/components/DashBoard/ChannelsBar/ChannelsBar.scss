@@ -1,0 +1,72 @@
+.dashboard-component{
+
+    .left-wrapper{
+        display: flex;
+        flex-direction: column;
+        gap:.8rem;
+            padding: 1rem 1.6rem;
+            // outline: 1px solid yellow;
+    
+            .flex.flex--between{
+                margin-bottom: 1rem;
+                align-items: center;
+                
+                span{
+                    font-size: 1.2rem;
+                    font-weight: 6500;
+                }
+                .add-btn{
+                    background: #252329;
+                    border-radius: 8px;
+                    width: 35px;
+                    height: 35px;
+        
+                    position: relative;
+        
+                    &::after, &::before{
+                        position: absolute;
+                        content: '';
+                        background-color: white;
+                        width: 35%;
+                        height: 2px;
+                    }
+        
+                    &::after{
+                        margin: 0 auto;
+                        left: 0;
+                        right: 0;
+        
+                    }
+        
+                    &::before{
+                        // margin: 0 auto;
+                        left: 0;
+                        right: 0;
+                        margin: 0 auto;
+                        transform: rotate(90deg);
+                    }
+                }
+            }
+    
+    
+            .search-wrapper{
+                display: flex;
+     
+                justify-content: center;
+                align-items: center;
+                input {
+                    padding: .6rem 2.5rem .6rem; 
+                    // width: 100%;
+                }
+                img{
+                    filter: brightness(0) invert(1);
+                    z-index: 100;
+                    flex: 20%;
+                    max-width: 20px;
+                }
+            }
+    
+           
+        }
+     
+}

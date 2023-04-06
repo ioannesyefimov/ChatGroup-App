@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
-import { useAuth } from '../../hooks'
+import { useAuth, useError } from '../../hooks'
 import { Fallback } from '../ErrorProvider/ErrorProvider'
 import { useLocation } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
@@ -17,15 +17,19 @@ const RedirectComponent = () => {
     const URL = `http://localhost:5050/api`
     
     const {loading,response} = useAuth()
-    const {cookies} = useAuthCookies()
+    const {cookies,setCookie} = useAuthCookies()
+    const {setError} = useError() 
     let location = useLocation()
     let handleLogin = useCallback(
         async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
            
-            let response = await APIFetch({url:`${URL}/auth/${type}`, method:'POST',body:{accessToken,loggedThrough}, signal})
-            if(!response){
-                
+            let response = await APIFetch({url:`${URL}/${type}`, method:'POST',body:{accessToken,loggedThrough}, signal})
+            if(!response?.success){
+                setError(response?.message)
+                return    
             }
+            setCookie('user', response?.data?.user,{path:'/',maxAge:2000})
+
             console.log(`response: ` , response)
         },[]
     )
