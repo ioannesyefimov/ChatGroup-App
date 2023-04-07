@@ -8,20 +8,17 @@ const useGoogle = (loginType:string) => {
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user} = useAuth()
     const {handleDelete} = useFetch()
+    let url = `http://localhost:5050/api/auth`
 
    
     
-    const handleGoogle = (response:any)=>{
-        let loginType = window.localStorage.getItem('LOGIN_TYPE')
+    const handleGoogle = async(googleResponse:any)=>{
+        // let loginType = window.localStorage.getItem('LOGIN_TYPE')
         console.log(loginType)
-        console.log(response)
-        if(!response?.credential) return console.log(`MISSING GOOGLE'S RESPONSE `)
-        switch(loginType){
-            case 'signin': return handleGoogleSignin(response);
-            case 'register': return handleGoogleRegister(response);
-            case 'delete': return handleGoogleDelete(response);
-            default: return console.log(`NOT MATCHED TYPE `)
-        }
+        console.log(googleResponse)
+        if(!googleResponse?.credential) return console.log(`MISSING GOOGLE'S RESPONSE `)
+        let response = await APIFetch({url:`${url}/google`,method:'POST',body:{credentials:googleResponse.credential}})
+
     }
     useEffect(
         () => {
@@ -49,7 +46,7 @@ const useGoogle = (loginType:string) => {
             return ()=>clearTimeout(timeout)
     }, [handleGoogle]
     )
-    const url = `https://authentic-app-backend.onrender.com/api/auth/`
+    // const url = `https://authentic-app-backend.onrender.com/api/auth/`
 
 
     let newURL = location.href.split("?")[0];
