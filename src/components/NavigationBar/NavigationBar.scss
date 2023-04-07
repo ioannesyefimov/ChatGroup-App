@@ -25,12 +25,12 @@
         justify-content: center;
         align-items: center;
         .nav-btn {
-            outline: 1px solid gold;
+            // outline: 1px solid gold;
             transition: .4s all ease-in-out;
             padding:.2rem .5rem ;
             font-size: clamp(.6rem, .8rem, 1rem);
-            color:gold;
-
+            color: color(biege);
+            background-color: color(brown);
             font-weight: 700;
             &:hover{
                 background-color: black;

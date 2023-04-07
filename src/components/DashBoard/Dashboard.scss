@@ -1,36 +1,40 @@
 .App:has(.dashboard-component){
-
+    position: relative;
 }
 
 
 .dashboard-component{
+    &::before{
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        top:25%;
+        box-shadow: 0 1px 2px 0px #fbfafa;
+    }
     // outline: 1px solid red;
     display: grid;
-    grid-template-columns: 25% 1fr;
+    grid-template-columns: minmax(130px,25%) 1fr;
     grid-template-rows: 50px 1fr;
     // width: 100%;
     grid-template-areas: 
     'navbar navbar navbar'
-    'main main main'
+    'sidebar main main'
     ;
 
     .navbar-component{
         grid-area: navbar;
     }
-
+    
+    .left-wrapper {
+        grid-area: sidebar;
+    }
+    .channels-wrapper {
+        position: relative;
+        grid-area: main;
+    }
     .main-wrapper {
         position: relative;
-
-        &::before{
-            content: '';
-            left: -33.5%;
-            position: absolute;
-            width: calc(100% + 33.5% );
-            height: 1px;
-            top:11.5%;
-            box-shadow: 0 1px 2px 0px #fbfafa;
-            // background-color:#020202 ;
-        }
     }
 
 

@@ -1,4 +1,5 @@
 @use 'sass:list';
+@use './animations.scss';
 
 $breakpoints: (
     'small' : (max-width:501px),
@@ -28,6 +29,9 @@ $font-weights: (
     @return map-get($font-weights, $weight-name)
 };
 
+@function color($color-name){
+    @return map-get($color-pallete, $color-name )
+}
 
 @mixin respond-to($breakpoint) {
     $raw-query: map-get($breakpoints, $breakpoint);
@@ -47,3 +51,17 @@ $font-weights: (
     }
 }
 
+
+$color-pallete: (
+    "black": #000000,
+    "darkish-black": #282935,
+    "brown" : #735F32,
+    "biege": #C69749
+);
+
+@mixin gradient($direction, $list) { 
+    background: -webkit-linear-gradient($direction, $list);
+    background: -moz-linear-gradient($direction, $list);
+    background: -o-linear-gradient($direction, $list);
+    background: linear-gradient($direction, $list);  
+  }

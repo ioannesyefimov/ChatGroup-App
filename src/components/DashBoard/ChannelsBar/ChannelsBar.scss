@@ -2,79 +2,124 @@
 .dashboard-component{
 
     .left-wrapper{
-
-        .hamburger{
-            @include respond-to(medium){
-                display: none;
-            }
+        position: relative;
+        @include respond-to(medium){
+            padding: 1.5rem 1.3rem;
         }
 
-        display: flex;
+        .add-btn{
+            background: #252329;
+            border-radius: 8px;
+            // width: rem;
+            // height: .5rem;
+
+            position: relative;
+
+            &::after, &::before{
+                position: absolute;
+                content: '';
+                background-color: white;
+                width: 25%;
+                height: 2px;
+            }
+
+            &::after{
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+
+            }
+
+            &::before{
+                // margin: 0 auto;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                transform: rotate(90deg);
+            }
+        }
+        .menu-btn {
+            position: absolute;
+            top:0;
+            left: 0;
+            &::after, &::before{
+                position: absolute;
+                content: '';
+                background-color: white;
+                width: 25%;
+                height: 2px;
+            }
+
+            &::after{
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+
+            }
+
+            &::before{
+                // margin: 0 auto;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                transform: rotate(90deg);
+            }
+        }
+    // .hamburger{
+    //     @include respond-to(medium){
+    //         display: none;
+    //     }
+    // }
+
+            display: flex;
         flex-direction: column;
         gap:.8rem;
-            padding: 1rem 1.6rem;
+        padding: 1.5rem .7rem;
             // outline: 1px solid yellow;
-    
+
             .flex.flex--between{
                 margin-bottom: 1rem;
                 align-items: center;
-                
                 span{
-                    font-size: 1.2rem;
-                    font-weight: 6500;
+                    font-size: clamp(0.8rem, 0.694rem + 0.451vw, 1.1rem);
+                    font-weight: 650;
                 }
-                .add-btn{
-                    background: #252329;
-                    border-radius: 8px;
-                    width: 35px;
-                    height: 35px;
-        
-                    position: relative;
-        
-                    &::after, &::before{
-                        position: absolute;
-                        content: '';
-                        background-color: white;
-                        width: 35%;
-                        height: 2px;
-                    }
-        
-                    &::after{
-                        margin: 0 auto;
-                        left: 0;
-                        right: 0;
-        
-                    }
-        
-                    &::before{
-                        // margin: 0 auto;
-                        left: 0;
-                        right: 0;
-                        margin: 0 auto;
-                        transform: rotate(90deg);
-                    }
-                }
+            
             }
+
+            
+        .inner-wrapper{
+            display: flex;  
     
-    
-            .search-wrapper{
-                display: flex;
-     
-                justify-content: center;
-                align-items: center;
-                input {
-                    padding: .6rem 2.5rem .6rem; 
-                    // width: 100%;
+            justify-content: center;
+            // align-items: center;
+            input {
+                @include respond-to(medium){
+                    &::placeholder{
+                        visibility: visible;
+                    }
                 }
-                img{
-                    filter: brightness(0) invert(1);
-                    // z-index: 2;
-                    flex: 20%;
-                    max-width: 20px;
+
+                &::placeholder{
+                    visibility: hidden;
                 }
+                font-size: clamp(0.6rem, 0.424rem + 0.751vw, 1.1rem);
+                padding: 0.2rem ;
+                // width: 100%;
             }
-    
-           
+            img{
+                @include respond-to(medium){
+                    visibility: visible;
+                }
+                filter: brightness(0) invert(1);
+                // z-index: 2;
+                // flex: 20%;
+                max-width: 18px;
+                visibility: hidden;
+            }
+        }
+
+        
         }
      
 }

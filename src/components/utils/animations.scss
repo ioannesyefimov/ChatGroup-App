@@ -1,0 +1,40 @@
+@keyframes appearFromTop {
+    from {
+        clip-path: inset(0 0 99% 0);
+        opacity: 0;
+    } to {
+        clip-path: inset(0 0 0 0);    
+     opacity: 1;
+    }
+}
+@keyframes disappearToTop {
+    from {
+        clip-path: inset(0 0 0 0);  
+       opacity: 1;
+
+    } to {
+        clip-path: inset(100% 0 0 0);
+
+
+                opacity: 0;
+
+    }
+}
+
+.animate {
+    animation: normal;
+  }
+
+.animate.animate--slow{
+    animation-duration: 3s;
+}
+.animate.animate--fast{
+    animation-duration: 1s;
+}
+  .animate.appearFromTop {
+  animation-name: appearFromTop;
+  }
+  .animate.disappearToTop {
+    animation-name: disappearToTop;
+
+  }

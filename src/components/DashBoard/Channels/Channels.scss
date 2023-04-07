@@ -1,11 +1,15 @@
 @use '../../utils/utils.scss' as * ;
 .App{
-
+    position: relative;
     .left-wrapper{
+        // position: absolute !important;
         @include respond-to(small){
-        
+            
+        }   
+        .left-wrapper-inner{
 
         }
+        outline: 1px solid red;
         .channels {
         
             display: grid;

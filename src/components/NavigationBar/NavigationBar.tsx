@@ -14,6 +14,13 @@ const NavigationBar = () => {
       console.log(windowSize)
     },[windowSize]
   )
+
+  const navBar = (
+    <div className="flex">
+       <button className='nav-btn' onClick={()=>clearState('/auth', navigate)}>Logout</button>
+      <button className='nav-btn back-btn' onClick={()=>navigate(-1)}>Back</button>
+    </div>
+  )
   const navigate = useNavigate()
     return (
     <div className='navbar-component' >
@@ -21,14 +28,14 @@ const NavigationBar = () => {
           <img  src={chatifyIco} alt="logo" />
         </div>
       <div className="navbar-inner" id='navBarInner'>
-      <Hamburger width={windowSize.width} id='navBarInner'>
-        <>
-          <div className="flex">
-              <button className='nav-btn' onClick={()=>clearState('/auth', navigate)}>Logout</button>
-              <button className='nav-btn back-btn' onClick={()=>navigate(-1)}>Back</button>
-          </div>
-        </>
-      </Hamburger>
+        {windowSize?.width < 500 ? (
+           <Hamburger type='navbar'>
+           {navBar}
+         </Hamburger>
+        ) : (
+           navBar
+        )}
+     
       </div>
     </div>
   )
