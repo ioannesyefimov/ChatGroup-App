@@ -8,7 +8,7 @@ import { useChat } from '../../../hooks'
 const CurrentChannel:React.FC = ({...props}) => {
   const location = useLocation()
   const {filteredChannels} = useSearchChannels()
-  const {currentChanel,setCurrentChannel} = useChat()
+  const {currentChannel,setCurrentChannel} = useChat()
   useEffect(()=>{
     // let filterCurrentChannel = () =>{
     //   let currentChanel = location.pathname.replace('/chat/', '')

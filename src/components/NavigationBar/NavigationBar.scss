@@ -1,29 +1,55 @@
+@use '../utils/utils.scss' as * ;
+
 .navbar-component {
+    padding: 0 1rem;
+    
+    .navbar-inner{
+        display: flex;
+        align-items: center;
+
+    }
+   
+  
+    
     display: flex;
-    padding: .3rem 1.5rem;
+    // padding: .3rem 1.5rem;
     justify-content: space-between;
     gap:1rem;
-    // position: absolute;
     right: 5px;
     z-index: 1;
     top:5px;
     margin:0rem 0rem .3rem 0;
 
     div.flex {
-        gap:1rem;
+        gap:.5rem;
+        justify-content: center;
+        align-items: center;
+        .nav-btn {
+            outline: 1px solid gold;
+            transition: .4s all ease-in-out;
+            padding:.2rem .5rem ;
+            font-size: clamp(.6rem, .8rem, 1rem);
+            color:gold;
+
+            font-weight: 700;
+            &:hover{
+                background-color: black;
+            }
+        }    
     }
+
+
     .logo {
-        max-width: 35rem;
+        display: flex;
+        width: 50px;
+        height: 40px;
         transform: scale(1.4);
-        filter: invert(100%)
-    }
-
-    .nav-btn {
-        // background: ;
-        padding:.5rem ;
-
-        &:hover{
-            background-color: aquamarine;
+        filter: invert(100%);
+        img{
+            width: 100%;
         }
     }
+
+   
+    
 }

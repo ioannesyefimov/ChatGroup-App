@@ -2,12 +2,14 @@ import React, {useEffect, useLayoutEffect} from 'react'
 import { useAddScript, useAuth, useAuthCookies, useError } from '../index';
 import useFetch from '../useFetch';
 import { APIFetch, timeout } from '../../components/utils';
+import { useNavigate } from 'react-router-dom';
 
 const useGoogle = (loginType:string) => {
     const {setError,setHasError} = useError()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user} = useAuth()
     const {handleDelete} = useFetch()
+    const navigate = useNavigate()
     let url = `http://localhost:5050/api/auth`
 
    
@@ -17,7 +19,12 @@ const useGoogle = (loginType:string) => {
         console.log(loginType)
         console.log(googleResponse)
         if(!googleResponse?.credential) return console.log(`MISSING GOOGLE'S RESPONSE `)
-        let response = await APIFetch({url:`${url}/google`,method:'POST',body:{credentials:googleResponse.credential}})
+        let response = await APIFetch({url:`${url}/google`,method:'POST',body:{credential:googleResponse.credential}})
+        if(!response?.success){
+            setError(response?.message)
+            return
+        }
+        navigate(`/auth/redirect?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
 
     }
     useEffect(

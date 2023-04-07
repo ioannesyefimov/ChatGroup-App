@@ -1,13 +1,55 @@
+@use '../utils/utils.scss' as * ;
+
 .hamburger {
+    position: relative;
+    // display: none;
+    .hamburger-btn {
+        // inset: 20px;
+        position: absolute;
+        padding: .6rem;
+        width: 35px;
 
-    background-color: rgba(0, 255, 255, 0.237);
-    border-radius:6px;
-    margin: 0 auto;
-    &-btn {
-        max-width: 50px;
-        filter: invert(100%);
-        background: transparent;
-        transform: scale(1.4);
+        left: 5px;
+        top:5px;
+        max-height: 35px;
+        filter:brightness(100%) invert(100%);
+        // background-color: wheat;
+        background: none;
+
+        z-index: 15;
+        img{
+            width: 100%;
+            transform: scale(1.5);
+        }
     }
+    &.toggled{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        inset: 0;
+        width: 30%;
+        background: red;
+        .flex {
+            display: grid;
 
+        }
+        
+    
+        .hamburger-children {
+            // display: none;
+        }
+    }
+   &.not-toggled {
+        position: relative;
+        width: 35px;
+        height: 35px;
+        .hamburger-btn {
+            top:0px
+        }
+        .hamburger-children {
+            display: none;
+        }
+   }
+    
 }

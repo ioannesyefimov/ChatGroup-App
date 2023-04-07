@@ -41,6 +41,9 @@ const RedirectComponent = () => {
             let accessToken = query.get('accessToken')
             let controller = new AbortController()
             let signal = controller.signal
+            console.log(`type: ${type}`)
+            console.log(`loggedThrough: ${loggedThrough}`)
+            console.log(`accessToken: ${accessToken}`)
             if(accessToken && type && loggedThrough){
                 handleLogin({accessToken,type,loggedThrough,signal})
             }

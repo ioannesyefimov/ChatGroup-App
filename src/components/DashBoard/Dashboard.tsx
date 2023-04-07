@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from 'react'
 import { searchIco } from '../../assets'
 import useSearchChannels from '../../hooks/useSearchChannels'
-import { useAuth} from '../index'
 import {FormInput} from '../index'
 import { getFirstLetter } from '../utils'
 import Channels from './Channels/Channels'

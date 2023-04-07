@@ -11,7 +11,6 @@ const ChannelsBar = () => {
 
   return (
     <div className="left-wrapper" id="sideBar" aria-checked={false}>
-      <Hamburger />
     <div className="flex flex--between">
       <span>Channels</span>
       <button className='add-btn'></button>

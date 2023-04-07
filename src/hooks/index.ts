@@ -4,6 +4,7 @@ import useChat from "./useChatContext/useChatContext";
 import useError  from "./useErrorContext/useError";
 
 import useAddScript from "./useScripts/useAddScript";
+import useWindowSize from "./useWindowSize/useWindowSize";
 
 import useFacebook from "./useFacebook/useFacebook";
 import useGithub from "./useGithub/useGithub";
@@ -13,5 +14,5 @@ import useTwitter from "./useTwitter/useTwitter";
 export {
     useAuth,useAuthCookies,useChat,useError,
     useFacebook,useGithub,useGoogle,useTwitter,
-    useAddScript
+    useAddScript,useWindowSize
 }

@@ -1,20 +1,41 @@
-import React, { useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { hamburgerIco } from '../../assets'
 import './Hamburger.scss'
-const Hamburger = () => {
+import { ChildrenType } from '../types'
+type PropsType = {
+    children?: ReactNode
+    id: string
+    width: number
+}
+
+const Hamburger = ({children,id,width}:PropsType) => {
+    const [isToggled, setIsToggled] = useState<boolean>(true)
    
-    return (
-    <div className='hamburger' >
-        <button onClick={()=>{
-            let div = document.getElementById('sideBar') as HTMLDivElement 
-            let checked = div.ariaChecked
-            if(checked==='true'){
-                div.ariaChecked = "false"
-            } else {
-                div.ariaChecked = "true"
-            }
-        }}  className='hamburger-btn'><img src={hamburgerIco} alt="hamburgerIco" /></button>
-    </div>  )
+    let hamburgerToggled = (
+        <div className='hamburger toggled' >
+            <button onClick={()=>setIsToggled(prev=>!prev)} className='hamburger-btn'>
+                <img src={hamburgerIco} alt="hamburgerIco" />
+            </button>
+            <div className="hamburger-children">
+            {children}
+            </div> 
+        </div>  
+    )
+
+    let hamburgerNotToggled = (
+        <div className='hamburger not-toggled ' >
+        <button onClick={()=>setIsToggled(prev=>!prev)} className='hamburger-btn'>
+          <img src={hamburgerIco} alt="hamburgerIco" />
+         </button>
+         </div>
+    )
+    
+
+    return  width < 500 ? (
+        isToggled ? hamburgerToggled : hamburgerNotToggled
+    ) : (
+         width >= 500 ? ( children ) : null
+    )
 }
 
 export default Hamburger
