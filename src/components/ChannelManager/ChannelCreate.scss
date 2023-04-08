@@ -1,0 +1,11 @@
+.dashboard-component:has(.prompt-menu-component){
+    position: relative;
+}
+
+.prompt-menu-component {
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    margin: auto;
+}

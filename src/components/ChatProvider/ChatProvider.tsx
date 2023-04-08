@@ -1,15 +1,15 @@
 import React,{FC, ReactNode, useEffect, useState} from 'react'
 import { Outlet } from 'react-router-dom'
 import { profileIco } from '../../assets'
-import { Channel, ChildrenType } from '../types'
+import { ChannelType, ChildrenType } from '../types'
 import { APIFetch } from '../utils'
 
 
 export type InitialChatStateType = {
-    channels: Channel[] | Channel
-    currentChannel: Channel | undefined
-    setChannels: React.Dispatch<React.SetStateAction<Channel | Channel[]>>
-    setCurrentChannel: React.Dispatch<React.SetStateAction<Channel | undefined>>
+    channels: ChannelType[] | ChannelType
+    currentChannel: ChannelType | undefined
+    setChannels: React.Dispatch<React.SetStateAction<ChannelType | ChannelType[]>>
+    setCurrentChannel: React.Dispatch<React.SetStateAction<ChannelType | undefined>>
 
 }
   
@@ -25,8 +25,8 @@ export type InitialChatStateType = {
   export const ChatContext = React.createContext<useChatContextType>(initChatContextState)
   
   export const useChatContext = (initChatContextState:InitialChatStateType)=>{
-    const [channels,setChannels] = useState<Channel[]|Channel>([])
-    const [currentChannel,setCurrentChannel] =useState<Channel| undefined>(undefined)
+    const [channels,setChannels] = useState<ChannelType[]|ChannelType>([])
+    const [currentChannel,setCurrentChannel] =useState<ChannelType| undefined>(undefined)
 
     // useEffect(
     //     ()=>{
@@ -49,10 +49,10 @@ export type InitialChatStateType = {
  
   
    const ChatProvider  = (
-    {children,...initState} :ChildrenType & InitialChatStateType 
+    {children} :ChildrenType  
   ) => {
     return (
-      <ChatContext.Provider value={useChatContext(initState)}>
+      <ChatContext.Provider value={useChatContext(initChatContextState)}>
           {children}
       </ChatContext.Provider>
     )

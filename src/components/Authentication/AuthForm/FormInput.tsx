@@ -8,7 +8,7 @@ interface FormProps {
     labelName?:string,
     name:string,
     id:string,
-    photo: string,
+    photo?: string,
 
     onChange: (e:ChangeEvent<HTMLInputElement> ) => void 
     value:string

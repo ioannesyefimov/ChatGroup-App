@@ -26,10 +26,12 @@
         align-items: center;
         .nav-btn {
             // outline: 1px solid gold;
+            border: 1px solid black;
+            border-radius: 8px;
             transition: .4s all ease-in-out;
             padding:.2rem .5rem ;
-            font-size: clamp(.6rem, .8rem, 1rem);
-            color: color(biege);
+            font-size: clamp(0.65rem, 0.439rem + 0.901vw, 1.15rem);
+            color: color(brown);
             background-color: color(brown);
             font-weight: 700;
             &:hover{

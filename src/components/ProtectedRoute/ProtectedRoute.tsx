@@ -9,7 +9,7 @@ const ProtectedRoute = () => {
     if(!user?.email) return <Navigate to="/auth/signin" replace/>
 
   return (
-   <ChatProvider channels={[]} setChannels={()=>{}}  >
+   <ChatProvider>
      <Outlet/>
    </ChatProvider>
   )

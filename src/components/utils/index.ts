@@ -174,7 +174,7 @@ const convertBase64 = (file:File) => {
 }
 interface FetchProps {
   url: string
-  method?: 'get' | 'post' | 'delete' | 'update' | 'POST' | 'GET' | 'DELETE' | 'UPDATE'
+  method?: 'get' | 'post' | 'put' | 'delete' | 'update' | 'PUT' | 'POST' | 'GET' | 'DELETE' | 'UPDATE'
   body?: Object
   headers?: HeadersInit | undefined 
   signal?: AbortSignal

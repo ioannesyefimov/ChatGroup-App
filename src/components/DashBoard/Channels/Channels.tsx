@@ -3,7 +3,7 @@ import { getFirstLetter } from '../../utils'
 import useSearchChannels from '../../../hooks/useSearchChannels'
 import { Link } from 'react-router-dom'
 import './Channels.scss'
-import { Channel } from '../../types'
+import { ChannelType } from '../../types'
 const Channels = ({...props}) => {
   const {search} = useSearchChannels()
 
@@ -13,7 +13,7 @@ const Channels = ({...props}) => {
   }, [props.channels])
   let mappedChannels = (
     props?.channels instanceof Array ? (
-      props?.channels.map((channel:Channel)=>{
+      props?.channels.map((channel:ChannelType)=>{
         return (
           <div key={channel?.id} className="channel">
             <div className="channel-logo">{getFirstLetter(channel?.name,2)}</div>

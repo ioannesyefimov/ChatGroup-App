@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useSearchChannels from '../../../hooks/useSearchChannels'
-import { Channel } from '../../types'
+// import { ChannelType } from '../../types'
 import './CurrentChannel.scss'
 import { useChat } from '../../../hooks'
 

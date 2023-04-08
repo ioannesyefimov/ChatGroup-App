@@ -19,7 +19,7 @@
         
         img{
             position: absolute;
-            cursor: pointer
+            // cursor: pointer
         };
         button {
             // opacity: 0;
@@ -31,22 +31,21 @@
         display: flex;
         flex: 1;
         position: relative;
-        // z-index: 1;
-        
+        z-index: 55;
+        border-radius: 50%;
         img{
             position: absolute;
-            width: 100%;
-            height: 100%;
+            // width: 100%;
+            // height: 100%;
             &:hover{
-                
                 cursor: pointer;
             }
         }
         button {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             opacity: 0;
-            // z-index: 1;
+            z-index: 55;
             // width: 55px;
         }
          
@@ -54,9 +53,6 @@
         .social-btn {
             border-radius: 50%;
             background: transparent;
-            &:hover{
-                cursor: pointer;
-            }
         
            
         }

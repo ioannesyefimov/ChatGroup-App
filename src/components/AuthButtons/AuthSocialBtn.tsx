@@ -10,7 +10,7 @@ export type SocialBtnProps = {
 const SocialBtn =  ({authType,id,execFunc,icon,socialType}:SocialBtnProps) => {
 
     return (
-      <div className="social-btn-container" >
+      <div className="social-btn-container"  >
         <img src={icon} alt={`${socialType} icon`} />
         {socialType === 'Google' ? (
             <button    className="social-btn" id={id}> </button> 

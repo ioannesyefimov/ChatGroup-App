@@ -3,13 +3,10 @@
 
     .left-wrapper{
         @include respond-to(medium){
-            padding: 1.5rem 1.3rem;
+            padding: 2.7rem 1.3rem;
         }
+
         position: relative;
-// 
-      
-
-
         .add-btn{
             background: #252329;
             border-radius: 8px;
@@ -41,17 +38,10 @@
                 transform: rotate(90deg);
             }
         }
-       
-    // .hamburger{
-    //     @include respond-to(medium){
-    //         display: none;
-    //     }
-    // }
-
-            display: flex;
+        display: flex;
         flex-direction: column;
         gap:.8rem;
-        padding: 1.5rem .7rem;
+        padding: 2.2rem .7rem;
             // outline: 1px solid yellow;
 
             .flex.flex--between{
@@ -66,8 +56,10 @@
 
             
         .inner-wrapper{
+            &.hidden {
+                
+            }
             display: flex;  
-    
             justify-content: center;
             // align-items: center;
             input {

@@ -9,12 +9,6 @@ const NavigationBar = () => {
   const {clearState} = useAuth()
   const windowSize= useWindowSize()
 
-  useEffect(
-    ()=>{
-      console.log(windowSize)
-    },[windowSize]
-  )
-
   const navBar = (
     <div className="flex">
        <button className='nav-btn' onClick={()=>clearState('/auth', navigate)}>Logout</button>

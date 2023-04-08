@@ -1,6 +1,6 @@
 import { ReactElement } from "react"
 
-export type Message =  {
+export type MessageType =  {
     profileImg?: string
     userName: string
     date: string 
@@ -15,9 +15,9 @@ export type ResponseType  = {
 
 export type Member = UserType
 
-export type Channel = {
+export type ChannelType = {
     name:string
-    messages: Message[] | Message
+    messages: MessageType[] | MessageType
     members: Member[]| Member
     id:string | number
 }

@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react'
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Authentication, NotFound,AuthForm, Dashboard, RedirectComponent} from './components'
+import { Authentication, ChannelCreate,NotFound,AuthForm, Dashboard, RedirectComponent} from './components'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './components/Landing/Landing'
-import { AddScriptType,addScript } from './scripts/scripts'
-import { useAddScript } from './hooks'
 
 let router = createBrowserRouter([
   {
@@ -24,8 +21,13 @@ let router = createBrowserRouter([
       {
        element: <Dashboard />,
        path: '/chat?/:channel',
-
-      }
+  
+      },
+      {
+       element: <ChannelCreate/>,
+       path: '/channel/create',
+  
+      },
     ]
   },
   {
