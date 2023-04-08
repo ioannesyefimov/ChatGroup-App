@@ -4,9 +4,10 @@ import './Hamburger.scss'
 import { ChildrenType } from '../types'
 type PropsType = {
     children?: ReactNode
+    type:string
 }
 
-const Hamburger = ({children}:PropsType) => {
+const Hamburger = ({children,type}:PropsType) => {
     const [isToggled, setIsToggled] = useState<string>('')
    const toggle = ()=>{
     if(isToggled === 'toggled'){
@@ -15,17 +16,27 @@ const Hamburger = ({children}:PropsType) => {
         setIsToggled('toggled')
     } 
    }
-    let content = (
-        <div className={`hamburger ${isToggled}`} >
+    let navBar = (
+        <div className={`hamburger navbar ${isToggled}`} >
             <button onClick={toggle} className='hamburger-btn'>
                 <img src={hamburgerIco} alt="hamburgerIco" />
             </button>
-            <div className={`hamburger-children animate animate--fast  ${isToggled ==='toggled' ? 'appearFromTop':isToggled ==='untoggled'?'disappearToTop' : '' }`}>
+            <div className={`hamburger-children animate animate--fast animate--forwards  ${isToggled ==='toggled' ? 'appearFromTop':isToggled ==='untoggled'?'disappearToTop' : '' }`}>
             {children}
             </div> 
         </div>  
     ) 
+    let channels = (
+        <div className={`hamburger channels ${isToggled}`} >
+            <button onClick={toggle} className='hamburger-btn'>
+                <img src={hamburgerIco} alt="hamburgerIco" />
+            </button>
+            <div className={`hamburger-children animate  animate--fast animate--forwards ${isToggled ==='toggled' ? 'appearFromLeft':isToggled ==='untoggled'?'disappearToLeft' : '' }`}>
+            {children}
+            </div> 
+        </div>
+    )
     
-    return  content
+    return  type === 'navbar' ? (navBar) : (channels)
     }
 export default Hamburger

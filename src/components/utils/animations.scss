@@ -4,7 +4,7 @@
         opacity: 0;
     } to {
         clip-path: inset(0 0 0 0);    
-     opacity: 1;
+       opacity: 1;
     }
 }
 @keyframes disappearToTop {
@@ -14,15 +14,33 @@
 
     } to {
         clip-path: inset(100% 0 0 0);
+        opacity: 0;
+    }
+}
+@keyframes appearFromLeft {
+    from {
+        transform: translateX(-120%);
 
+        opacity: 0;
+    } to {
+        transform: translateX(0%);   
+     opacity: 1;
+    }
+}
+@keyframes disappearToLeft {
+    from {
+        transform: translateX(0%);   
+       opacity: 1;
 
-                opacity: 0;
+    } to {
+        transform: translateX(-120%);
+        opacity: 0;
 
     }
 }
 
 .animate {
-    animation: normal;
+    animation-direction: normal;
   }
 
 .animate.animate--slow{
@@ -31,10 +49,29 @@
 .animate.animate--fast{
     animation-duration: 1s;
 }
-  .animate.appearFromTop {
-  animation-name: appearFromTop;
-  }
-  .animate.disappearToTop {
+.animate.appearFromTop {
+    animation-name: appearFromTop;
+}
+.animate.disappearToTop {
     animation-name: disappearToTop;
 
-  }
+}
+.animate.appearFromLeft {
+    animation-name: appearFromLeft;
+}
+.animate.disappearToLeft {
+    animation-name: disappearToLeft;
+
+}
+
+.animate.animate--infinite {
+    animation-iteration-count: infinite;
+}
+
+.animate.animate--forwards {
+    -webkit-animation-fill-mode: forwards; /* Chrome 16+, Safari 4+ */
+    -moz-animation-fill-mode: forwards;    /* FF 5+ */
+    -o-animation-fill-mode: forwards;      /* Not implemented yet */
+    -ms-animation-fill-mode: forwards;     /* IE 10+ */
+    animation-fill-mode: forwards;
+}

@@ -8,13 +8,14 @@ import CurrentChannel from './Channels/CurrentChannel'
 import './Dashboard.scss'
 import ChannelsBar from './ChannelsBar/ChannelsBar'
 import NavigationBar from '../NavigationBar/NavigationBar'
+import DashboardMain from './DashboardMain'
 const Dashboard: React.FC = ()  => {
   
   return (
     <div className='dashboard-component'>
       <NavigationBar />
-      <ChannelsBar/>
-      <CurrentChannel />
+      <DashboardMain/>
+   
     </div>
   )
 }

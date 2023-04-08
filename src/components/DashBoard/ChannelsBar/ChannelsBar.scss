@@ -2,10 +2,13 @@
 .dashboard-component{
 
     .left-wrapper{
-        position: relative;
         @include respond-to(medium){
             padding: 1.5rem 1.3rem;
         }
+        position: relative;
+// 
+      
+
 
         .add-btn{
             background: #252329;
@@ -38,33 +41,7 @@
                 transform: rotate(90deg);
             }
         }
-        .menu-btn {
-            position: absolute;
-            top:0;
-            left: 0;
-            &::after, &::before{
-                position: absolute;
-                content: '';
-                background-color: white;
-                width: 25%;
-                height: 2px;
-            }
-
-            &::after{
-                margin: 0 auto;
-                left: 0;
-                right: 0;
-
-            }
-
-            &::before{
-                // margin: 0 auto;
-                left: 0;
-                right: 0;
-                margin: 0 auto;
-                transform: rotate(90deg);
-            }
-        }
+       
     // .hamburger{
     //     @include respond-to(medium){
     //         display: none;
