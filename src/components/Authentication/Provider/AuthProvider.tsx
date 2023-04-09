@@ -1,14 +1,13 @@
 import React,{FC, ReactElement, ReactNode, useCallback, useEffect, useState} from 'react'
 import {Cookies, ReactCookieProps, useCookies} from  'react-cookie'
 import { UserType,ChildrenType,ResponseType } from '../../types'
-import { addPolicyScript,addPolicyScript2,addPolicyScript3 } from '../../../scripts/scripts'
-import { CookieSetOptions } from 'universal-cookie'
 
 export type InitialStateType = {
   user: UserType 
   loading: boolean
   cookies?: {user?:UserType,accessToken?:string,refreshToken?:string}
   response?: ResponseType 
+  serverUrl:string
 }
 
 type UseAuthContextType = ReturnType<typeof useAuthContext>
@@ -20,6 +19,7 @@ export const initAuthContextState: UseAuthContextType ={
   setUser: () => { },
   setLoading: () => { },
   setResponse: () => { },
+  serverUrl:'http://localhost:5050/api'
 }
 export const AuthContext = React.createContext<UseAuthContextType>(initAuthContextState)
 
@@ -27,6 +27,7 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   const [loading, setLoading] = useState<boolean>(false)
   const [response,setResponse] = useState<ResponseType>()
   const [user, setUser] = useState(initAuthContextState.user)
+  const serverUrl =  initAuthContextState.serverUrl
 
   // useEffect(
   //     ()=>{
@@ -46,7 +47,7 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
    
 
 
-  return {user,loading,response,setUser,setLoading,setResponse}
+  return {user,loading,response,serverUrl,setUser,setLoading,setResponse}
 }
 
 

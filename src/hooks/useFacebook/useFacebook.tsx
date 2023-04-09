@@ -114,14 +114,14 @@ const useFacebook = (type:string) => {
                 provider: 'facebook',
                 fbAccessToken:''
             }; 
-
+            let FB:any
             console.log(`FACEBOOK HANDLING`)
 
                 FB.getLoginStatus((resp:any)=>{
                     console.log(`FB:status: ${resp.status}`)
                     if(resp.status === 'connected'){
                         params.fbAccessToken = resp.authResponse.accessToken 
-                        FB.api('/me', response=>{
+                        FB.api('/me', (response:any)=>{
                             console.log(`successful login for: ${response?.name}`)
                             console.log(`RESPONSE:` ,response)
     
@@ -140,7 +140,7 @@ const useFacebook = (type:string) => {
                         '/me',
                         'GET',
                         {"fields":"email,name,birthday,photos{picture,images,from},about,hometown,picture{url}"},
-                        (response)=>{
+                        (response:any)=>{
                             console.log(response)
                             console.log(`GOOD to see you, ${response?.name}.`)
                             console.log(`type: ${type}`)

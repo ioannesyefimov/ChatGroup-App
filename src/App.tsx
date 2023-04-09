@@ -39,11 +39,11 @@ let router = createBrowserRouter([
         path: 'redirect?/:params'
       },
       {
-        element: <AuthForm type="register" />,
+        element: <AuthForm redirectType='auth/user' type="register" />,
         path:'register'
       },
       {
-        element: <AuthForm type="signin" />,
+        element: <AuthForm redirectType='auth/user' type="signin" />,
         path:'signin'
 
       }

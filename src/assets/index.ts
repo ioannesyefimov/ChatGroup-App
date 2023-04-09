@@ -16,13 +16,14 @@ import questionIco from './questionIco.svg'
 import notFoundIco from './notFoundIco.svg'
 import searchIco from './searchIco.svg'
 import hamburgerIco from './hamburgerIco.svg'
+import uploadIco from './uploadIco.svg'
 
 import chatifyIco from './chatify-logo.svg'
 export interface Icons {
   icon: File
 }
 export  {
-  questionIco, searchIco,  loadingGif,
+  questionIco, searchIco,  loadingGif,uploadIco,
     triangleIco, logoutIco, backIco,cameraIco,correctUploadIco,
       groupIco, hamburgerIco,
         facebookIco, GithubIco, GoogleIco,

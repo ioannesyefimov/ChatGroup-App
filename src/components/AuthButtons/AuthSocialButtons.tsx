@@ -1,19 +1,22 @@
+import { useEffect } from "react";
 import { GithubIco, GoogleIco, TwitterIco, facebookIco } from "../../assets";
-import { useAddScript, useAuth, useError, useFacebook, useGithub, useGoogle, useTwitter } from "../../hooks";
+import { useAddScript, useFacebook, useGithub, useGoogle, useTwitter } from "../../hooks";
 import SocialBtn from "./AuthSocialBtn";
 import './AuthSocialButtons.scss'
 
 
 
-const AuthSocialButtons = ({authType, loggedThroughBtn=''}:{authType :string,loggedThroughBtn?:string}) => {
+const AuthSocialButtons = ({authType, redirectUrl=''}:{authType :string,redirectUrl?:string}) => {
 
-    const {setUser,setLoading} = useAuth();
-    const {setError} = useError()
     const {handleTwitter} = useTwitter(authType);
     const {handleFacebook} = useFacebook(authType); 
-    const {handleGoogle} = useGoogle(authType);
+    const {handleGoogle} = useGoogle(authType,redirectUrl);
     const {handleGitHub} = useGithub(authType);
-    
+
+    useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
+    useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
+
+
     const content = (
       <>
       <p className="hint">or continue with social:</p>
@@ -25,16 +28,6 @@ const AuthSocialButtons = ({authType, loggedThroughBtn=''}:{authType :string,log
     </div>
       </> 
     )
-  
-    // if(loggedThroughBtn?.social){
-    //   switch(loggedThroughBtn?.social){
-    //     case 'Google':   return <SocialBtn   icon={GoogleIco} socialType={`Google`} authType={loginType} id={`googleBtn`} />
-    //     case 'Github':   return <SocialBtn  execFunc={handleGitHub} icon={GithubIco} socialType={`Github`} loginType={loginType} id={`githubBtn`}  />
-    //     case 'Twitter':  return <SocialBtn  execFunc={handleTwitter} icon={TwitterIco} socialType={`Twitter`} loginType={loginType} id={`twitterBtn`}  />
-    //     case 'Facebook': return <SocialBtn  execFunc={handleFacebook} icon={facebookIco} socialType={`Facebook`} loginType={loginType} id={`facebookBtn`}   />
-    //  }
-    // }
-    
     return content
   }
   

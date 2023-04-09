@@ -10,9 +10,10 @@ import useFacebook from "./useFacebook/useFacebook";
 import useGithub from "./useGithub/useGithub";
 import useGoogle from "./useGoogle/useGoogle";
 import useTwitter from "./useTwitter/useTwitter";
+import useImageUpload from "./useImageUpload/useImageUpload";
 
 export {
     useAuth,useAuthCookies,useChat,useError,
     useFacebook,useGithub,useGoogle,useTwitter,
-    useAddScript,useWindowSize
+    useAddScript,useWindowSize,useImageUpload
 }

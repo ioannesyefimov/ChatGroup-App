@@ -1,5 +1,5 @@
 import React, { ReactPropTypes, useState } from 'react'
-import FormInput from './FormInput'
+import FormInput from '../../FormInput/FormInput'
 import {lockerIco, mailIco, profileIco}   from '../../../assets/index' 
 import './AuthForm.scss'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,9 +9,11 @@ import useAuthCookies from '../../../hooks/useAuthCookies/useAuthCookies'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 type AuthProps = {
   type: string
+  redirectType: string
+  redirectUrl?:string
 }
 
-const AuthForm = ({type}:AuthProps) => {
+const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
   const [email,setEmail] = useState<string>('')
   const [password,setPassword] = useState<string>('')
   const [userName,setUserName] = useState<string>('')
@@ -59,9 +61,15 @@ const AuthForm = ({type}:AuthProps) => {
         if(!response?.success) {
           throwErr(response?.message)
         }
-  
+        
+        if(!response?.data?.accessToken) throwErr({name:`SOMETHING WENT WRONG`, arguments: 'accessToken is undefined'})
+        if(redirectUrl){
+          return navigate(`/auth/redirect/?type=${redirectType}&accessToken=${response?.data?.accessToken}&redirectUrl=${redirectUrl}`)
+        }
+
+
         if(response?.data?.accessToken){
-          navigate(`/auth/redirect/?type=auth/user&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
+          navigate(`/auth/redirect/?type=${redirectType}&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
         }
         
 
@@ -73,6 +81,7 @@ const AuthForm = ({type}:AuthProps) => {
     
   }
 
+  
 
  let registerContent = (
   <div className='auth-form-component box-shadow--gray'>
@@ -105,8 +114,9 @@ const AuthForm = ({type}:AuthProps) => {
         <FormInput value={password} onChange={(e)=>handleOnChange(e,setPassword,'password')} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
       </div>
        <button className='submit-btn' onClick={(e)=>handleSubmit(e, 'signin')}>Signin</button>
-      <AuthSocialButtons authType='signin' />
-       <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span>
+      <AuthSocialButtons authType='signin' redirectUrl={redirectUrl} />
+      {!redirectUrl && <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span> }
+       
     </div>
  )
 

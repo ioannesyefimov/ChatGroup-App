@@ -1,11 +1,39 @@
-.dashboard-component:has(.prompt-menu-component){
-    position: relative;
-}
-
+@use '../utils/utils.scss' as * ;
 .prompt-menu-component {
-    position: absolute;
-    top:0;
-    left:0;
-    right: 0;
     margin: auto;
+    display: grid;
+    // background-color: red;
+    place-content: center;
+    gap:1.2rem;
+    padding: 1rem 2rem;
+    // max-width: 400px;
+    border-radius: 10px;
+
+    .file-upload-component{
+        position: relative;
+        margin-top: 1rem;
+        &::before{
+            @include respond-to(small){
+                width:100%;
+            }
+            content: '';
+            position: absolute;
+            width: calc(100% + 27%);
+            height: 1px;
+            background-color: gray;
+            top:-15%;
+            // right: 0;
+        }
+    }
+    input {
+        all: unset;
+
+        padding: .2rem .7rem;
+        &#image{
+            // position: relative;
+            
+            // padding: .4rem 2rem;
+        }
+    }
+
 }

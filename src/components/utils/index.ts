@@ -160,7 +160,7 @@ const timeout = (delay:number)=>{
 }
 
 const convertBase64 = (file:File) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<string | ArrayBuffer | null | {err:any}>((resolve, reject) => {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file)
     fileReader.onload = () => {

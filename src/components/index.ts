@@ -1,7 +1,7 @@
 import Authentication from "./Authentication/Authentication";
 import NotFound from './NotFound'
 import AuthForm from "./Authentication/AuthForm/AuthForm";
-import FormInput from "./Authentication/AuthForm/FormInput";
+import FormInput from "./FormInput/FormInput";
 import AuthSocialButtons from "./AuthButtons/AuthSocialButtons";
 
 import Dashboard from "./DashBoard/Dashboard";

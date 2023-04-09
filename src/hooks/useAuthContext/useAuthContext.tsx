@@ -5,7 +5,7 @@ import useAuthCookies from "../useAuthCookies/useAuthCookies"
 
 
 export default () =>{
-    const {user,loading,response,setUser,setLoading,setResponse} = useContext(AuthContext)
+    const {user,loading,serverUrl,response,setUser,setLoading,setResponse} = useContext(AuthContext)
     const {removeCookie,cookies} = useAuthCookies()
 
     useEffect(
@@ -35,7 +35,7 @@ export default () =>{
 
       const value = useMemo(
         ()=>({
-          user,loading,response,setUser,setResponse,setLoading,clearState
+          user,loading,response,serverUrl,setUser,setResponse,setLoading,clearState
         }),
         [user,loading,response]
       )

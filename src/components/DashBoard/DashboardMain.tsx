@@ -1,5 +1,5 @@
 import React from 'react'
-import CurrentChannel from './Channels/CurrentChannel'
+import CurrentChannel from './CurrentChannel/CurrentChannel'
 import ChannelsBar from './ChannelsBar/ChannelsBar'
 import "./DashboardMain.scss"
 const DashboardMain = () => {

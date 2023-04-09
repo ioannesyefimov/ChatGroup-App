@@ -4,7 +4,7 @@ import useFetch from '../useFetch';
 import { APIFetch, timeout } from '../../components/utils';
 import { useNavigate } from 'react-router-dom';
 
-const useGoogle = (loginType:string) => {
+const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
     const {setError,setHasError} = useError()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user} = useAuth()
@@ -23,6 +23,11 @@ const useGoogle = (loginType:string) => {
         if(!response?.success){
             setError(response?.message)
             return
+        }
+        if(redirectUrl){
+            console.log(`REDIRECT ULR : ${redirectUrl}`)
+            navigate(`/auth/redirect?type=newAccessToken&accessToken=${response?.data.accessToken}&redirectUrl=${redirectUrl}`)
+            return 
         }
         navigate(`/auth/redirect?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
 
@@ -51,7 +56,7 @@ const useGoogle = (loginType:string) => {
             let timeout = setTimeout(initializeGoogle,2000)
 
             return ()=>clearTimeout(timeout)
-    }, [handleGoogle]
+    }, []
     )
     // const url = `https://authentic-app-backend.onrender.com/api/auth/`
 
@@ -82,7 +87,7 @@ const useGoogle = (loginType:string) => {
         }
     }
 
-    const handleGoogleRegister = async (googleResponse) => {
+    const handleGoogleRegister = async (googleResponse:any) => {
         try {
             setLoading(true)
             let response = await APIFetch({url:`${url}google/register`, method:'POST',body: {credential: googleResponse?.credential} });
@@ -108,7 +113,7 @@ const useGoogle = (loginType:string) => {
         }
     }
 
-    const handleGoogleDelete = async(googleResponse) =>{
+    const handleGoogleDelete = async(googleResponse:any) =>{
         try {
             // console.log(`DELETING USER GOOGLE`)
             setLoading(true)
