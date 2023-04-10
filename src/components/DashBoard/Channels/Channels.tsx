@@ -6,7 +6,7 @@ import './Channels.scss'
 import { ChannelType } from '../../types'
 import Channel from '../Channel/Channel'
 const Channels = ({...props}) => {
-  const {search} = useSearchChannels()
+ 
 
   useEffect(() => {
     console.log(props.channels)
@@ -23,7 +23,7 @@ const Channels = ({...props}) => {
         }
       </div>
     ) : (
-        <Channel key="1" name="FRONT-END DEVELOPERS"  />
+        <Channel key="first" name="FRONT-END DEVELOPERS"  />
     )
   )
 

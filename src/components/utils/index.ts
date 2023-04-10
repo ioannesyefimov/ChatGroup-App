@@ -254,8 +254,10 @@ function getFirstLetter(str:string,words?:number){
   }
 
 }
+
+
  
   export {
     countWords,getFirstLetter,
-    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,setter
+    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,setter,
   }

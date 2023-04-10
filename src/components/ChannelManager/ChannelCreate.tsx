@@ -28,9 +28,9 @@ const ChannelCreate = ()=>{
     
      
 
-    const nameRef = useRef<null | HTMLLabelElement | HTMLInputElement>(null)
-    const descriptionRef = useRef<null | HTMLLabelElement | HTMLInputElement>(null)
-    const avatarRef = useRef<null | HTMLLabelElement | HTMLInputElement>(null)
+    const nameRef = useRef<null | HTMLLabelElement >(null)
+    const descriptionRef = useRef<null | HTMLLabelElement >(null)
+    const avatarRef = useRef<null | HTMLLabelElement >(null)
 
     const handleSubmit = useCallback(
        async (e:React.MouseEvent)=>{

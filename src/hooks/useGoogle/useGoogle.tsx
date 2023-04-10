@@ -4,7 +4,10 @@ import useFetch from '../useFetch';
 import { APIFetch, timeout } from '../../components/utils';
 import { useNavigate } from 'react-router-dom';
 
+
 const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
+  useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
+
     const {setError,setHasError} = useError()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user} = useAuth()

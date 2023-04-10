@@ -4,6 +4,8 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Authentication, ChannelCreate,NotFound,AuthForm, Dashboard, RedirectComponent} from './components'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './components/Landing/Landing'
+import ChatContainer from './components/DashBoard/ChatContainer'
+import CurrentChannel from './components/DashBoard/CurrentChannel/CurrentChannel'
 
 let router = createBrowserRouter([
   {
@@ -19,7 +21,7 @@ let router = createBrowserRouter([
     // path: '/chat/?:channel',
     children: [
       {
-       element: <Dashboard />,
+       element: <ChatContainer />,
        path: '/chat?/:channel',
   
       },

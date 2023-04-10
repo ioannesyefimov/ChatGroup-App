@@ -7,8 +7,7 @@ import NavigationBar from '../NavigationBar/NavigationBar'
 const ProtectedRoute = () => {
     const {user} = useAuth()
     const {cookies} = useAuthCookies()
-
-    if(!user?.email && !cookies?.user) return <Navigate to="/auth/signin" replace/> 
+    if(!user?.email && !cookies?.user?.email) return <Navigate to="/auth/signin" replace/> 
 
   return (
    <ChatProvider>

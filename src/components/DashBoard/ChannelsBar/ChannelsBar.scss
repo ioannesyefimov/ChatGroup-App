@@ -1,5 +1,5 @@
 @use '../../utils/utils.scss' as *;
-.dashboard-component{
+.chat-container-outer{
 
     .left-wrapper{
         @include respond-to(medium){

@@ -1,11 +1,13 @@
 import React from 'react'
 import './Dashboard.scss'
-import DashboardMain from './DashboardMain'
+import ChatContainer from './ChatContainer'
+import { Outlet } from 'react-router-dom'
 const Dashboard: React.FC = ()  => {
   
   return (
     <div className='dashboard-component'>
-      <DashboardMain/>
+      <ChatContainer />
+      <Outlet/>
     </div>
   )
 }

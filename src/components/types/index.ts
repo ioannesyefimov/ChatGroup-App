@@ -18,7 +18,7 @@ export type Member = UserType
 
 export type ChannelType = {
     channelName:string
-    messages: MessageType[] | MessageType
+    messages: MessageType[] 
     members: Member[]| Member
     _id?:string | number
     channelAvatar:string 

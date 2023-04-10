@@ -5,6 +5,8 @@ import { Errors,APIFetch } from '../../components/utils';
 import useFetch from '../useFetch';
 
 const useFacebook = (type:string) => {
+  useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
+
     const {setError,setHasError} = useError()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading} = useAuth()

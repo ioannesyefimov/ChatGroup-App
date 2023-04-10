@@ -1,43 +1,67 @@
-import React, { useEffect } from 'react'
+import React, { SetStateAction, useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useSearchChannels from '../../../hooks/useSearchChannels'
 import './CurrentChannel.scss'
-import { useChat } from '../../../hooks'
-
-const CurrentChannel:React.FC = ({...props}) => {
+import { useAuth, useChat, useError } from '../../../hooks'
+import { ChannelType, MessageType, UserType } from '../../types'
+import Message from '../Message/Message'
+import FormInput from '../../FormInput/FormInput'
+import { APIFetch, setter, throwErr } from '../../utils'
+type PropsType = {
+  channels: ChannelType[]
+  currentChannel: ChannelType
+  setCurrentChannel: React.Dispatch<SetStateAction<ChannelType>>
+}
+const CurrentChannel = ({channels}:{channels:ChannelType[]}) => {
+  const [currentMessage,setCurrentMessage] = useState('')
+  const {setCurrentChannel,currentChannel} = useChat()
   const location = useLocation()
-  const {filteredChannels,search,handleSearchChannels} = useSearchChannels()
-  const {currentChannel,setCurrentChannel} = useChat()
 
   useEffect(
-    ()=>{   
-        const timeOutId = setTimeout(()=>handleSearchChannels(search),1000)
-        console.log('filtered: ',filteredChannels)
-        return () => clearTimeout(timeOutId)
-    }, [search]
-  ) 
+    ()=>{
+      console.log(`rerender on change pathname`)
+      const handleCurrentChannel = 
+      (channels:ChannelType[],pathname:string,setCurrentChannel: React.Dispatch<React.SetStateAction<ChannelType>>)=>{
+          if(!channels) return console.log(`CHANNELs AREN'T FOUND`)
+          console.log(`channels:`, channels);
+          console.log(`pathname:`, pathname);
+          
+          let filteredChannel = channels.find((channel:ChannelType,index:string|number)=>{
+              let pathNameChannel = pathname.replace('/chat/','')
+              channel.channelName = channel.channelName.replaceAll(' ', '-');
+              console.log(`pathNameChannel: ${pathNameChannel}`);
+              console.log(`channel.channelName: ${channel.channelName}`);
+              
+              
+             return channel.channelName=== pathNameChannel
+          })
+          console.log(`FILTERED CHANNEL:` , filteredChannel);
+          
+          if(!filteredChannel){
+              return console.log(`CURRENT CHANNEL ISN'T FOUND`)
+          }
+          setCurrentChannel(filteredChannel)
+      }
+      
+      handleCurrentChannel(channels,location.pathname,setCurrentChannel)
+    },[location.pathname]
+  )
 
+  let title = <h2 className='channel-title'>{currentChannel?.channelName ?? "Choose your channel"}</h2>
 
-  let title = <h2 className='channel-title'>{currentChannel?.name ?? "Choose your channel"}</h2>
-
-    let channels =
+    let channelContent =
     (
       <div className="channels-wrapper">
         {
-            currentChannel?.messages instanceof Array && 
+            currentChannel?.messages.length ?  
            (
-            currentChannel?.messages.map((message,i)=>{
+            currentChannel?.messages.map((message:MessageType,i:number|string)=>{
               return (
-                <div key={message.date} className='message'>
-                  <img className='message-logo' src={message.profileImg} alt="profile-logo" />
-                  <div className="message-wrapper">
-                    <span className="message-name">{message?.userName}</span>
-                    <span className="message-date">{message?.date}</span>
-                  </div>
-                  <p className="message-text">{message?.message}</p>
-                </div>
-              )
+                <Message userName={message?.userName} message={message?.message} date={message?.date} profileImg={message?.profileImg}  />
+                )
             })
+           ) : (
+            <h4>There is nothing to show</h4>
            )
        
         }
@@ -46,8 +70,8 @@ const CurrentChannel:React.FC = ({...props}) => {
   return (
     <div className="main-wrapper">
       {title}
-     
-     {channels}
+      {channelContent}
+      <FormInput name='message-input' type="text" id="message-input" onChange={(e)=>setter(e,setCurrentChannel)} value={currentMessage} /> 
       </div>
     )
 }

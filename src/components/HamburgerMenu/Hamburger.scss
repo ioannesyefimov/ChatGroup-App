@@ -81,7 +81,7 @@
             // clip-path: inset(0 0 99% 0) !important;
             // opacity: 0 !important;
         }
-        &[data-istoggled=hidden]{
+        &[data-istoggled=loaded]{
             // @extend .disappearToLeft;
             clip-path: inset(0 0 99% 0) ;
             opacity: 0;
@@ -103,6 +103,10 @@
     &[data-istoggled=untoggled]{
         // position: absolute;
         flex:minmax(130px, 35%) 
+    }
+    &[data-istoggled=loaded]{
+        // position: relative;
+        // flex:minmax(130px, 35%) 
     }
 
     left:0px;
@@ -130,10 +134,11 @@
             // clip-path: inset(0 0 99% 0) ;
             opacity: 0;
         }
-        &[data-istoggled=hidden]{
+        &[data-istoggled=loaded]{
             // @extend .disappearToLeft;
             clip-path: inset(0 0 99% 0) ;
-            opacity: 0;
+            // position: relative;
+            // opacity: 1;
         }
          display: flex;
         width: 100%;

@@ -11,6 +11,7 @@ interface FormProps {
     photo?: string,
     onChange: (e:ChangeEvent<HTMLInputElement> ) => void 
     value:string
+    SubmitBtn?:()=>JSX.Element
 }
 
 declare module 'react' {
@@ -18,31 +19,34 @@ declare module 'react' {
       files?: File
   }
 }
-const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLInputElement | HTMLLabelElement>) => (
-  // const {name,placeholder, type} = props
+const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelElement>) => {
+  const {name,labelName,onChange ,value,placeholder, type,photo,SubmitBtn} = props
 
-  // const filesInput 
-    // <input onChange={props.onChange} files={props.files} placeholder={props.placeholder} type={props.type}  ref={ref} name={props.name} id={props.name} aria-label={`${props.name} `} />
-  
 
+  return (
     <div className={`inner-wrapper ${props.name}`}>
-      {props.labelName && (
-        <label ref={ref} className='label-color' htmlFor={props.name}>
-          {props.labelName}
+      {labelName && (
+        <label ref={ref} className='label-color' htmlFor={name}>
+          {labelName}
         </label>
         )
       }
       <div className='form-wrapper'>
-          <input onChange={props.onChange} value={props.value} placeholder={props.placeholder} type={props.type}   name={props.name} id={props.name} aria-label={`${props.name} `} />
-        {props?.photo && (
-            <img src={props.photo} alt="input-icon" />
+          <input onChange={onChange} value={value} placeholder={placeholder} type={type}   name={name} id={name} aria-label={`${name} `} />
+        {photo && (
+            <img src={photo} alt="input-icon" />
         ) 
         }
       </div>
-
+        {SubmitBtn ? (
+          <SubmitBtn />
+        ): (
+          null
+        )}
   </div>
   
-))  
+  )
+})
   
   
 

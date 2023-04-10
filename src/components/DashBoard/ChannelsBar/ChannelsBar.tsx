@@ -7,10 +7,10 @@ import './ChannelsBar.scss'
 import Hamburger from '../../HamburgerMenu/Hamburger'
 import { useChat, useWindowSize } from '../../../hooks'
 import { useNavigate } from 'react-router-dom'
+import { ChannelType } from '../../types'
 
-const ChannelsBar = () => {
-  const {search,hanldeSearchChange, filteredChannels} = useSearchChannels()
-  const {channels} = useChat()
+const ChannelsBar = ({channels}:{channels:ChannelType[]}) => {
+  const {search, filteredChannels,handleSearchChange} = useSearchChannels(channels)
   const navigate = useNavigate()
   useEffect
   (
@@ -29,7 +29,7 @@ const ChannelsBar = () => {
             <span>Channels</span>
             <button onClick={()=>navigate('/channel/create')} className='add-btn'></button>
             </div>
-            <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={hanldeSearchChange} value={search} />
+            <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={handleSearchChange} value={search} />
             <Channels channels={ channels  } />
           </div>
       </div>

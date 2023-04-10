@@ -1,0 +1,42 @@
+@use '../utils/utils.scss' as * ;
+
+.App:has(.chat-container-outer){
+    position: relative;
+    .chat-container-outer {
+        margin-top: 1rem;
+    }
+}
+
+
+.chat-container-outer{
+    display: flex;
+    flex:1;
+    
+    // display: flex;
+    .main-wrapper {
+         transition: .3s all cubic-bezier(1, 0, 0, 1);
+
+        position: relative;
+    }
+
+
+
+   
+}
+.chat-container-inner {
+  
+        // outline: 1px solid red;
+    display: flex;
+    flex:1;
+    // transition: .3s all cubic-bezier(0.165, 0.84, 0.44, 1);
+
+    position: relative;
+    .left-wrapper {
+        flex:20%;
+    
+    }
+    .main-wrapper {
+        flex:100%
+    }
+}
+

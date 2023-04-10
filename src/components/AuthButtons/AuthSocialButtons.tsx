@@ -13,8 +13,6 @@ const AuthSocialButtons = ({authType, redirectUrl=''}:{authType :string,redirect
     const {handleGoogle} = useGoogle(authType,redirectUrl);
     const {handleGitHub} = useGithub(authType);
 
-    useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
-    useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
 
 
     const content = (
