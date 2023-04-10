@@ -2,17 +2,21 @@ import { useCallback, useContext, useEffect, useMemo } from "react"
 import { AuthContext, initAuthContextState } from "../../components/Authentication/Provider/AuthProvider"
 import { NavigateFunction } from "react-router-dom"
 import useAuthCookies from "../useAuthCookies/useAuthCookies"
+import useChat from "../useChatContext/useChatContext"
 
 
 export default () =>{
     const {user,loading,serverUrl,response,setUser,setLoading,setResponse} = useContext(AuthContext)
     const {removeCookie,cookies} = useAuthCookies()
+    const {setChannels} = useChat()
 
     useEffect(
       ()=>{
         let isLogged = cookies?.user
         if(isLogged){
+          console.log(`USER: `, isLogged)
           setUser(isLogged)
+          setChannels(isLogged?.channels)
         }
       },[cookies?.user]
     )

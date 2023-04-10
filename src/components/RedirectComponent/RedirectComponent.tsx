@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
-import { useAuth, useError } from '../../hooks'
+import { useAuth, useChat, useError } from '../../hooks'
 import { Fallback } from '../ErrorProvider/ErrorProvider'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
@@ -16,7 +16,8 @@ type HandleLoginProps = {
 const RedirectComponent = () => {
     const URL = `http://localhost:5050/api`
     
-    const {loading,response} = useAuth()
+    const {loading} = useAuth()
+    const {setChannels} = useChat()
     const {cookies,setCookie} = useAuthCookies()
     const {setError} = useError() 
     let location = useLocation()
@@ -30,7 +31,6 @@ const RedirectComponent = () => {
                 return    
             }
             setCookie('user', response?.data?.user,{path:'/',maxAge:2000})
-
             console.log(`response: ` , response)
         },[]
     )

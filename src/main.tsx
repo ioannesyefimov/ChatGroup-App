@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary   Fallback={()=>ErrorFallBack()}  >
       <CookiesProvider>
-        <AuthProvider user={initAuthContextState?.user} loading={initAuthContextState.loading} response={initAuthContextState?.response}  >
+        <AuthProvider >
           <App />
         </AuthProvider>
       </CookiesProvider>

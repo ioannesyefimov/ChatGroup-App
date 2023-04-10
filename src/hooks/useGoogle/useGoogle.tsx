@@ -26,10 +26,10 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
         }
         if(redirectUrl){
             console.log(`REDIRECT ULR : ${redirectUrl}`)
-            navigate(`/auth/redirect?type=newAccessToken&accessToken=${response?.data.accessToken}&redirectUrl=${redirectUrl}`)
+            navigate(`/auth/redirect/?type=newAccessToken&accessToken=${response?.data.accessToken}&redirectUrl=${redirectUrl}`)
             return 
         }
-        navigate(`/auth/redirect?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
+        navigate(`/auth/redirect/?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
 
     }
     useEffect(
@@ -53,10 +53,10 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
                     googleBnt.disabled = false
                 }
             }
-            let timeout = setTimeout(initializeGoogle,2000)
+            let timeout = setTimeout(initializeGoogle,1000)
 
             return ()=>clearTimeout(timeout)
-    }, []
+    }, [handleGoogle]
     )
     // const url = `https://authentic-app-backend.onrender.com/api/auth/`
 
@@ -65,6 +65,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
     const handleGoogleSignin = async(googleResponse) =>{
         try {
             setLoading(true)
+            console.log(`GOOGLE RESPONSE:`, googleResponse)
 
             let response = await APIFetch({url: `${url}google/signin`, method:'POST', body:{credential: googleResponse?.credential, loggedThrough: 'Google'}});
     

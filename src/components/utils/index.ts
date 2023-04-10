@@ -1,4 +1,4 @@
-import { Ref, RefObject } from "react";
+import { ChangeEvent, Ref, RefObject } from "react";
 
  const  validateEmail = function(email:string) {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
@@ -27,7 +27,11 @@ type ErrorsType = {
   [index:string]: string 
 }
 type RefsType ={
-  [index:string]: RefObject<HTMLInputElement>
+  [index:string]: RefObject<HTMLInputElement|HTMLLabelElement>
+}
+
+const setter = (e:ChangeEvent<HTMLInputElement>, setState:React.Dispatch<React.SetStateAction<any>>) =>{
+  setState(e?.currentTarget.value)
 }
 
 export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=>{
@@ -38,6 +42,8 @@ export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=
       if(!fields[obj]) {
           refs[obj]?.current?.classList.add('error')
           errors[obj] = Errors.CANNOT_BE_EMPTY
+          refs[obj].current?.setAttribute('error',errors[obj])
+  
       }
       else if(obj==='email'){
         let isValid = validateEmail(fields[obj]);
@@ -46,18 +52,22 @@ export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=
         if(!isValid) {
           refs[obj]?.current?.classList.add('error')
           errors[obj] = Errors.INVALID_EMAIL
+          refs[obj].current?.setAttribute('error',errors[obj])
         }
       } else if (fields[obj].length < 3){
         refs[obj]?.current?.classList.add('error')
         errors[obj] = Errors.SHORT_LENGTH
+        refs[obj].current?.setAttribute('error',errors[obj])
+
       }
     }
     console.log(`ERRORS:` , errors)
     if(Object.keys(errors).length > 0) {
-      for(let ref in refs){
-        refs[ref]?.current?.classList.remove('error')
-      }
       return reject({success:false,errors})
+    }
+    for(let ref in refs){
+      refs[ref]?.current?.classList.remove('error')
+      refs[ref]?.current?.removeAttribute('error')
     }
     return resolve({success:true})
   })
@@ -247,5 +257,5 @@ function getFirstLetter(str:string,words?:number){
  
   export {
     countWords,getFirstLetter,
-    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,
+    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,setter
   }

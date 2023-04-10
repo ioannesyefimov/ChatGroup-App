@@ -9,23 +9,25 @@ export type MessageType =  {
 }
 
 export type ResponseType  = {
-    message: Object | null
+    message?: Object | null
     success: boolean | null
+    data?: any
 }
 
 export type Member = UserType
 
 export type ChannelType = {
-    name:string
+    channelName:string
     messages: MessageType[] | MessageType
     members: Member[]| Member
-    id:string | number
+    _id?:string | number
+    channelAvatar:string 
+    channelDescription?: string
 }
 
 export type ProviderProps = {
     children: React.ReactNode
 }
-
 
 
 
@@ -46,6 +48,7 @@ export type UserType = {
     photo?:string
     id:string
     loggedThrough?: string
+    channels: ChannelType | ChannelType[]
     bio?: string
 }
 export type ChangesType =  {

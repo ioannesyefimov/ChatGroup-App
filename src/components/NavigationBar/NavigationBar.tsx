@@ -18,9 +18,9 @@ const NavigationBar = () => {
   const navigate = useNavigate()
     return (
     <div className='navbar-component' >
-        <div className='logo'>
+        <button className='logo-btn' onClick={()=>navigate('/dashboard')}>
           <img  src={chatifyIco} alt="logo" />
-        </div>
+        </button>
       <div className="navbar-inner" id='navBarInner'>
         {windowSize?.width < 500 ? (
            <Hamburger type='navbar'>

@@ -6,29 +6,25 @@ import { useChat } from '../../../hooks'
 
 const CurrentChannel:React.FC = ({...props}) => {
   const location = useLocation()
-  const {filteredChannels} = useSearchChannels()
+  const {filteredChannels,search,handleSearchChannels} = useSearchChannels()
   const {currentChannel,setCurrentChannel} = useChat()
-  useEffect(()=>{
-    // let filterCurrentChannel = () =>{
-    //   let currentChanel = location.pathname.replace('/chat/', '')
-    //   console.log(currentChanel)
-    //   let filterCurrent = filteredChannels.filter(channel => channel?.name?.toLocaleLowerCase().replaceAll(' ', '-').includes(currentChanel))
-    //   if(filterCurrent){
-    //     setCurrentChannel(filterCurrent[0])
-    //   }
-    //   console.log(filterCurrent)
-    // }
-    // if(location.pathname.includes('chat')){
-    //   filterCurrentChannel()
-    // }
-  },[location.pathname])
+
+  useEffect(
+    ()=>{   
+        const timeOutId = setTimeout(()=>handleSearchChannels(search),1000)
+        console.log('filtered: ',filteredChannels)
+        return () => clearTimeout(timeOutId)
+    }, [search]
+  ) 
+
+
   let title = <h2 className='channel-title'>{currentChannel?.name ?? "Choose your channel"}</h2>
 
     let channels =
     (
       <div className="channels-wrapper">
         {
-            currentChannel?.messages instanceof Array ? 
+            currentChannel?.messages instanceof Array && 
            (
             currentChannel?.messages.map((message,i)=>{
               return (
@@ -43,9 +39,7 @@ const CurrentChannel:React.FC = ({...props}) => {
               )
             })
            )
-        : (
-          null
-          ) 
+       
         }
       </div>
   )

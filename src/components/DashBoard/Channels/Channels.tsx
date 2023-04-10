@@ -4,6 +4,7 @@ import useSearchChannels from '../../../hooks/useSearchChannels'
 import { Link } from 'react-router-dom'
 import './Channels.scss'
 import { ChannelType } from '../../types'
+import Channel from '../Channel/Channel'
 const Channels = ({...props}) => {
   const {search} = useSearchChannels()
 
@@ -11,49 +12,23 @@ const Channels = ({...props}) => {
     console.log(props.channels)
   
   }, [props.channels])
-  let mappedChannels = (
-    props?.channels instanceof Array ? (
-      props?.channels.map((channel:ChannelType)=>{
-        return (
-          <div key={channel?.id} className="channel">
-            <div className="channel-logo">{getFirstLetter(channel?.name,2)}</div>
-            <Link className='link-tag' to={`/chat/${channel?.name.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">{channel?.name}</div></Link>
-          </div>
-        )
-      })
-      ) :  (
-          <div key={props?.channels?.id} className="channel">
-            <div className="channel-logo">{getFirstLetter(props?.channels?.name,2)}</div>
-            <Link to={`/chat/${props?.channel?.name.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">{props?.channels?.name}</div></Link>
-          </div>
-      )
+  let content = (
+    Array.isArray(props.channels) && props.channels?.length ? (
+      <div className='channels'>
+        {props.channels.map((channel:ChannelType)=>{
+          return (
+            <Channel key={channel?._id!} name={channel?.channelName} avatar={channel?.channelAvatar} />
+          )
+        })
+        }
+      </div>
+    ) : (
+        <Channel key="1" name="FRONT-END DEVELOPERS"  />
+    )
   )
-  let defaultChannels = (
-    <>
-    <div className="channel">
-      <div className="channel-logo">FD</div>
-      <Link to={`/chat/${props.channel?.name.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">front-end developers</div></Link>
-    </div>
-    <div className="channel">
-      <div className="channel-logo">FD</div>
-      <Link to={`/chat/${props.channel?.name.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">front-end developers</div></Link>
-    </div>
-    <div className="channel">
-      <div className="channel-logo">FD</div>
-      <Link to={`/chat/${props.channel?.name.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">front-end developers</div></Link>
-    </div>
-  </>
-  ) 
 
-  return (
-    <div className="channels">
-        {props?.channels  ? (
-            mappedChannels
-          ) :(
-            defaultChannels
-          )}  
-        </div>
-  )
+
+  return content
 }
 
 export default Channels

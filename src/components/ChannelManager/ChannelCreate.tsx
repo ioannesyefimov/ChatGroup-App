@@ -2,10 +2,11 @@ import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 're
 import './ChannelCreate.scss'
 import FormInput from '../FormInput/FormInput'
 import UploadInput from '../UploadInput/UploadInput'
-import { APIFetch, convertBase64, throwErr, validateInput } from '../utils'
+import { APIFetch, convertBase64, setter, throwErr, validateInput } from '../utils'
 import Button from '../Button/Button'
-import { useAuth, useAuthCookies, useError } from '../../hooks'
+import { useAuth, useAuthCookies, useChat, useError } from '../../hooks'
 import AuthForm from '../Authentication/AuthForm/AuthForm'
+import { ResponseType } from '../types'
 
 
 const ChannelCreate = ()=>{
@@ -16,6 +17,7 @@ const ChannelCreate = ()=>{
     const {setError} = useError()
     const {serverUrl,setLoading} = useAuth()
     const {cookies} = useAuthCookies()
+    const {setChannels,channels,} = useChat()
 
     if(!cookies?.accessToken) return (
         <>
@@ -24,22 +26,28 @@ const ChannelCreate = ()=>{
         </>
     )
     
+     
 
-    const nameRef = useRef<null | HTMLInputElement>(null)
-    const descriptionRef = useRef<null | HTMLInputElement>(null)
-    const avatarRef = useRef<null | HTMLInputElement>(null)
+    const nameRef = useRef<null | HTMLLabelElement | HTMLInputElement>(null)
+    const descriptionRef = useRef<null | HTMLLabelElement | HTMLInputElement>(null)
+    const avatarRef = useRef<null | HTMLLabelElement | HTMLInputElement>(null)
 
     const handleSubmit = useCallback(
        async (e:React.MouseEvent)=>{
             e.preventDefault()
             try {
                 setLoading(true)
-                let isEmpty = await validateInput({fields:{channelName,channelAvatar,channelDescription},refs:{channelName:nameRef,channelAvatar:avatarRef,channelDescription:descriptionRef}})
+                let fields = {channelName,channelDescription}
+                console.log(`FIELDS: `, fields)
+                let isEmpty = await validateInput({fields,refs:{channelName:nameRef,channelDescription:descriptionRef}})
                 if(!isEmpty?.success){
                     throwErr(isEmpty?.errors)
                 }
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
-                let response = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar,channelDescription}})
+                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar,channelDescription},method:'POST'})
+                if(!response.success) throwErr(response?.message)
+                setChannels({...channels, ...response?.data })
+                console.log(`RESPONSE : `, response)
             } catch (error) {
                 console.log(`ERROR:`,error)
                 setError(error)
@@ -52,9 +60,7 @@ const ChannelCreate = ()=>{
 
 
 
-    const setter = (e:ChangeEvent<HTMLInputElement>, setState:React.Dispatch<React.SetStateAction<any>>) =>{
-        setState(e?.currentTarget.value)
-    }
+    
 
     const handleImageUpload =  useCallback(
         async(e:React.ChangeEvent<HTMLInputElement>)=>{
@@ -68,9 +74,8 @@ const ChannelCreate = ()=>{
         <div className='prompt-menu-component  box-shadow--gray'>
             <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>setter(e,setChannelName)}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
                
-            <FormInput ref={descriptionRef} labelName='Channel description:' value={channelName} onChange={(e)=>setter(e,setChannelDescription)}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
+            <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>setter(e,setChannelDescription)}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
            
-            {/* <UploadInput  labelName='Channel Avatar:' id="image-input" setter={setSelectedFile} /> */}
             <UploadInput value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImageUpload}/>
             <Button text='Create' className='submit-btn' onClick={(e)=>handleSubmit(e)} />
         </div>

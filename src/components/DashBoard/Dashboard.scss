@@ -3,14 +3,15 @@
 
 .App:has(.dashboard-component){
     position: relative;
+    .dashboard-component {
+        margin-top: 1rem;
+    }
 }
 
 
 .dashboard-component{
 
     display: grid;
-    grid-template-rows: 50px 1fr;
-    grid-template-columns: 1fr;
     .main-wrapper {
          transition: .3s all cubic-bezier(1, 0, 0, 1);
 

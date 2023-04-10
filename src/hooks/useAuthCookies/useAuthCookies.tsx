@@ -1,11 +1,18 @@
 
 import React from 'react'
-import { useCookies } from 'react-cookie'
-import { UserType } from '../../components/types'
+import { Cookies, useCookies } from 'react-cookie'
+import { ChannelType, UserType } from '../../components/types'
 
 
 const useAuthCookies = () => {
-  const [cookies,setCookie,removeCookie]= useCookies(['user' ,'accessToken','refreshToken'])
+  type CookiesType = {
+    user: UserType
+    accessToken:string,
+    refreshToken:string
+    channels: ChannelType | ChannelType[]
+  }
+  const [cookies,setCookie,removeCookie]= useCookies<'user'|'accessToken'|'refreshToken'|'channels', CookiesType
+>(['user' ,'accessToken','refreshToken',"channels"])
 
   return {cookies,setCookie,removeCookie}
 }

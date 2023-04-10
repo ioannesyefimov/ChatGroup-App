@@ -14,7 +14,17 @@
 }
 
 .App {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  & > .dashboard-component {
+    flex: 1;
+  }
+
+  &:has(.auth-form-component){
+    align-items: center;
+    justify-content: center;
+  }
+
 }
 .box-shadow--gray{
   box-shadow: 1px 1px 6px 1px gray;

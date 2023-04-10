@@ -2,7 +2,6 @@
 
 .navbar-component {
     padding: 0 1rem;
-    
     .navbar-inner{
         display: flex;
         align-items: center;
@@ -18,7 +17,7 @@
     right: 5px;
     z-index: 1;
     top:5px;
-    margin:0rem 0rem .3rem 0;
+    // margin:0rem 0rem .3rem 0;
 
     div.flex {
         gap:.5rem;
@@ -27,7 +26,6 @@
         .nav-btn {
             // outline: 1px solid gold;
             border: 1px solid black;
-            border-radius: 8px;
             transition: .4s all ease-in-out;
             padding:.2rem .5rem ;
             font-size: clamp(0.65rem, 0.439rem + 0.901vw, 1.15rem);
@@ -36,18 +34,21 @@
             font-weight: 700;
             &:hover{
                 background-color: black;
+                border-radius: 8px;
             }
         }    
     }
 
 
-    .logo {
+    .logo-btn {
+        padding: 0;
         display: flex;
-        width: 50px;
-        height: 40px;
-        transform: scale(1.4);
+        width: 60px;
+        align-self: center;
+        // height: 40px;
         filter: invert(100%);
         img{
+            transform: scale(1.4);
             width: 100%;
         }
     }

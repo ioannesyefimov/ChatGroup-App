@@ -23,11 +23,11 @@ type PropsType ={
 //     id:string
 // }
 
-const UploadInput = React.forwardRef(({channel,labelName,id,onChange,value}: PropsType,ref?: React.Ref<HTMLInputElement>) => {
+const UploadInput = React.forwardRef(({channel,labelName,id,onChange,value}: PropsType,ref?: React.Ref<HTMLInputElement | HTMLLabelElement>) => {
 
     return(
 
-        <label htmlFor={id} className="file-upload-component">
+        <label htmlFor={id} className="file-upload-component inner-wrapper">
             {labelName ?? ''}
             <img className="converted-img"  src={value==='' ? uploadIco : value}  />
             <input ref={ref} type="file" name={'upload'} id={id} onChange={onChange}  />

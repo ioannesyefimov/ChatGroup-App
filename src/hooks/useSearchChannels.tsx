@@ -1,23 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChatContext } from '../components/ChatProvider/ChatProvider'
-import { Channel } from '../components/types'
+import { ChannelType } from '../components/types'
+import useChat from './useChatContext/useChatContext'
 const useSearchChannels = () => {
     const [search, setSearch] = useState<string>('')
-    const [filteredChannels,setFilteredChannels] = useState<Channel[]>([])
-    
-
-    const {channels} = useChatContext()
-
-    useEffect(
-        ()=>{   
-            const timeOutId = setTimeout(()=>handleSearchChannels(search),500)
-            console.log('filtered: ',filteredChannels)
-            return () => clearTimeout(timeOutId)
-        }, [search]
-    )
-
-    const handleSearchChannels = (search:string) =>{
-        // console.log('h')
+    const [filteredChannels,setFilteredChannels] = useState<ChannelType[]>([])
+ 
+    const handleSearchChannels = useCallback((search:string) =>{
+        if(!search) return 
         let result
             if(channels instanceof Array ){
                 result = channels.filter((channel)=>{
@@ -29,7 +19,7 @@ const useSearchChannels = () => {
                 setFilteredChannels(result)
             }
             
-    }
+    },[])
     const  hanldeSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void =>{
         const value = e?.target.value
             setSearch(value)

@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigate,Outlet } from 'react-router-dom'
 import { useAuth, useAuthCookies } from '../../hooks'
 import ChatProvider from '../ChatProvider/ChatProvider'
+import NavigationBar from '../NavigationBar/NavigationBar'
 
 const ProtectedRoute = () => {
     const {user} = useAuth()
@@ -11,7 +12,10 @@ const ProtectedRoute = () => {
 
   return (
    <ChatProvider>
-     <Outlet/>
+    <>
+      <NavigationBar />
+       <Outlet/>
+    </>
    </ChatProvider>
   )
 }

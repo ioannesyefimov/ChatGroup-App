@@ -21,6 +21,24 @@
     }
     label {
         text-transform: capitalize;
+        display: flex;
+        flex-wrap: wrap;
+        gap:.5rem;
+        align-items: center;
+        // justify-content: center;
+        // position: relative;
+        max-width: 300px;
+        order:0;
+        line-height: 1.2;
+        &::before{
+            order:1;
+            content: attr(error);
+            font-size: .75rem;
+            color:red;
+            max-width: 300px;
+            word-wrap: break-word;
+            // background-color: black;
+        }
     }
     input {
         width: 100%;
@@ -30,5 +48,7 @@
         padding: .85rem 0rem .85rem 2.55rem ;
         // border: 1px solid gray;
         color: rgb(67, 183, 203);
+        position: relative;
+        
     }
 }

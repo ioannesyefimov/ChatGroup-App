@@ -29,35 +29,17 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   const [user, setUser] = useState(initAuthContextState.user)
   const serverUrl =  initAuthContextState.serverUrl
 
-  // useEffect(
-  //     ()=>{
-  //       // add sscripts
-  //       const addScript = async(callback:CallableFunction)=>{
-  //         try {
-  //           return await callback()
-  //         } catch (error) {
-  //           console.log(error)
-  //         }
-  //       }
-  //       addScript(addPolicyScript3)
-  //       addScript(addPolicyScript2)
-  //       addScript(addPolicyScript)
-  //     },[]
-  //   )
-   
-
-
   return {user,loading,response,serverUrl,setUser,setLoading,setResponse}
 }
 
 
  const AuthProvider  = (
-  {children,...initState} :ChildrenType & InitialStateType 
+  {children} :ChildrenType 
 ) => {
    
 
   return (
-    <AuthContext.Provider value={useAuthContext(initState)}>
+    <AuthContext.Provider value={useAuthContext(initAuthContextState)}>
         {children}
     </AuthContext.Provider>
   )
