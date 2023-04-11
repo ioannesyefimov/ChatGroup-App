@@ -5,37 +5,57 @@ body[theme="ligth"]{
 
 }
 .App{
-    .dashboard-component{
-        .left-wrapper{
-            background: #120F13;
-            .search-wrapper{
-                .inner-wrapper{
-                    .form-wrapper{
-                        background-color: #3C393F;
-                    }
-                }
-                // border-radius: inherit;
-             
-                input {
-                    border: none;
-                }
+    .chat-container-outer{
+        .prompt-menu-component {
+            background:#120F13 !important;
 
+            input{
+                background-color:#252329 ;
+                
             }
-            .channels {
-    
-                .channel{
-                    .link-tag  {
-                        color:whitesmoke ;
+        }
+        .hamburger.channels{
+            background:#120F13 !important;
+
+            .left-wrapper{
+                .search-wrapper{
+                    .inner-wrapper{
+                        .form-wrapper{
+                            background-color: white !important;
+                        }
                     }
-                    &-logo{
-                        background-color:#252329 ;
-                    
+                    // border-radius: inherit;
+                 
+                    input {
+                        border: none;
                     }
     
                 }
-    
-    
-            }
+                .channels {
+        
+                    .channel{
+                        
+                        .link-tag  {
+                            color:whitesmoke ;
+                        }
+                        &-logo{
+                            background-color:#252329 ;
+                        
+                        }
+
+                        &-name {
+                            color:#BDBDBD;
+                        }
+        
+                    }
+        
+        
+                }
+        }
+        }
+
+        .main-wrapper {
+            background-color: #252329;
         }
     }
 }

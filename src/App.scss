@@ -10,7 +10,8 @@
 }
 
 .App:has(.landing-component,.auth-form-component){
-  place-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .App {

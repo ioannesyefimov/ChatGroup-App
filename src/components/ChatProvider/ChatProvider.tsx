@@ -7,9 +7,7 @@ import { APIFetch } from '../utils'
 
 export type InitialChatStateType = {
     channels: ChannelType[]
-    currentChannel: ChannelType
     setChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
-    setCurrentChannel: React.Dispatch<React.SetStateAction<ChannelType>>
 
 }
   
@@ -17,19 +15,16 @@ export type InitialChatStateType = {
   
   export const initChatContextState: InitialChatStateType ={
     channels: [],
-    currentChannel: {channelName:'',channelAvatar:'',messages:[],members:[]},
     setChannels: ()=>{},
-    setCurrentChannel: ()=>{}
     
   }
   export const ChatContext = React.createContext<useChatContextType>(initChatContextState)
   
   export const useChatContext = (initChatContextState:InitialChatStateType)=>{
     const [channels,setChannels] = useState<ChannelType[]>([])
-    const [currentChannel,setCurrentChannel] =useState<ChannelType>(initChatContextState.currentChannel)
 
 
-    return {channels,currentChannel,setChannels,setCurrentChannel}
+    return {channels,setChannels}
   }
   
  

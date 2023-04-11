@@ -47,7 +47,7 @@ const ChatContainer = () => {
             <ChannelsBar channels={channels}/>
             {/* <CurrentChannel location={location.pathname} /> */}
             <CurrentChannel channels={channels} />
-
+          <Outlet/>
         </div>
     </div>
   )

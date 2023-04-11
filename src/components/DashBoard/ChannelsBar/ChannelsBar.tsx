@@ -8,18 +8,11 @@ import Hamburger from '../../HamburgerMenu/Hamburger'
 import { useChat, useWindowSize } from '../../../hooks'
 import { useNavigate } from 'react-router-dom'
 import { ChannelType } from '../../types'
+import UserBar from '../../UserBar/UserBar'
 
 const ChannelsBar = ({channels}:{channels:ChannelType[]}) => {
   const {search, filteredChannels,handleSearchChange} = useSearchChannels(channels)
   const navigate = useNavigate()
-  useEffect
-  (
-    ()=>{
-      console.log(channels);
-      console.log(filteredChannels);
-      
-    },[channels,filteredChannels]
-  )
 
   let content = (
      <Hamburger  type='channels'>
@@ -33,6 +26,7 @@ const ChannelsBar = ({channels}:{channels:ChannelType[]}) => {
             <Channels channels={ channels  } />
           </div>
       </div>
+      <UserBar />
      </Hamburger>
   )
   

@@ -7,7 +7,6 @@ const Dashboard: React.FC = ()  => {
   return (
     <div className='dashboard-component'>
       <ChatContainer />
-      <Outlet/>
     </div>
   )
 }

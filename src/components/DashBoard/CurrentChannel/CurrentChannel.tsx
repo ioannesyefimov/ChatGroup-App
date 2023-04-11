@@ -14,15 +14,15 @@ type PropsType = {
 }
 const CurrentChannel = ({channels}:{channels:ChannelType[]}) => {
   const [currentMessage,setCurrentMessage] = useState('')
-  const {setCurrentChannel,currentChannel} = useChat()
+  const [currentChannel,setCurrentChannel] =useState<ChannelType>()
   const location = useLocation()
 
   useEffect(
     ()=>{
       console.log(`rerender on change pathname`)
-      const handleCurrentChannel = 
-      (channels:ChannelType[],pathname:string,setCurrentChannel: React.Dispatch<React.SetStateAction<ChannelType>>)=>{
+      const handleCurrentChannel = (channels:ChannelType[],pathname:string,setCurrentChannel: React.Dispatch<React.SetStateAction<ChannelType|undefined>>)=>{
           if(!channels) return console.log(`CHANNELs AREN'T FOUND`)
+          if(currentChannel?.channelName) return 
           console.log(`channels:`, channels);
           console.log(`pathname:`, pathname);
           

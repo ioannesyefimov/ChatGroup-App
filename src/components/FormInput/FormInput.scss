@@ -42,12 +42,16 @@
     }
     input {
         width: 100%;
+        word-wrap: break-word;
+        word-break: break-all;
         order: 1;
         background-color: transparent;
         border: none;
         padding: .85rem 0rem .85rem 2.55rem ;
         // border: 1px solid gray;
-        color: rgb(67, 183, 203);
+        outline: none;
+        color: #828282;
+        font-size: .9rem;
         position: relative;
         
     }

@@ -6,12 +6,7 @@ import './Channels.scss'
 import { ChannelType } from '../../types'
 import Channel from '../Channel/Channel'
 const Channels = ({...props}) => {
- 
 
-  useEffect(() => {
-    console.log(props.channels)
-  
-  }, [props.channels])
   let content = (
     Array.isArray(props.channels) && props.channels?.length ? (
       <div className='channels'>

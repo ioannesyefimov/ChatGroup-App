@@ -2,11 +2,12 @@ import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 're
 import './ChannelCreate.scss'
 import FormInput from '../FormInput/FormInput'
 import UploadInput from '../UploadInput/UploadInput'
-import { APIFetch, convertBase64, setter, throwErr, validateInput } from '../utils'
-import Button from '../Button/Button'
+import { APIFetch, convertBase64, throwErr, validateInput } from '../utils'
+import Button from '../UserBar/UserBar'
 import { useAuth, useAuthCookies, useChat, useError } from '../../hooks'
 import AuthForm from '../Authentication/AuthForm/AuthForm'
 import { ResponseType } from '../types'
+import { useNavigate } from 'react-router-dom'
 
 
 const ChannelCreate = ()=>{
@@ -31,8 +32,8 @@ const ChannelCreate = ()=>{
     const nameRef = useRef<null | HTMLLabelElement >(null)
     const descriptionRef = useRef<null | HTMLLabelElement >(null)
     const avatarRef = useRef<null | HTMLLabelElement >(null)
-
-    const handleSubmit = useCallback(
+        const navigate = useNavigate()
+    const handleSubmit = 
        async (e:React.MouseEvent)=>{
             e.preventDefault()
             try {
@@ -47,6 +48,7 @@ const ChannelCreate = ()=>{
                 let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar,channelDescription},method:'POST'})
                 if(!response.success) throwErr(response?.message)
                 setChannels({...channels, ...response?.data })
+                navigate(`/chat/${channelName}`)
                 console.log(`RESPONSE : `, response)
             } catch (error) {
                 console.log(`ERROR:`,error)
@@ -55,9 +57,8 @@ const ChannelCreate = ()=>{
                 setLoading(false)
 
             }
-        },[]
-    )
-
+        }
+    
 
 
     
@@ -72,12 +73,12 @@ const ChannelCreate = ()=>{
     },[])
     return (
         <div className='prompt-menu-component  box-shadow--gray'>
-            <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>setter(e,setChannelName)}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
+            <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>{setChannelName(e.target.value)}}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
                
-            <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>setter(e,setChannelDescription)}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
+            <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
            
             <UploadInput value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImageUpload}/>
-            <Button text='Create' className='submit-btn' onClick={(e)=>handleSubmit(e)} />
+            <button className='submit-btn' onClick={(e)=>handleSubmit(e)}>Create</button>
         </div>
     )
 }

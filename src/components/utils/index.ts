@@ -39,7 +39,8 @@ export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=
     let errors:ErrorsType = {}
     console.log(refs)
     for(let obj in fields){
-      if(!fields[obj]) {
+      if(fields[obj] === '') {
+        console.log(`FIELD:`, fields[obj])
           refs[obj]?.current?.classList.add('error')
           errors[obj] = Errors.CANNOT_BE_EMPTY
           refs[obj].current?.setAttribute('error',errors[obj])

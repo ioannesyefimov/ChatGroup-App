@@ -6,18 +6,13 @@ import { UserType } from "../../components/types"
 
 
  const useChat = () =>{
-    const {channels,currentChannel,setCurrentChannel, setChannels } = useContext(ChatContext)
+    const {channels, setChannels } = useContext(ChatContext)
 
-    useEffect(
-        ()=>{
-            console.log(`CURRENT CHANNEL IS CHANGED:`, currentChannel)
-            console.log(`CHANNELs ARE CHANGED:`, channels)
-        },[currentChannel,channels]
-    )
+  
  
     const value = useMemo(
         ()=>({
-            channels,currentChannel,setCurrentChannel , setChannels
+            channels, setChannels
         }),[channels]
     )
     return value

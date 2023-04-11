@@ -1,23 +1,40 @@
 @use '../utils/utils.scss' as * ;
 .prompt-menu-component {
+    box-shadow: none;
+    align-self: center;
     margin: auto;
     display: flex;
+    position: absolute;
+    left:0;
+    right: 0;
     flex-direction: column;
     gap:1rem;
     padding: 1rem 2rem ;
-    border-radius: 6px;
-    max-width: 500px;
+    border-radius: 10px;
+    max-width: 400px;
     & > * {
         flex:1
     }
-    .inner-wrapper {
-       
+    .form-wrapper {
+        border-radius: 10px;
+        input {
+            border-radius: inherit;
+            word-break: break-all;
+            word-wrap: break-word;
+        }
+
+        #description {
+            display: block;
+            height: 100px;
+            // padding-bottom: 4rem;
+          
+        }
     }
 
     .file-upload-component{
         flex-direction: row;
         position: relative;
-        padding: .2rem 1rem;
+        padding: .4rem 1rem;
 
         &::after,&::before{
             content: '';
@@ -33,7 +50,7 @@
                 width:100% ;
                 left:0;
             }
-            top:-5%;
+            top:0%;
         }
            
         &::after{
@@ -41,12 +58,11 @@
                 width:100% ;
                 left:0;
             }
-            bottom:-15%;
+            bottom:0%;
         }
         img{
-            // position: relative;
+            filter: invert(100%) brightness(50%);
             max-width: 50px;   
-            // padding: .4rem 2rem;
         }
     }
     input {
