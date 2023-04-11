@@ -20,7 +20,7 @@ const ChannelsBar = ({channels}:{channels:ChannelType[]}) => {
           <div className="left-wrapper-inner"  id="leftWrapperInner">
             <div className="flex flex--between">
             <span>Channels</span>
-            <button onClick={()=>navigate('/channel/create')} className='add-btn'></button>
+            <button onClick={()=>navigate('/chat/channel/create')} className='add-btn'></button>
             </div>
             <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={handleSearchChange} value={search} />
             <Channels channels={ channels  } />

@@ -18,19 +18,18 @@ body[theme="ligth"]{
             background:#120F13 !important;
 
             .left-wrapper{
-                .search-wrapper{
                     .inner-wrapper{
+                       
                         .form-wrapper{
-                            background-color: white !important;
+                            input {
+                                border-radius: inherit;
+                                background-color: #3C393F !important;
+                            }
                         }
                     }
                     // border-radius: inherit;
                  
-                    input {
-                        border: none;
-                    }
     
-                }
                 .channels {
         
                     .channel{

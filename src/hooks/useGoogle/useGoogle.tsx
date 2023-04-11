@@ -35,7 +35,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
         navigate(`/auth/redirect/?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
 
     }
-    useEffect(
+    useLayoutEffect(
         () => {
             let googleBnt = document.getElementById('googleBtn') as HTMLButtonElement
             googleBnt.disabled = true
@@ -59,7 +59,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             let timeout = setTimeout(initializeGoogle,1000)
 
             return ()=>clearTimeout(timeout)
-    }, [handleGoogle]
+    }, [handleGoogle,window]
     )
     // const url = `https://authentic-app-backend.onrender.com/api/auth/`
 

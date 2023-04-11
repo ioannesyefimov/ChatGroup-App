@@ -22,7 +22,7 @@ let router = createBrowserRouter([
     children: [
       {
        element: <ChatContainer />,
-       path: '/dashboard?/:channel',
+       path: '/chat?/:channel',
        children: [
          {
           element: <ChannelCreate/>,

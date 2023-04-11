@@ -40,20 +40,22 @@ const Hamburger = ({children,type}:PropsType) => {
             <button onClick={toggle} className='hamburger-btn'>
                 <img src={hamburgerIco} alt="hamburgerIco" />
             </button>
-            <div data-istoggled={isToggled} className={`hamburger-children  animate animate--fast animate--forwards    `}>
+            <div data-istoggled={isToggled} className={`hamburger-children  animate animate--fast animate--forwards`}>
             {children}
             </div> 
         </div>  
     ) 
     let channels = (
-        <div className={`hamburger channels`} data-istoggled={isToggled} >
-            <button onClick={toggle} className='hamburger-btn'>
-                <img src={hamburgerIco} alt="hamburgerIco" />
-            </button>
-            <div data-istoggled={isToggled}  className={`hamburger-children  animate animate--fast animate--forwards"    `}>
+        <div className='hamburger-outer' data-istoggled={isToggled}>
+            <button onClick={toggle} className='hamburger-btn'><img src={hamburgerIco} alt="hamburgerIco" /></button>
+            <div className={`hamburger channels`} data-istoggled={isToggled} >
+                
+            <div   className={`hamburger-children  animate animate--fast animate--forwards"    `}>
                 {children}
             </div> 
         </div>
+        </div>
+        
     )
     
     return  type === 'navbar' ? (navBar) : type ==='channels'? (channels) : content

@@ -13,7 +13,7 @@ export type InitialStateType = {
 type UseAuthContextType = ReturnType<typeof useAuthContext>
 
 export const initAuthContextState: UseAuthContextType ={
-  user: { userName: '', email: '', photo: '', id: '', loggedThrough: '' },
+  user: { userName: '', email: '', picture: '', id: '', loggedThrough: '',channels:[] },
   loading: false,
   response: { success: false, message: null },
   setUser: () => { },

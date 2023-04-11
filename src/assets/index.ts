@@ -17,6 +17,7 @@ import notFoundIco from './notFoundIco.svg'
 import searchIco from './searchIco.svg'
 import hamburgerIco from './hamburgerIco.svg'
 import uploadIco from './uploadIco.svg'
+import sendIco from './sendIco.svg'
 
 import chatifyIco from './chatify-logo.svg'
 export interface Icons {
@@ -28,5 +29,5 @@ export  {
       groupIco, hamburgerIco,
         facebookIco, GithubIco, GoogleIco,
         TwitterIco, mailIco, lockerIco,profileIco,notFoundIco,
-        chatifyIco
+        chatifyIco,sendIco
 } 

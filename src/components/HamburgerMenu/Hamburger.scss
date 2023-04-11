@@ -63,6 +63,7 @@
     }
     .hamburger-children{
         
+        
         @include gradient(to bottom right,(#E01C34,#ACABB0));
         display: flex;
         align-items: center;
@@ -94,52 +95,69 @@
     
 }
 
-
-.hamburger.channels {
-    &[data-istoggled=toggled]{
-        position: relative;
-        flex:minmax(130px, 35%) 
+.hamburger-outer{
+  
+    transition: all .5s ease-in-out;
+    display: flex;
+    .hamburger-btn {
+        @include respond-to(small){
+            left: .2rem;
+        }
+        position: absolute;
+            width: 25px;
+         height: 25px;
+        left: .2rem;
+         top:5px;
+         img{
+            //  width: 100%;
+         }
     }
+    
+.hamburger.channels {
+    transition: .3s all ease-in-out;
+ 
+    &[data-istoggled=toggled] {
+        @include respond-to(medium){
+            position: relative;
+        }
+        // @extend .appearFromLeft;
+        animation-name: appearFromLeft;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+
     &[data-istoggled=untoggled]{
-        // position: absolute;
-        flex:minmax(130px, 35%) 
+        // @extend .disappearToLeft;
+        animation-name: disappearToLeft;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
     }
     &[data-istoggled=loaded]{
+        // @extend .disappearToLeft;
+        // clip-path: inset(0 0 99% 0) ;
         // position: relative;
-        // flex:minmax(130px, 35%) 
+        // opacity: 1;
     }
+    
+    // &[data-istoggled=toggled]{
+    //     flex:minmax(130px, 35%);
+    //     z-index: 1;
+    // }
+    // &[data-istoggled=untoggled]{
+    // }
+    // &[data-istoggled=loaded]{
+    //     position: relative;
+    //     flex:minmax(130px, 35%) 
+    // }
 
     left:0px;
     position: absolute;
     top:0px;
     bottom: 0;
         // position: relative;
-     .hamburger-btn {
-        padding: 0rem;
-         width: clamp(1.25rem, 0.81rem + 1.878vw, 1.9rem);
-         height: 25px;
-         left: 5px;
-         top:5px;
-         img{
-             width: 100%;
-         }
-    }
+     
     .hamburger-children{
-        &[data-istoggled=toggled] {
-            @extend .appearFromLeft;
-        }
-
-        &[data-istoggled=untoggled]{
-            @extend .disappearToLeft;
-            // clip-path: inset(0 0 99% 0) ;
-            opacity: 0;
-        }
-        &[data-istoggled=loaded]{
-            // @extend .disappearToLeft;
-            clip-path: inset(0 0 99% 0) ;
-            // position: relative;
-            // opacity: 1;
-        }
+        
          display: flex;
         width: 100%;
         height: 100%;
@@ -147,6 +165,10 @@
      }
 
  }
+
+}
+
+
 
 
  

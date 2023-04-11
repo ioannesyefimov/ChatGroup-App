@@ -45,10 +45,10 @@ export type LogType  = {
 export type UserType = {
     userName:string
     email:string
-    photo?:string
+    picture?:string
     id:string
     loggedThrough?: string
-    channels: ChannelType | ChannelType[]
+    channels:ChannelType[]
     bio?: string
 }
 export type ChangesType =  {

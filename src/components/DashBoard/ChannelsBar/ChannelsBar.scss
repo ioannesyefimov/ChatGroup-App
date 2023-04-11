@@ -1,17 +1,19 @@
 @use '../../utils/utils.scss' as *;
 .chat-container-outer{
 
+ 
     .left-wrapper{
-        @include respond-to(medium){
-            padding: 2.7rem 1.3rem;
-        }
+        display: flex;
+        flex-direction: column;
+
+        padding: .9rem 2.2rem;
 
         position: relative;
         .add-btn{
             background: #252329;
-            border-radius: 8px;
-            // width: rem;
-            // height: .5rem;
+            border-radius: 5px;
+            min-width:30px !important;
+            min-height: 30px;
 
             position: relative;
 
@@ -19,8 +21,8 @@
                 position: absolute;
                 content: '';
                 background-color: white;
-                width: 25%;
-                height: 2px;
+                width: 32%;
+                height: 1.8px;
             }
 
             &::after{
@@ -38,31 +40,18 @@
                 transform: rotate(90deg);
             }
         }
-        display: flex;
-        flex-direction: column;
-        gap:.8rem;
-        padding: 2.2rem .7rem;
-            // outline: 1px solid yellow;
-
-            .flex.flex--between{
-                margin-bottom: 1rem;
+        .flex.flex--between{
+            margin-bottom: 1rem;
                 align-items: center;
                 span{
-                    font-size: clamp(0.8rem, 0.694rem + 0.451vw, 1.1rem);
                     font-weight: 650;
+                    font-size: 1.1 rem;
                 }
             
             }
 
             
         .inner-wrapper{
-            &.hidden {
-                
-            }
-            display: flex;  
-            justify-content: center;
-            gap:.5rem;
-            // align-items: center;
             input {
                 @include respond-to(medium){
                     &::placeholder{
@@ -74,18 +63,18 @@
                     visibility: hidden;
                 }
                 font-size: clamp(0.6rem, 0.424rem + 0.751vw, 1.1rem);
-                padding: 0.2rem ;
-                // width: 100%;
+                padding: 0.5rem 1rem  .5rem 2.5rem  ;
+                width: 100%;
+                font-size: .85rem;
             }
             img{
                 @include respond-to(medium){
                     visibility: visible;
                 }
                 filter: brightness(0) invert(1);
-                // z-index: 2;
-                // flex: 20%;
-                max-width: 18px;
-                visibility: hidden;
+                // visibility: hidden;
+                padding: .1rem;
+                max-width: 20px;
             }
         }
 

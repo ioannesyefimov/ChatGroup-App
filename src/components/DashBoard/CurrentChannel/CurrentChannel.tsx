@@ -47,33 +47,31 @@ const CurrentChannel = ({channels}:{channels:ChannelType[]}) => {
     },[location.pathname]
   )
 
-  let title = <h2 className='channel-title'>{currentChannel?.channelName ?? "Choose your channel"}</h2>
+  let title = <h2 className='channel-title'>{currentChannel?.channelName}</h2>
 
     let channelContent =
     (
-      <div className="channels-wrapper">
-        {
-            currentChannel?.messages.length ?  
-           (
-            currentChannel?.messages.map((message:MessageType,i:number|string)=>{
-              return (
-                <Message userName={message?.userName} message={message?.message} date={message?.date} profileImg={message?.profileImg}  />
-                )
-            })
-           ) : (
-            <h4>There is nothing to show</h4>
-           )
-       
-        }
+      <div className="main-wrapper">
+        {title}
+        <div className="messages-wrapper">
+          {
+              currentChannel?.channelName && currentChannel?.messages.length ?  
+             (
+              currentChannel?.messages.map((message:MessageType,i:number|string)=>{
+                return (
+                  <Message userName={message?.userName} message={message?.message} date={message?.date} profileImg={message?.profileImg}  />
+                  )
+                })
+                ) : (
+                  <h4>There is no messages in {currentChannel?.channelName}</h4>
+                  )
+                }
+        </div>
+        <FormInput placeholder='type in your message...' name='message-input' type="text" id="message-input" onChange={(e)=>setter(e,setCurrentChannel)} value={currentMessage} /> 
+        
       </div>
   )
-  return (
-    <div className="main-wrapper">
-      {title}
-      {channelContent}
-      <FormInput name='message-input' type="text" id="message-input" onChange={(e)=>setter(e,setCurrentChannel)} value={currentMessage} /> 
-      </div>
-    )
+  return currentChannel?.channelName ? channelContent : <h2 className='channel-title'>Choose your channel</h2>
 }
 
 export default CurrentChannel

@@ -17,13 +17,16 @@
 .App {
   display: flex;
   flex-direction: column;
-  & > .dashboard-component {
+  & > .chat-container-outer {
     flex: 1;
   }
 
   &:has(.auth-form-component){
-    align-items: center;
-    justify-content: center;
+      align-items: center;
+      justify-content: center;
+      .navbar-component {
+        width: 100%;
+      }
   }
 
 }
@@ -51,5 +54,14 @@
 
 input.error{
   border: 1px solid red;
+}
+
+.chat-container-outer:has(.prompt){
+  .hamburger-outer , .main-wrapper {
+    display: none !important;
+  }
+    .prompt {
+      margin: auto;
+    }
 }
 

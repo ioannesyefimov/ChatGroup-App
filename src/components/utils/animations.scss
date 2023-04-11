@@ -20,21 +20,24 @@
 @keyframes appearFromLeft {
     from {
         transform: translateX(-120%);
-
+        z-index: -1;
         opacity: 0;
     } to {
         transform: translateX(0%);   
      opacity: 1;
+     z-index: 4;
     }
 }
 @keyframes disappearToLeft {
     from {
         transform: translateX(0%);   
        opacity: 1;
+       z-index: 4;
 
     } to {
         transform: translateX(-120%);
         opacity: 0;
+        z-index: -1;
 
     }
 }
@@ -77,5 +80,5 @@
     -moz-animation-fill-mode: forwards;    /* FF 5+ */
     -o-animation-fill-mode: forwards;      /* Not implemented yet */
     -ms-animation-fill-mode: forwards;     /* IE 10+ */
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards !important;
 }

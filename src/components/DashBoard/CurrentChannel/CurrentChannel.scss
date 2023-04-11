@@ -4,6 +4,7 @@
     position: relative;
     grid-template-rows: 15%;
     gap:1rem;
+    padding: 1rem;
     .channel-title{
         margin-top: .5rem;
         font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);    }
@@ -57,4 +58,15 @@
         }
 
     }
+    .inner-wrapper{
+        all: unset;
+        align-self: flex-end;
+        display: flex;
+        align-items: center;
+        .form-wrapper{
+            flex:1;
+        }
+        // justify-content: center;
+    }
+
 }
