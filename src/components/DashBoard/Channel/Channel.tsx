@@ -16,7 +16,7 @@ const Channel = ({key,name,avatar}:ChannelProps) => {
         ) : (
             <div className="channel-logo">{getFirstLetter(name,2)}</div>
         )}
-        <Link className='link-tag' to={`/chat/${name.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">{name}</div></Link>
+        <Link className='link-tag' to={`/chat/${name?.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">{name}</div></Link>
     </div> 
    )
 }

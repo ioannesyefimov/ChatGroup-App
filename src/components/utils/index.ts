@@ -38,6 +38,7 @@ export function createDate(){
   let DATE:{day:string,time:string} = {day:'',time:''};
   DATE.day = date.toLocaleDateString()
   DATE.time = date.toLocaleTimeString()
+
   return DATE
   
 }

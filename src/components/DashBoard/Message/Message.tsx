@@ -6,17 +6,16 @@ type PropsType = {
     createdAt:{day:string,time:string}
     message:string
     profileImg?:string
+    key:any
 }
 
 const displayDate = (date:{day:string,time:string}) => {
 let newDate = createDate();
   let showedDate = '' 
-console.log(`DATE: `, date)
-console.log(`newDate: `, newDate)
   let day = Number(date.day.slice(0,2))
   let newDay = Number(newDate.day.slice(0,2))
   showedDate = `${date.day} at ${date.time}`
-  if(day=== newDay){
+  if(day- newDay === 0){
     showedDate = `today at ${date.time}`
   }
   else if ((newDay-day) === 1){
@@ -26,9 +25,9 @@ console.log(`newDate: `, newDate)
 
 }
 
-const Message = ({userName,createdAt,message,profileImg}:PropsType) => {
+const Message = ({userName,createdAt,message,profileImg,key}:PropsType) => {
   return (
-    <div key={createdAt?.time} className='message'>
+    <div key={key} className='message'>
        <img className='message-logo' src={profileImg} alt="profile-logo" />
        <div className="message-wrapper">
          <span className="message-name">{userName}</span>

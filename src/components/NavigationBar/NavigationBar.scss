@@ -2,53 +2,57 @@
 
 .navbar-component {
     padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    gap:1rem;
+    position: relative;
+    z-index: 1;
+    // top:5px;
     .navbar-inner{
         display: flex;
+        margin-left: auto;
         align-items: center;
-
+        // align-self: flex-end;
+        div.flex {
+        
+            gap:.5rem;
+            justify-content: center;
+            align-items: center;
+            .nav-btn {
+                // outline: 1px solid gold;
+                border: 1px solid black;
+                transition: .4s all ease-in-out;
+                padding:.2rem .5rem ;
+                font-size: clamp(0.65rem, 0.439rem + 0.901vw, 1.15rem);
+                color: color(brown);
+                background-color: color(brown);
+                font-weight: 700;
+                &:hover{
+                    background-color: black;
+                    border-radius: 8px;
+                }
+            }    
+        }
     }
    
   
     
-    display: flex;
-    // padding: .3rem 1.5rem;
-    justify-content: space-between;
-    gap:1rem;
-    right: 5px;
-    z-index: 1;
-    top:5px;
-    // margin:0rem 0rem .3rem 0;
-
-    div.flex {
-        gap:.5rem;
-        justify-content: center;
-        align-items: center;
-        .nav-btn {
-            // outline: 1px solid gold;
-            border: 1px solid black;
-            transition: .4s all ease-in-out;
-            padding:.2rem .5rem ;
-            font-size: clamp(0.65rem, 0.439rem + 0.901vw, 1.15rem);
-            color: color(brown);
-            background-color: color(brown);
-            font-weight: 700;
-            &:hover{
-                background-color: black;
-                border-radius: 8px;
-            }
-        }    
-    }
+    
 
 
     .logo-btn {
+        position: absolute;
+        margin: auto;
+        left: 0;
+        top:0;
+        bottom: 0;
         padding: 0;
-        display: flex;
-        width: 60px;
-        align-self: center;
-        // height: 40px;
+        // flex:10%;
+        // align-self: center;
+        width: 70px;
         filter: invert(100%);
         img{
-            transform: scale(1.4);
+            // transform: scale(1.5);
             width: 100%;
         }
     }

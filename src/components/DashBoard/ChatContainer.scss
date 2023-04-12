@@ -11,8 +11,10 @@
 .chat-container-outer{
     display: flex;
     flex:1;
-    
-    // display: flex;
+    overflow-y: scroll;
+   
+
+
     .main-wrapper {
          transition: .3s all cubic-bezier(1, 0, 0, 1);
 
@@ -24,19 +26,16 @@
    
 }
 .chat-container-inner {
-  
         // outline: 1px solid red;
     display: flex;
     flex:1;
-    // transition: .3s all cubic-bezier(0.165, 0.84, 0.44, 1);
-
     position: relative;
     .left-wrapper {
         flex:20%;
     
     }
     .main-wrapper {
-        flex:100%
+        flex:100%;
     }
 }
 

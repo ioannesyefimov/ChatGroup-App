@@ -1,20 +1,22 @@
 .main-wrapper {
     outline: 1px solid white;
-    display: grid;
-    position: relative;
-    grid-template-rows: 15%;
+    display: flex;
+    flex-direction: column;
     gap:1rem;
+
     padding: 1rem;
     .channel-title{
         margin-top: .5rem;
-        font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);    }
-    .messages-wrapper{
-        display: flex;
+        font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);   
+     }
+        .messages-wrapper{
+            overflow-y: scroll;
+        display: grid;
         flex-direction: column;
-
+        gap:1rem;
         .message{
             display: grid;
-            padding: 1rem 2rem ;
+            // padding: 1rem 2rem ;
             grid-template-areas: 
 
             'img wrapper wrapper'
@@ -59,10 +61,9 @@
 
     }
     .inner-wrapper.message-input{
-        position: relative !important;
-        align-self: flex-end;
         display: flex;
         align-items: center;
+        position: relative;
         .form-wrapper{
             flex:1;
             

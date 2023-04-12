@@ -9,8 +9,8 @@ import { Outlet, useLocation } from 'react-router-dom'
 import useSearchChannels from '../../hooks/useSearchChannels'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 export type ChannelsProps = {
-  setChannels: React.Dispatch<React.SetStateAction<ChannelType[] | undefined>>
-  channels : ChannelType[] | undefined
+  setChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
+  channels : ChannelType[]
 }
 const ChatContainer = () => {
     const {channels,setChannels} = useFetchChannels()

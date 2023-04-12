@@ -5,10 +5,11 @@ type ButtonProps= {
     img?: string
     type?: "button" | "submit" | "reset" 
     onClick: (e:React.MouseEvent<HTMLButtonElement>) => void
+    onKeyDown?: (e:React.KeyboardEvent<any>)=> void
 }
-const Button = ({text,onClick,name,img,type='button'}:ButtonProps) => {
+const Button = ({text,onClick,name,img,type='button',onKeyDown}:ButtonProps) => {
   return (
-    <button className={name} type={type} onClick={onClick}>{text ? text : <img src={img} alt={`${name} image`}/>}</button>
+    <button onKeyDown={onKeyDown} className={name} type={type} onClick={onClick}>{text ? text : <img src={img} alt={`${name} image`}/>}</button>
   )
 }
 

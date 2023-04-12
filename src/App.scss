@@ -16,11 +16,17 @@
 
 .App {
   display: flex;
+  
   flex-direction: column;
   & > .chat-container-outer {
     flex: 1;
   }
+  &:has(.chat-container-outer){
+    display: grid;
+    grid-template-rows: 40px 1fr;
+    max-height: calc(100dvh);
 
+  }
   &:has(.auth-form-component){
       align-items: center;
       justify-content: center;
