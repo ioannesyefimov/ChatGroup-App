@@ -2,15 +2,15 @@
 import React from 'react'
 import { Cookies, useCookies } from 'react-cookie'
 import { ChannelType, UserType } from '../../components/types'
-
+export type CookiesType = {
+  user: UserType
+  accessToken:string,
+  refreshToken:string
+  channels: ChannelType | ChannelType[]
+}
 
 const useAuthCookies = () => {
-  type CookiesType = {
-    user: UserType
-    accessToken:string,
-    refreshToken:string
-    channels: ChannelType | ChannelType[]
-  }
+
   const [cookies,setCookie,removeCookie]= useCookies<'user'|'accessToken'|'refreshToken'|'channels', CookiesType
 >(['user' ,'accessToken','refreshToken',"channels"])
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useChatContext } from '../components/ChatProvider/ChatProvider'
 import { ChannelType } from '../components/types'
 import useChat from './useChatContext/useChatContext'
-const useSearchChannels = (channels:ChannelType[]) => {
+const useSearchChannels = (channels:ChannelType[]| undefined) => {
     const [search, setSearch] = useState<string>('')
     const [filteredChannels,setFilteredChannels] = useState<ChannelType[]>([])
  

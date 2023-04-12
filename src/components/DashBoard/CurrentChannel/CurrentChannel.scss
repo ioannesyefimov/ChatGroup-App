@@ -58,15 +58,31 @@
         }
 
     }
-    .inner-wrapper{
-        all: unset;
+    .inner-wrapper.message-input{
+        position: relative !important;
         align-self: flex-end;
         display: flex;
         align-items: center;
         .form-wrapper{
             flex:1;
+            
         }
-        // justify-content: center;
+        button.submit-btn {
+            position: absolute;
+            z-index: 5;
+            right:.5rem;
+            padding: 0;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            // width: 100%;
+            background-color: #2F80ED;
+            img{
+                width: 60%;
+                margin: auto;
+                background: transparent;
+            }
+        }
     }
 
 }

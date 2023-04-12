@@ -9,8 +9,11 @@ import { useChat, useWindowSize } from '../../../hooks'
 import { useNavigate } from 'react-router-dom'
 import { ChannelType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
-
-const ChannelsBar = ({channels}:{channels:ChannelType[]}) => {
+export type ChannelsProps = {
+  setChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
+  channels : ChannelType[]
+}
+const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
   const {search, filteredChannels,handleSearchChange} = useSearchChannels(channels)
   const navigate = useNavigate()
 

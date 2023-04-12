@@ -6,8 +6,8 @@ import { APIFetch } from '../utils'
 
 
 export type InitialChatStateType = {
-    channels: ChannelType[]
-    setChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
+    channels: ChannelType[] | undefined
+    setChannels: React.Dispatch<React.SetStateAction<ChannelType[] | undefined>>
 
 }
   
@@ -21,7 +21,7 @@ export type InitialChatStateType = {
   export const ChatContext = React.createContext<useChatContextType>(initChatContextState)
   
   export const useChatContext = (initChatContextState:InitialChatStateType)=>{
-    const [channels,setChannels] = useState<ChannelType[]>([])
+    const [channels,setChannels] = useState<ChannelType[] | undefined>([])
 
 
     return {channels,setChannels}

@@ -35,7 +35,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
         navigate(`/auth/redirect/?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
 
     }
-    useLayoutEffect(
+    useEffect(
         () => {
             let googleBnt = document.getElementById('googleBtn') as HTMLButtonElement
             googleBnt.disabled = true
@@ -61,62 +61,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             return ()=>clearTimeout(timeout)
     }, [handleGoogle,window]
     )
-    // const url = `https://authentic-app-backend.onrender.com/api/auth/`
-
-
-    let newURL = location.href.split("?")[0];
-    const handleGoogleSignin = async(googleResponse) =>{
-        try {
-            setLoading(true)
-            console.log(`GOOGLE RESPONSE:`, googleResponse)
-
-            let response = await APIFetch({url: `${url}google/signin`, method:'POST', body:{credential: googleResponse?.credential, loggedThrough: 'Google'}});
-    
-    
-            if(!response?.success){
-                clearState('')
-                setError({message: response.message, loggedThrough: response?.loggedThrough})
-                return console.log(response?.message)
-            }
-            console.log(response)
-            setCookie("accessToken", response?.data?.accessToken, {path: '/',maxAge : 1200} );
-                localStorage.setItem('LOGIN_TYPE', 'signin')
-                localStorage.setItem('LOGGED_THROUGH', 'Google')
-                console.log(`GETTING GOOGLE USER `)
-        } catch (error) {
-            return setError({message: error})
-
-        }finally {
-            setLoading(false)
-        }
-    }
-
-    const handleGoogleRegister = async (googleResponse:any) => {
-        try {
-            setLoading(true)
-            let response = await APIFetch({url:`${url}google/register`, method:'POST',body: {credential: googleResponse?.credential} });
-
-            if(!response?.success ){
-               return setError({message:response.message, loggedThrough: response?.loggedThrough})
-
-            }
-            console.log(`google response: ${response}`)
-            let dbResponse = response?.data
-            
-                
-            setCookie("accessToken", dbResponse?.accessToken,  {path: '/',maxAge : 1200});
-            localStorage.setItem('LOGGED_THROUGH', 'Google')
-            localStorage.setItem('LOGIN_TYPE', 'register')
-            
-        } catch (error) {
-            
-            return setError({message:error})
-
-        }finally {
-            setLoading(false)
-        }
-    }
-
+ 
     const handleGoogleDelete = async(googleResponse:any) =>{
         try {
             // console.log(`DELETING USER GOOGLE`)
@@ -149,7 +94,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
         }
     }
 
-  return {handleGoogleRegister,handleGoogleSignin, handleGoogleDelete,handleGoogle}
+  return {handleGoogleDelete,handleGoogle}
 }
 
 export default useGoogle

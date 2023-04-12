@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, ReactNode } from 'react'
 import { ActionFunction } from 'react-router-dom'
 import './FormInput.scss'
 
@@ -11,7 +11,7 @@ interface FormProps {
     photo?: string,
     onChange: (e:ChangeEvent<HTMLInputElement> ) => void 
     value:string
-    SubmitBtn?:()=>JSX.Element
+    children?:ReactNode
 }
 
 declare module 'react' {
@@ -20,7 +20,7 @@ declare module 'react' {
   }
 }
 const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelElement>) => {
-  const {name,labelName,onChange ,value,placeholder, type,photo,SubmitBtn} = props
+  const {name,labelName,onChange ,value,placeholder, type,photo,children} = props
 
 
   return (
@@ -38,11 +38,8 @@ const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelE
         ) 
         }
       </div>
-        {SubmitBtn ? (
-          <SubmitBtn />
-        ): (
-          null
-        )}
+        {children ?? null
+        }
   </div>
   
   )

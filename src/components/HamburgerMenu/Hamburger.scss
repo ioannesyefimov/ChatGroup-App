@@ -39,7 +39,7 @@
 }
 
 .hamburger.navbar {
-   position: absolute;
+   position: absolute;                                  
    display: grid;
    align-items: center;
    top:0;
@@ -96,7 +96,8 @@
 }
 
 .hamburger-outer{
-  
+    // position: relative;
+
     transition: all .5s ease-in-out;
     display: flex;
     .hamburger-btn {
@@ -135,7 +136,7 @@
     &[data-istoggled=loaded]{
         // @extend .disappearToLeft;
         // clip-path: inset(0 0 99% 0) ;
-        // position: relative;
+        position: relative;
         // opacity: 1;
     }
     

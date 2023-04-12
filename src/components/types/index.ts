@@ -1,10 +1,11 @@
 import { ReactElement } from "react"
 
 export type MessageType =  {
-    profileImg?: string
-    userName: string
-    date: string 
+    user: UserType
+    createdAt: {day:string,time:string} 
     message: string
+    channelAt: ChangesType[]
+    id?: string
 
 }
 
