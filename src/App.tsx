@@ -6,6 +6,8 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './components/Landing/Landing'
 import ChatContainer from './components/DashBoard/ChatContainer'
 import CurrentChannel from './components/DashBoard/CurrentChannel/CurrentChannel'
+import ChannelManager from './components/ChannelManager/ChannelManager'
+import ChannelJoin from './components/ChannelManager/ChannelJoin'
 
 let router = createBrowserRouter([
   {
@@ -24,13 +26,24 @@ let router = createBrowserRouter([
        element: <ChatContainer />,
        path: '/chat?/:channel',
        children: [
-         {
-          element: <ChannelCreate/>,
-          path: 'channel/create',
-     
-         },
+         
        ]
       },
+      {
+        element: <ChannelManager/>,
+        path: '/channel/manage/',
+        children: [
+          {
+            path:'create',
+            element: <ChannelCreate/>
+          },
+          {
+            path:'join',
+            element: <ChannelJoin/>
+          }
+        ]
+   
+       },
     ]
   },
   {

@@ -1,39 +1,41 @@
-import React from 'react'
+import React, { SetStateAction } from 'react'
 import './Message.scss'
-import { createDate } from '../../utils'
+import { APIFetch, createDate, throwErr } from '../../utils'
+import Button from '../../Button/Button'
+import { trashIco } from '../../../assets'
+import { UserType } from '../../types'
 type PropsType = {
-    userName:string
+  user:UserType
     createdAt:{day:string,time:string}
     message:string
-    profileImg?:string
+    messageUser?:UserType
     key:any
+    _id?: string
+    channelName: string
+    deleteMessage: (_id:string) => Promise<void>
 }
 
-const displayDate = (date:{day:string,time:string}) => {
-let newDate = createDate();
-  let showedDate = '' 
-  let day = Number(date.day.slice(0,2))
-  let newDay = Number(newDate.day.slice(0,2))
-  showedDate = `${date.day} at ${date.time}`
-  if(day- newDay === 0){
-    showedDate = `today at ${date.time}`
-  }
-  else if ((newDay-day) === 1){
-    showedDate = `yesterday at ${date.time}`
-  }
-  return showedDate
-
+const displayDate = (date:Date) => {
+ 
 }
 
-const Message = ({userName,createdAt,message,profileImg,key}:PropsType) => {
+
+const Message = ({deleteMessage,user,createdAt,message,messageUser,key,_id}:PropsType) => {
+
+
+
   return (
     <div key={key} className='message'>
-       <img className='message-logo' src={profileImg} alt="profile-logo" />
+       <img className='message-logo' src={messageUser?.picture} alt="profile-logo" />
        <div className="message-wrapper">
-         <span className="message-name">{userName}</span>
+         <span className="message-name">{user?.userName}</span>
          <span className="message-date">{displayDate(createdAt)}</span>
        </div>
        <p className="message-text">{message}</p>
+       {user?.id === messageUser?.id ? (
+         <Button img={trashIco} name='msg-delete' type="button" onClick={()=>deleteMessage(_id)} />
+
+       ): (null)}
      </div>
   )
 }

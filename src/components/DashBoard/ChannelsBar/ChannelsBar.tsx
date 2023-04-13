@@ -9,10 +9,8 @@ import { useChat, useWindowSize } from '../../../hooks'
 import { useNavigate } from 'react-router-dom'
 import { ChannelType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
-export type ChannelsProps = {
-  setChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
-  channels : ChannelType[]
-}
+import { ChannelsProps } from '../ChatContainer'
+
 const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
   const {search, filteredChannels,handleSearchChange} = useSearchChannels(channels)
   const navigate = useNavigate()
@@ -23,7 +21,7 @@ const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
           <div className="left-wrapper-inner"  id="leftWrapperInner">
             <div className="flex flex--between">
             <span>Channels</span>
-            <button onClick={()=>navigate('/chat/channel/create')} className='add-btn'></button>
+            <button onClick={()=>navigate('/channel/manage')} className='add-btn'></button>
             </div>
             <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={handleSearchChange} value={search} />
             <Channels channels={ channels  } />

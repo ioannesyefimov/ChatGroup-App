@@ -1,0 +1,27 @@
+.channel-manager-component{
+    display:grid;
+    place-content: center;
+    height: 100%;
+    gap:1rem;
+    a {
+        all:unset;
+        &:hover{
+            color:gold;
+            font-weight: 700;
+        }
+        outline: 1px solid gold;
+        padding: .3rem .5rem;
+        border-radius: 12px;
+    }
+
+    .inner-wrapper{
+        display: flex;
+        flex-direction: column;
+        gap:1rem;
+        .back-btn {
+            position: absolute;
+            left: 1%;
+            top:15%;
+        }
+    }
+}

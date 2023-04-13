@@ -31,9 +31,7 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
   const UserNameRef =React.createRef<HTMLInputElement>()
   const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>, setValue:React.Dispatch<React.SetStateAction<string>>,type:string) =>{
       setValue(e.target.value)
-      console.log(`value: ` , e.target.value)
-      console.log(`type: ` , type)
-  }
+    }
 
   const handleSubmit = async(e:React.MouseEvent<HTMLButtonElement, MouseEvent>, type:string)=>{
     e.preventDefault()

@@ -18,7 +18,7 @@ import searchIco from './searchIco.svg'
 import hamburgerIco from './hamburgerIco.svg'
 import uploadIco from './uploadIco.svg'
 import sendIco from './sendIco.svg'
-
+import trashIco from './trashIco.svg'
 import chatifyIco from './chatify-logo.svg'
 export interface Icons {
   icon: File
@@ -26,7 +26,7 @@ export interface Icons {
 export  {
   questionIco, searchIco,  loadingGif,uploadIco,
     triangleIco, logoutIco, backIco,cameraIco,correctUploadIco,
-      groupIco, hamburgerIco,
+      groupIco, hamburgerIco,trashIco,
         facebookIco, GithubIco, GoogleIco,
         TwitterIco, mailIco, lockerIco,profileIco,notFoundIco,
         chatifyIco,sendIco

@@ -10,7 +10,7 @@ import { ResponseType } from '../types'
 import { useNavigate } from 'react-router-dom'
 
 
-const ChannelCreate = ()=>{
+const ChannelJoin = ()=>{
     const [channelName,setChannelName] = useState<string>('')
     const [channelDescription,setChannelDescription] = useState<string>('')
     const [channelAvatar,setChannelAvatar] = useState<string>('');
@@ -23,31 +23,26 @@ const ChannelCreate = ()=>{
     if(!cookies?.accessToken) return (
         <div className='prompt'>       
             <h2 style={{marginBottom:'1rem', color:'red'}}>You need to log in again: </h2>
-            <AuthForm type='signin' redirectType='newAccessToken' redirectUrl='/channel/manage'/>
+            <AuthForm type='signin' redirectType='newAccessToken' redirectUrl='/channel/join'/>
         </div>
     )
-    
-     
-
     const nameRef = useRef<null | HTMLLabelElement >(null)
-    const descriptionRef = useRef<null | HTMLLabelElement >(null)
-    const avatarRef = useRef<null | HTMLLabelElement >(null)
         const navigate = useNavigate()
     const handleSubmit = 
        async (e:React.MouseEvent)=>{
             e.preventDefault()
             try {
                 setLoading(true)
-                let fields = {channelName,channelDescription}
+                let fields = {channelName}
                 console.log(`FIELDS: `, fields)
-                let isEmpty = await validateInput({fields,refs:{channelName:nameRef,channelDescription:descriptionRef}})
+                let isEmpty = await validateInput({fields,refs:{channelName:nameRef}})
                 if(!isEmpty?.success){
                     throwErr(isEmpty?.errors)
                 }
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
-                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar,channelDescription},method:'POST'})
+                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{accessToken:cookies?.accessToken,channelName,},method:'POST'})
                 if(!response.success) throwErr(response?.message)
-                setChannels({...channels, ...response?.data })
+                setChannels({...channels, ...response?.data?.channel })
                 navigate(`/chat/${channelName}`)
                 console.log(`RESPONSE : `, response)
             } catch (error) {
@@ -58,29 +53,14 @@ const ChannelCreate = ()=>{
 
             }
         }
-    
-
-
-    
-
-    const handleImageUpload =  useCallback(
-        async(e:React.ChangeEvent<HTMLInputElement>)=>{
-            let file = e.currentTarget.files![0]
-            if(!file) return console.log(`NOT FOUND FILES`)
-            let converted = await convertBase64(file)
-            if(!converted) return console.error(`ERROR:` , converted)
-            if(typeof converted === 'string')setChannelAvatar(converted)
-    },[])
     return (
         <div className='prompt-menu-component  box-shadow--gray'>
-            <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>{setChannelName(e.target.value)}}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
-               
-            <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
-           
-            <UploadInput value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImageUpload}/>
-            <button className='submit-btn' onClick={(e)=>handleSubmit(e)}>Create</button>
+            <form>
+                <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>{setChannelName(e.target.value)}}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
+                <button className='submit-btn' onClick={(e)=>handleSubmit(e)}>Join</button>
+            </form>
         </div>
     )
 }
 
-export default ChannelCreate
+export default ChannelJoin

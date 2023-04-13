@@ -1,6 +1,6 @@
 import React from 'react'
 type ButtonProps= {
-    text: string
+    text?: string
     name: string
     img?: string
     type?: "button" | "submit" | "reset" 

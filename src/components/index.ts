@@ -8,11 +8,15 @@ import Dashboard from "./DashBoard/Dashboard";
 import RedirectComponent from "./RedirectComponent/RedirectComponent";
 import ChannelCreate from "./ChannelManager/ChannelCreate";
 import Button from "./Button/Button";
+import SubmitInput from "./SubmitInput/SubmitInput";
 
 import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
 import AuthProvider from "./Authentication/Provider/AuthProvider";
 export 
 {
-    ChatProvider,AuthProvider,ErrorProvider,  Authentication, Button,FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons,ChannelCreate
+    ChatProvider,AuthProvider,ErrorProvider,  Authentication, 
+    Button,SubmitInput,
+    
+    FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons,ChannelCreate
 }

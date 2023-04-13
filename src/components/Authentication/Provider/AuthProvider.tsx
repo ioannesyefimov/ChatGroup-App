@@ -1,6 +1,8 @@
 import React,{FC, ReactElement, ReactNode, useCallback, useEffect, useState} from 'react'
 import {Cookies, ReactCookieProps, useCookies} from  'react-cookie'
 import { UserType,ChildrenType,ResponseType } from '../../types'
+import { Fallback } from '../../ErrorProvider/ErrorProvider'
+import { LoadingFallback } from '../../LoadingFallback/LoadingFallback'
 
 export type InitialStateType = {
   user: UserType 
@@ -36,11 +38,14 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
  const AuthProvider  = (
   {children} :ChildrenType 
 ) => {
-   
+  const value= useAuthContext(initAuthContextState)
 
   return (
-    <AuthContext.Provider value={useAuthContext(initAuthContextState)}>
+    <AuthContext.Provider value={value}>
+        <>
+        {value.loading && <LoadingFallback/>}
         {children}
+        </>
     </AuthContext.Provider>
   )
 }

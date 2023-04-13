@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
 import { useAuth, useChat, useError } from '../../hooks'
-import { Fallback } from '../ErrorProvider/ErrorProvider'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, throwErr } from '../utils'
@@ -77,7 +76,6 @@ const RedirectComponent = () => {
         },[])
 
 
-    if(loading) return <Fallback />
 
     return <Outlet/>
 

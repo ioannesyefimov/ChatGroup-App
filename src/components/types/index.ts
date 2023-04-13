@@ -1,4 +1,12 @@
-import { ReactElement } from "react"
+import { Dispatch, ReactElement, SetStateAction } from "react"
+export type SubmitInputType ={
+    e:React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement> | undefined
+    value:any
+    setValue:Dispatch<SetStateAction<any>>
+    propsValue:any
+    setPropsValue:Dispatch<SetStateAction<any>>
+}
+
 
 export type MessageType =  {
     user: UserType
