@@ -1,5 +1,6 @@
 
 .landing-component{
+    margin: auto;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
@@ -41,5 +42,6 @@
         margin: 0 auto;
         padding: .2rem 1.5rem; 
         font-size: .8rem;
+        border: 1px solid beige;
     }
 }

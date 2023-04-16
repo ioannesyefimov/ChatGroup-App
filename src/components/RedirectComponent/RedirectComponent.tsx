@@ -24,7 +24,7 @@ const RedirectComponent = () => {
     let handleLogin = useCallback(
         async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
            
-            let response = await APIFetch({url:`${URL}/${type}`, method:'POST',body:{accessToken,loggedThrough}, signal})
+            let response = await APIFetch({url:`${URL}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
             if(!response?.success){
                 setError(response?.message)
                 return    

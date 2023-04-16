@@ -13,10 +13,11 @@ import SubmitInput from "./SubmitInput/SubmitInput";
 import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
 import AuthProvider from "./Authentication/Provider/AuthProvider";
+import SocketProvider from "./SocketContext/SocketProvider";
 export 
 {
     ChatProvider,AuthProvider,ErrorProvider,  Authentication, 
     Button,SubmitInput,
     
-    FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons,ChannelCreate
+    FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons,ChannelCreate,SocketProvider
 }

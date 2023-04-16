@@ -2,7 +2,7 @@
 .social-wrapper {
     display: flex;
     margin: 0 auto;
-    gap:1rem;
+    gap:.8rem;
     flex-wrap: wrap;
    
     .hint {
@@ -14,25 +14,29 @@
         right: 0;
     }
 
-    #GG-btn{
-        // position: relative;
-        
-        img{
-            position: absolute;
-            // cursor: pointer
-        };
-        button {
-            // opacity: 0;
-
-        }
-    }
+ 
 
     .social-btn-container{
+        #googleBtn{
+            & > * {
+                position: absolute !important;
+                inset: 0;
+                opacity: 0;
+            }
+            img{
+                // position: absolute;
+                // cursor: pointer
+            };
+        }
         display: flex;
+        align-items: center;
+        justify-content: center;
         flex: 1;
         position: relative;
         z-index: 55;
         border-radius: 50%;
+        width: 35px;
+        height: 35px;
         img{
             position: absolute;
             // width: 100%;
@@ -42,9 +46,8 @@
             }
         }
         button {
-            width: 35px;
-            height: 35px;
-            opacity: 0;
+            // opacity: 0;
+            width: 100%;
             z-index: 55;
             // width: 55px;
         }

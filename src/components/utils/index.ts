@@ -33,16 +33,22 @@ type RefsType ={
 const setter = (e:ChangeEvent<HTMLInputElement>, setState:React.Dispatch<React.SetStateAction<any>>) =>{
   setState(e?.currentTarget.value)
 }
-export function createDate(){
-  let date = new Date()
-  let DATE:{day:string,time:string} = {day:'',time:''};
-  DATE.day = date.toLocaleDateString()
-  DATE.time = date.toLocaleTimeString()
 
+export const createDate = ()=>{
+  const today = new Date();
+const DATE = {day:"",time:""}
+const yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+
+const formattedToday = dd + '/' + mm + '/' + yyyy;
+  DATE.day = formattedToday
+  DATE.time = today.toLocaleTimeString()
   return DATE
-  
 }
-
 export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=>{
   return new Promise<{success:boolean,errors?: ErrorsType}>((resolve, reject) => {
     let errors:ErrorsType = {}

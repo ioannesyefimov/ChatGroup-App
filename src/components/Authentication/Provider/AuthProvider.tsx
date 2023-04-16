@@ -1,7 +1,6 @@
 import React,{FC, ReactElement, ReactNode, useCallback, useEffect, useState} from 'react'
 import {Cookies, ReactCookieProps, useCookies} from  'react-cookie'
 import { UserType,ChildrenType,ResponseType } from '../../types'
-import { Fallback } from '../../ErrorProvider/ErrorProvider'
 import { LoadingFallback } from '../../LoadingFallback/LoadingFallback'
 
 export type InitialStateType = {

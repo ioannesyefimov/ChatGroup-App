@@ -14,14 +14,13 @@
         border-radius: 12px;
     }
 
-    .inner-wrapper{
-        display: flex;
-        flex-direction: column;
-        gap:1rem;
-        .back-btn {
-            position: absolute;
-            left: 1%;
-            top:15%;
-        }
+   form{
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+
+}
+    button{
+        padding: .4rem;
     }
 }

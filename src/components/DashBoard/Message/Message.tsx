@@ -2,8 +2,9 @@ import React, { SetStateAction } from 'react'
 import './Message.scss'
 import { APIFetch, createDate, throwErr } from '../../utils'
 import Button from '../../Button/Button'
-import { trashIco } from '../../../assets'
+import { trashIco, userIco } from '../../../assets'
 import { UserType } from '../../types'
+import MemberInfo from '../../MemberInfo/MemberInfo'
 type PropsType = {
   user:UserType
     createdAt:{day:string,time:string}
@@ -15,25 +16,41 @@ type PropsType = {
     deleteMessage: (_id:string) => Promise<void>
 }
 
-const displayDate = (date:Date) => {
- 
+const displayDate = (date:{day:string,time:string}) => {
+  let currentDate = createDate()
+  let day = Number(date.day.slice(0,2))
+  let currentDay = Number(currentDate.day.slice(0,2))
+    
+  if(day-currentDay === 0){
+    return `today at ${date.time}`
+  }else if(day-currentDay === -1){
+    return `yesterday at ${date.time}`
+
+  }else {
+    return `${date.day} at ${date.time}`
+
+  }
 }
+
 
 
 const Message = ({deleteMessage,user,createdAt,message,messageUser,key,_id}:PropsType) => {
 
 
+console.log(`USERID:`, user._id);
+console.log(`messageUserId:`, messageUser?._id);
 
   return (
     <div key={key} className='message'>
-       <img className='message-logo' src={messageUser?.picture} alt="profile-logo" />
+        <MemberInfo user={messageUser!}/>
+      
        <div className="message-wrapper">
          <span className="message-name">{user?.userName}</span>
          <span className="message-date">{displayDate(createdAt)}</span>
        </div>
        <p className="message-text">{message}</p>
-       {user?.id === messageUser?.id ? (
-         <Button img={trashIco} name='msg-delete' type="button" onClick={()=>deleteMessage(_id)} />
+       {user?._id == messageUser?._id ? (
+         <Button img={trashIco} name='message-delete' type="button" onClick={()=>deleteMessage(_id!)} />
 
        ): (null)}
      </div>

@@ -9,6 +9,9 @@ import CurrentChannel from './components/DashBoard/CurrentChannel/CurrentChannel
 import ChannelManager from './components/ChannelManager/ChannelManager'
 import ChannelJoin from './components/ChannelManager/ChannelJoin'
 
+
+
+
 let router = createBrowserRouter([
   {
     element: <NotFound />,
@@ -23,7 +26,8 @@ let router = createBrowserRouter([
     // path: '/chat/?:channel',
     children: [
       {
-       element: <ChatContainer />,
+
+       element: <ChatContainer  />,
        path: '/chat?/:channel',
        children: [
          

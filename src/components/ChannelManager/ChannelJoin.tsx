@@ -1,19 +1,14 @@
 import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
-import './ChannelCreate.scss'
+import './channelJoin.scss'
 import FormInput from '../FormInput/FormInput'
-import UploadInput from '../UploadInput/UploadInput'
 import { APIFetch, convertBase64, throwErr, validateInput } from '../utils'
-import Button from '../UserBar/UserBar'
 import { useAuth, useAuthCookies, useChat, useError } from '../../hooks'
 import AuthForm from '../Authentication/AuthForm/AuthForm'
 import { ResponseType } from '../types'
 import { useNavigate } from 'react-router-dom'
 
-
 const ChannelJoin = ()=>{
     const [channelName,setChannelName] = useState<string>('')
-    const [channelDescription,setChannelDescription] = useState<string>('')
-    const [channelAvatar,setChannelAvatar] = useState<string>('');
 
     const {setError} = useError()
     const {serverUrl,setLoading} = useAuth()

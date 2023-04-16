@@ -8,19 +8,32 @@ import { isObj } from '../utils'
 
 export const ResponseFallback = ({children}:{children?: ReactNode | ReactNode[]})=>{
     const {error,setError} = useError()
+console.log(`ERROR`,error);
+
+    if(!error) return <>{children}</>
+    let displayedError =(
+        <>
+        {isObj(error) ? (
+             Object.keys(error).map(err=>{
+                return (<span key={error[err]} className='error'>{err}: {JSON.stringify(error[err])}</span>)
+            })  
+        ): (
+            JSON.stringify(error)
+        )}
+        </>
+    )
 
     return (
         <>
-        {error ? (
+        {Object?.keys(error)?.length ? (
             <div className='fallback-component'>
-            {isObj(error) ? Object.keys(error).map(err=>{
-                return (<span key={error[err]} className='error'>{err}: {error[err]}</span>)
-            }) : JSON.stringify(error)}
+                <h2>ERROR:</h2>
+                {displayedError}
             <button  onClick={()=>setError('')}>Continue</button>
-        </div>
+            </div>
 
         ) : null}
-            {children}
+        {children}
         </>
     )
 }

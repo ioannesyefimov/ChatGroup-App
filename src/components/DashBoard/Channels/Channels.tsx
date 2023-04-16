@@ -12,7 +12,7 @@ const Channels = ({...props}) => {
       <div className='channels'>
         {props.channels.map((channel:ChannelType)=>{
           return (
-            <Channel key={channel?._id!} name={channel?.channelName} avatar={channel?.channelAvatar} />
+            <Channel key={channel?._id ?? '228'} name={channel?.channelName} avatar={channel?.channelAvatar} />
           )
         })
         }

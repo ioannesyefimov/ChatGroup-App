@@ -15,13 +15,15 @@ declare module 'react' {
 }
 
 const Hamburger = ({children,type}:PropsType) => {
-    const [isToggled, setIsToggled] = useState<string|boolean>('loaded')
+    const [isToggled, setIsToggled] = useState<'loaded'|'toggled'|'untoggled'>('loaded')
 
     let toggle = ()=>{
-        if(isToggled === 'loaded' || isToggled==='untoggled'){
-            setIsToggled('toggled')
+        if(isToggled === 'loaded'){
+            setIsToggled('untoggled')
         } else if(isToggled==='toggled') {
             setIsToggled('untoggled')
+        } else if (isToggled==='untoggled'){
+            setIsToggled('toggled')
         }
     }
     let content = (

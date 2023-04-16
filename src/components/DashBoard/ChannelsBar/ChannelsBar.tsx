@@ -12,7 +12,7 @@ import UserBar from '../../UserBar/UserBar'
 import { ChannelsProps } from '../ChatContainer'
 
 const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
-  const {search, filteredChannels,handleSearchChange} = useSearchChannels(channels)
+  const {search,handleSearchChange} = useSearchChannels(channels)
   const navigate = useNavigate()
 
   let content = (

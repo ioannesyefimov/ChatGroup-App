@@ -1,12 +1,13 @@
+body {
+}
+
 #root {
-  // max-width: 1280px;
+  display: grid;
   // margin: 0 auto;
   // padding: .2rem;
-  display: grid;
   min-width:320px;
   width: 100%;
   min-height: 100dvh;
-  text-align: center;
 }
 
 .App:has(.landing-component,.auth-form-component){
@@ -16,15 +17,16 @@
 
 .App {
   display: flex;
-  
+  // max-height: calc(100dvh - 50px);
   flex-direction: column;
   & > .chat-container-outer {
     flex: 1;
+    margin-top: 1rem;
+
   }
   &:has(.chat-container-outer){
     display: grid;
-    grid-template-rows: 40px 1fr;
-    max-height: calc(100dvh);
+    grid-template-rows: 50px 1fr;
 
   }
   &:has(.auth-form-component){
@@ -107,4 +109,8 @@ input.error{
       border: 1px solid black;
   }
 
+}
+
+button {
+  border:1px solid rgb(11, 11, 17) 
 }

@@ -55,7 +55,7 @@ export type UserType = {
     userName:string
     email:string
     picture?:string
-    id:string
+    _id?:string
     loggedThrough?: string
     channels:ChannelType[]
     bio?: string

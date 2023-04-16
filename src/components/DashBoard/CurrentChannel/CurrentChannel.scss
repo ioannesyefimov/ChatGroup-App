@@ -1,69 +1,20 @@
 .main-wrapper {
-    outline: 1px solid white;
-    display: flex;
-    flex-direction: column;
+    display: flex;flex-direction: column;
     gap:1rem;
 
-    padding: 1rem;
+    padding: 1.25rem;
     .channel-title{
         margin-top: .5rem;
         font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);   
      }
-        .messages-wrapper{
-            overflow-y: scroll;
-        display: grid;
-        flex-direction: column;
-        gap:1rem;
-        .message{
-            display: grid;
-            // padding: 1rem 2rem ;
-            grid-template-areas: 
+    
 
-            'img wrapper wrapper'
-            'img text text '
-            ;
-            margin-right: auto;
-            gap:.2rem;
-            outline: 1px solid green;
-            &-logo{
-                margin-right:  1rem;
-
-                grid-area: img;
-                max-width: 40px;
-                max-height: 40px;
-                border-radius: 5px;
-                background-color: red;
-            }
-            &-wrapper{
-                grid-area: wrapper;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap:1.5rem;
-                .message-name, .message-date{
-                    color: #828282;
-                }
-                .message-name{
-                    font-weight: 700;
-                }
-                .message-date{
-                    font-size: max(.9rem);
-                    font-weight: lighter;
-                }
-            }
-
-            &-text{
-                grid-area: text;
-                text-align: left;
-            }
-            
-        }
-
-    }
     .inner-wrapper.message-input{
         display: flex;
         align-items: center;
         position: relative;
+        margin-top: auto;
+
         .form-wrapper{
             flex:1;
             

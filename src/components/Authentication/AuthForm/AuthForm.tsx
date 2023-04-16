@@ -1,4 +1,4 @@
-import React, { ReactPropTypes, useState } from 'react'
+import React, { ChangeEvent, ReactPropTypes, useState } from 'react'
 import FormInput from '../../FormInput/FormInput'
 import {lockerIco, mailIco, profileIco}   from '../../../assets/index' 
 import './AuthForm.scss'
@@ -12,27 +12,31 @@ type AuthProps = {
   redirectType: string
   redirectUrl?:string
 }
-
+const initState = {
+  email:"",  
+  password:"",  
+  userName:"",  
+}
 const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
-  const [email,setEmail] = useState<string>('')
-  const [password,setPassword] = useState<string>('')
-  const [userName,setUserName] = useState<string>('')
+  const [form,setForm] = useState(initState)
+  // const [email,setEmail] = useState<string>('')
+  // const [password,setPassword] = useState<string>('')
+  // const [userName,setUserName] = useState<string>('')
 
-  const {setResponse,setLoading} = useAuth()
+  const handleFormChange =(e:ChangeEvent<HTMLInputElement>)=>{
+    setForm({...form,[e.target.name]:e.target.value})
+  }
+
+  const {serverUrl,setLoading} = useAuth()
   const {setCookie} = useAuthCookies()
   const {setError} = useError()
 
   const navigate = useNavigate()
 
-  let URL = `http://localhost:5050/api/auth`
 
-  const EmailRef =React.createRef<HTMLInputElement>()
-  const PasswordRef =React.createRef<HTMLInputElement>()
-  const UserNameRef =React.createRef<HTMLInputElement>()
-  const handleOnChange = (e:React.ChangeEvent<HTMLInputElement>, setValue:React.Dispatch<React.SetStateAction<string>>,type:string) =>{
-      setValue(e.target.value)
-    }
-
+  const EmailRef =React.createRef<HTMLLabelElement>()
+  const PasswordRef =React.createRef<HTMLLabelElement>()
+  const UserNameRef =React.createRef<HTMLLabelElement>()
   const handleSubmit = async(e:React.MouseEvent<HTMLButtonElement, MouseEvent>, type:string)=>{
     e.preventDefault()
 
@@ -41,11 +45,15 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
         return console.log(`TYPE IS MISSING`)
       }
       setLoading(true)
+      let {email,userName,password} = form
       let params 
       if(type==='register'){
         params = {fields: {email,userName,password},refs:{email:EmailRef,password:PasswordRef,userName:UserNameRef}}
+        type = 'auth/register'
       } else if (type==='signin'){
         params = {fields: {email,password},refs:{email:EmailRef,password:PasswordRef}}
+        type = 'auth/signin'
+
 
       }
       if(!params) return
@@ -54,13 +62,15 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
         let controller = new AbortController() 
         let  signal = controller.signal;
         
-        let response = await APIFetch({url:`${URL}/${type}`, method:'POST', body: {...params?.fields,loggedThrough:`INTERNAL`,signal}});
+        let response = await APIFetch({url:`${serverUrl}/${type}`, method:'POST', body: {...params?.fields,loggedThrough:`INTERNAL`,signal}});
         console.log(`RESPONSE: `, response)
         if(!response?.success) {
           throwErr(response?.message)
         }
         
-        if(!response?.data?.accessToken) throwErr({name:`SOMETHING WENT WRONG`, arguments: 'accessToken is undefined'})
+        if(!response?.data.accessToken) {
+          throwErr({name:`SOMETHING WENT WRONG`, arguments: 'accessToken is undefined'})
+        }
         if(redirectUrl){
           return navigate(`/auth/redirect/?type=${redirectType}&accessToken=${response?.data?.accessToken}&redirectUrl=${redirectUrl}`)
         }
@@ -79,26 +89,27 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
     
   }
 
-  
-
  let registerContent = (
   <div className='auth-form-component box-shadow--gray'>
       <h2>Register</h2>
       <div className="input-wrapper">
-        <FormInput value={userName} onChange={(e)=>handleOnChange(e,setUserName,'userName')}
+        <form action="submit">
+        <FormInput value={form.userName} onChange={(e)=>handleFormChange(e)}
         labelName='Username'
-          name='username'
+          name='userName'
           id="usernameInput"
           type="text"
           placeholder='Type in your username...'
           ref={UserNameRef}
           photo={profileIco} 
         />
-        <FormInput value={email} onChange={(e)=>handleOnChange(e,setEmail,'email')} labelName='email' name="Email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
-        <FormInput value={password} onChange={(e)=>handleOnChange(e,setPassword,'password')} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
-      </div>
+        <FormInput value={form.email} onChange={(e)=>handleFormChange(e)} labelName='email' name="email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
+        <FormInput value={form.password} onChange={(e)=>handleFormChange(e)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
         <button className='submit-btn' onClick={(e)=>handleSubmit(e,'register')}>Register</button>
         <AuthSocialButtons authType='signin' />
+
+        </form>
+      </div>
 
         <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
       </div>
@@ -108,11 +119,13 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
     <div className='auth-form-component box-shadow--gray'>
       <h2>Login</h2>
       <div className="input-wrapper">
-        <FormInput value={email} onChange={(e)=>handleOnChange(e,setEmail,'email')} labelName='email' name="Email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
-        <FormInput value={password} onChange={(e)=>handleOnChange(e,setPassword,'password')} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
-      </div>
+        <form action="submit">
+        <FormInput value={form.email} onChange={(e)=>handleFormChange(e)} labelName='email' name="email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
+        <FormInput value={form.password} onChange={(e)=>handleFormChange(e)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
+        </form>
        <button className='submit-btn' onClick={(e)=>handleSubmit(e, 'signin')}>Signin</button>
       <AuthSocialButtons authType='signin' redirectUrl={redirectUrl} />
+         </div>
       {!redirectUrl && <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span> }
        
     </div>
