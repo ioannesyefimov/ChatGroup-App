@@ -6,7 +6,7 @@ import { useAuth, useAuthCookies, useChat, useError, useSocket } from '../../hoo
 import { ChannelType, UserType } from '../types'
 import { APIFetch, throwErr } from '../utils'
 import { Outlet, useLocation } from 'react-router-dom'
-import useSearchChannels from '../../hooks/useSearchChannels'
+import useSearchChannels from '../../hooks/useSearch'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 import { Socket } from 'socket.io-client/build/esm/socket'
 import {io} from 'socket.io-client'
@@ -26,7 +26,7 @@ const ChatContainer = () => {
         <div className='chat-container-inner '>  
             <ChannelsBar setChannels={setChannels} channels={channels ?? []}/>
             {/* <CurrentChannel location={location.pathname} /> */}
-            <CurrentChannel socket={socket}  setChannels={setChannels} channels={channels} />
+            <CurrentChannel socket={socket!}  setChannels={setChannels} channels={channels} />
           <Outlet/>
         </div>
       </div>

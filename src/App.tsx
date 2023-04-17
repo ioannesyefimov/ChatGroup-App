@@ -1,18 +1,20 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Authentication, ChannelCreate,NotFound,AuthForm, Dashboard, RedirectComponent} from './components'
+import { Authentication, ChannelCreate,NotFound,AuthForm, Dashboard, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch} from './components'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './components/Landing/Landing'
 import ChatContainer from './components/DashBoard/ChatContainer'
 import CurrentChannel from './components/DashBoard/CurrentChannel/CurrentChannel'
 import ChannelManager from './components/ChannelManager/ChannelManager'
 import ChannelJoin from './components/ChannelManager/ChannelJoin'
+import UserComponent from './components/UserComponent/UserComponent'
 
 
 
 
 let router = createBrowserRouter([
+
   {
     element: <NotFound />,
     path: '*'
@@ -22,20 +24,36 @@ let router = createBrowserRouter([
     path: '/'
   },
   {
+    element:<SearchComponent/>,
+    path: '/search',
+    children:[
+      {
+        path:'user/:search',
+        element:<MemberInfo/>
+      },
+      {
+        element: <ChannelSearch/>,
+        path: 'channel?/:search'
+      },
+    ]
+
+  },
+  {
+    element: <UserComponent />,
+    path: '/user/:search?'
+  },
+  {
     element: <ProtectedRoute />,
-    // path: '/chat/?:channel',
+    path:'/chat/',
     children: [
       {
 
        element: <ChatContainer  />,
-       path: '/chat?/:channel',
-       children: [
-         
-       ]
+       path: ':channel',
       },
       {
         element: <ChannelManager/>,
-        path: '/channel/manage/',
+        path: 'manage/',
         children: [
           {
             path:'create',
@@ -68,12 +86,11 @@ let router = createBrowserRouter([
 
       }
     ],
-  }
+  },
+  
+  
 ])
 function App() {
-
-
-
   return (
     <div className="App">
      <RouterProvider router={router} />

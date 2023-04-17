@@ -1,0 +1,17 @@
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import './SearchComponent.scss'
+
+
+const SearchComponent = () => {
+    // const [search,setSearch] = useState('')
+    const location = useLocation()
+    let content = (
+        <div className='search-component flex'>
+            <Link to='user' replace>Search User</Link>
+            <Link to='channel' replace>Search Channel</Link>
+        </div>
+    )
+   return  location.pathname === '/search' ? content  : <Outlet/>
+}
+
+export default SearchComponent

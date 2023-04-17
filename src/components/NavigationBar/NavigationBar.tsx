@@ -18,7 +18,7 @@ const NavigationBar = () => {
   const navigate = useNavigate()
     return (
     <div className='navbar-component' >
-        <button className='logo-btn' onClick={()=>navigate('/dashboard')}>
+        <button className='logo-btn' onClick={()=>navigate('/chat')}>
           <img  src={chatifyIco} alt="logo" />
         </button>
       <div className="navbar-inner" id='navBarInner'>

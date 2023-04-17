@@ -6,6 +6,7 @@ import useError  from "./useErrorContext/useError";
 import useAddScript from "./useScripts/useAddScript";
 import useWindowSize from "./useWindowSize/useWindowSize";
 
+import useSearch from "./useSearch";
 import useFacebook from "./useFacebook/useFacebook";
 import useGithub from "./useGithub/useGithub";
 import useGoogle from "./useGoogle/useGoogle";
@@ -14,7 +15,7 @@ import useImageUpload from "./useImageUpload/useImageUpload";
 import useSocket from "./useSocket/useSocket";
 
 export {
-    useAuth,useSocket,useAuthCookies,useChat,useError,
+    useAuth,useSocket,useAuthCookies,useChat,useError,useSearch,
     useFacebook,useGithub,useGoogle,useTwitter,
     useAddScript,useWindowSize,useImageUpload
 }

@@ -28,12 +28,8 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
   }
 
   const {serverUrl,setLoading} = useAuth()
-  const {setCookie} = useAuthCookies()
   const {setError} = useError()
-
   const navigate = useNavigate()
-
-
   const EmailRef =React.createRef<HTMLLabelElement>()
   const PasswordRef =React.createRef<HTMLLabelElement>()
   const UserNameRef =React.createRef<HTMLLabelElement>()

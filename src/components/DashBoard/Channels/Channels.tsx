@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { getFirstLetter } from '../../utils'
-import useSearchChannels from '../../../hooks/useSearchChannels'
+import useSearchChannels from '../../../hooks/useSearch'
 import { Link } from 'react-router-dom'
 import './Channels.scss'
 import { ChannelType } from '../../types'

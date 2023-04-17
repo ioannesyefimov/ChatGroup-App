@@ -26,10 +26,11 @@ export type ResponseType  = {
 export type Member = UserType
 
 export type ChannelType = {
-    channelName:string
+    channel?:ChannelType
+ channelName:string
     messages: MessageType[] 
     members: Member[]| Member
-    _id?:string | number
+    _id?:string 
     channelAvatar:string 
     channelDescription?: string
 }

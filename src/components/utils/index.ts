@@ -5,6 +5,18 @@ import { ChangeEvent, Ref, RefObject } from "react";
        return regex.test(email)
 };
 
+export const convertQueryString = ({uri,obj}:{[index:string]:any, uri:string})=>{
+  return new Promise<string | {success:false,error:any}>((resolve, reject) => {
+    if(!uri) return reject({success:false,error:`MISSING URI`}) 
+    if(!obj) return reject({success:false,error:`MISSING PARAMS`}) 
+    let str = '?' + Object.keys(obj).reduce(function(a:string[], k){
+      a.push(k + '=' + encodeURIComponent(obj[k]));
+      return a;
+    }, []).join('&')
+      return resolve(`${uri}${str}`)
+  })
+}
+
 const throwErr =  (err:any) =>{
  
   if(err?.name ){

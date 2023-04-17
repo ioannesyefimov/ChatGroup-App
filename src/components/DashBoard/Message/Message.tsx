@@ -4,7 +4,7 @@ import { APIFetch, createDate, throwErr } from '../../utils'
 import Button from '../../Button/Button'
 import { trashIco, userIco } from '../../../assets'
 import { UserType } from '../../types'
-import MemberInfo from '../../MemberInfo/MemberInfo'
+import MemberInfo from '../../UserSearch/UserSearch'
 type PropsType = {
   user:UserType
     createdAt:{day:string,time:string}
@@ -42,7 +42,9 @@ console.log(`messageUserId:`, messageUser?._id);
 
   return (
     <div key={key} className='message'>
-        <MemberInfo user={messageUser!}/>
+         <button className='show-member-button'>
+                <img className='message-logo' src={user?.picture ?? userIco} alt="profile-logo" />
+            </button>
       
        <div className="message-wrapper">
          <span className="message-name">{user?.userName}</span>

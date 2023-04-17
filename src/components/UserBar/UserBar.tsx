@@ -2,14 +2,14 @@ import React, { MouseEventHandler } from 'react'
 import { useAuth } from '../../hooks'
 import './UserBar.scss'
 import { triangleIco, userIco } from '../../assets'
-const UserBar = () => {
-  const {user}=useAuth()
+import { UserType } from '../types'
+import UserComponent from '../UserComponent/UserComponent'
+const UserBar = ({user}:{user:UserType}) => {
 
 
   const content = (
     <div className='user-bar-component'>
-      <img src={user?.picture ?? userIco} alt="" className='profile-img' />
-      <p className='name'>{user?.userName}</p>
+      <UserComponent user={user}/>
       <img src={triangleIco} className='dropdown-img' alt="user menu dropdown" />
     </div>
   )

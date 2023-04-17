@@ -1,0 +1,54 @@
+.user-component{
+    display: grid;
+
+    .user {
+        // width: 100px;
+        margin: auto;
+        img{
+            max-width:100px ;
+        }
+    }
+    .user-channels{
+        padding:1rem 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(6rem,1fr));
+        margin: auto;
+        max-width: 700px;
+        outline: 1px solid rebeccapurple;
+        gap:1.35rem;
+        margin-top: 2rem;
+        h4 {
+            grid-column: 1/-1;
+            margin: auto;
+        }
+        .channel{
+            padding: .2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 5px 1px gray;
+            display: grid;
+            align-items: center;
+            text-align: center;
+            gap:.4rem;
+            img {
+
+                object-fit: cover;
+                order: 1;
+                width: 60px;
+                height: 60px;
+                margin: auto;
+            }
+        }
+    }
+    .back-btn {
+        align-items: center;
+        gap:0;
+        position: absolute;
+        left: 10px;
+        top:10px;
+        font-weight: bold;
+
+        img {
+            width: 30px;
+        }
+    }
+}

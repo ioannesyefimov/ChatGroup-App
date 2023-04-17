@@ -15,9 +15,7 @@ type HandleLoginProps = {
 const RedirectComponent = () => {
     const URL = `http://localhost:5050/api`
     
-    const {loading} = useAuth()
-    const {setChannels} = useChat()
-    const {cookies,setCookie} = useAuthCookies()
+    const {setCookie} = useAuthCookies()
     const {setError} = useError() 
     let location = useLocation()
     let navigate = useNavigate()

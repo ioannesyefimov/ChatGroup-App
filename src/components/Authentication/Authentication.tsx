@@ -1,6 +1,5 @@
-import  { useEffect } from 'react'
 import {Navigate, Outlet, useLocation} from 'react-router-dom'
-import { useAddScript, useAuth } from '../../hooks'
+import { useAuth } from '../../hooks'
 
 const AuthenticationForm = () => {
   const {user} = useAuth()
