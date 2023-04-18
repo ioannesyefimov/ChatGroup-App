@@ -8,6 +8,7 @@ import { APIFetch, setter, throwErr, validateInput } from '../../utils'
 import {SubmitInput} from '../..'
 import { ChannelsProps } from '../ChatContainer'
 import { Socket } from 'socket.io-client'
+import Messages from '../../Messages/Messages'
 
 export type HandleClickType = {
   handleClick: (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | undefined, value: any, setValue: Dispatch<SetStateAction<any>>, propsValue: any, setPropsValue: Dispatch<SetStateAction<any>>) => Promise<void>
@@ -17,6 +18,7 @@ export type SocketResponse = {
   data?: any
   message?: any
 }
+
 const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Socket<any>}) => {
   const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
   // const socket = useSocket()!
@@ -25,18 +27,24 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
   const location = useLocation()
 
 
- const handleCurrentChannel = async(channels:ChannelType[] ,pathname:string)=>{
+ const handleCurrentChannel = async(channels:ChannelType[] ,name:string)=>{
 
   try {
-    if(!pathname.includes('/chat/'))return setCurrentChannel(null)
+    console.log(`NAME: ${name}`);
+    
+    if(!name.includes('?channel=')) {
+      return setCurrentChannel(null)
+    }
+    name = name.replace('?channel=','').replaceAll('-', ' ')
     if(!user.email) return 
     setLoading(true)
-    let pathNameChannel = pathname.replace('/chat/','').replaceAll('-', ' ')?.trim()
-   if(currentChannel?.channelName && pathNameChannel !== currentChannel.channelName.replaceAll(' ', '-')) {
+    console.log(`name:`, name);
+    
+   if(currentChannel?.channelName && name !== currentChannel.channelName) {
      setCurrentChannel(null)
    }
    
-   socket.emit('get_channel',{channelName:pathNameChannel,user, })
+   socket.emit('get_channel',{channelName:name,user})
    
     
   } catch (error) {
@@ -47,18 +55,17 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
 }
 
   useEffect(
-    ()=>{
-      handleCurrentChannel(channels,location.pathname)
-     },[location.pathname]
+    ()=>{   
+      handleCurrentChannel(channels,location.search)
+     },[location.search]
   )
 
   useEffect(
     ()=>{
       socket.on('receive_message',(data:SocketResponse)=>{
-        if(data.data.channel){
-          console.log(`received message`, data.data.channel);
-          
-          setCurrentChannel(data.data?.channel)
+        console.log(`received message`, data);
+        if(data.data.messages){
+          setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         }
       })
       socket.on('delete_message',(data:SocketResponse)=>{
@@ -71,13 +78,18 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
         }
       })
       socket.on('get_channel',(data:SocketResponse)=>{
-        console.log(`data:`,data);
-        if(data.data.channel){
-          setCurrentChannel(data.data.channel)
-        socket.emit('join_channel',data.data.channel._id)
+        console.log(`connection channel:`,data);
+        if(data?.data?.channels){
+          setCurrentChannel(data.data?.channels)
+         socket.emit('join_channel',data?.data?.channels?._id)
         }
-        return
       })
+      return ()=>{
+        console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
+        if(currentChannel?._id){
+          socket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
+        }
+      }
     },[socket,currentChannel]
   )
   const handleSubmitMessage = async(e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, value: any, setValue: Dispatch<SetStateAction<any>>, propsValue: any, setPropsValue: Dispatch<SetStateAction<any>>): Promise<void> =>{
@@ -95,7 +107,7 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
       setValue('')
     }
  }
- const deleteMessage = async(_id:string) => {
+ const handleDeleteMessage = async(_id:string) => {
   console.log(`DELETING :`, _id);
   console.log(`USER:`, user);
   console.log(`channel:`, currentChannel);
@@ -116,23 +128,7 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
     (
       <div className="main-wrapper">
         {title}
-        <div className="messages-wrapper" id='messagesWrapper' >
-          {
-            currentChannel?.channelName && currentChannel?.messages.length ?  
-            (
-            currentChannel?.messages.map((message:MessageType,i:number|string)=>{
-              console.log(`MESSAGE:`, message);
-              
-              return (
-                <Message deleteMessage={deleteMessage} channelName={currentChannel.channelName} _id={message?.id} key={message?.id} user={user} message={message?.message} createdAt={message?.createdAt} messageUser={message?.user}  />
-                )
-              })
-              ) : (
-                <h4 key="no-message">There is no messages in {currentChannel?.channelName}</h4>
-                )
-            }
-            <button onClick={()=>{document.getElementById('messagesWrapper')!.scrollTop = 10000}} id={'downBtn'} className='down-btn'>↓</button>
-        </div>
+        <Messages handleDelete={handleDeleteMessage} currentChannel={currentChannel} user={user} />
         <SubmitInput  handleClick={handleSubmitMessage} setPropsValue={setCurrentChannel} propsValue={currentChannel} name="message-input" placeholder="Type a message here" e={undefined} value={undefined} setValue={function (value: any): void {
             throw new Error('Function not implemented.')
           } } />

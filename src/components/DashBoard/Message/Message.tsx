@@ -5,6 +5,7 @@ import Button from '../../Button/Button'
 import { trashIco, userIco } from '../../../assets'
 import { UserType } from '../../types'
 import MemberInfo from '../../UserSearch/UserSearch'
+import { useNavigate } from 'react-router-dom'
 type PropsType = {
   user:UserType
     createdAt:{day:string,time:string}
@@ -13,7 +14,7 @@ type PropsType = {
     key:any
     _id?: string
     channelName: string
-    deleteMessage: (_id:string) => Promise<void>
+    handleDelete: (_id:string) => Promise<void>
 }
 
 const displayDate = (date:{day:string,time:string}) => {
@@ -34,27 +35,25 @@ const displayDate = (date:{day:string,time:string}) => {
 
 
 
-const Message = ({deleteMessage,user,createdAt,message,messageUser,key,_id}:PropsType) => {
-
-
-console.log(`USERID:`, user._id);
-console.log(`messageUserId:`, messageUser?._id);
-
+const Message = ({handleDelete,user,createdAt,message,messageUser,key,_id}:PropsType) => {
+const navigate = useNavigate()
   return (
     <div key={key} className='message'>
-         <button className='show-member-button'>
-                <img className='message-logo' src={user?.picture ?? userIco} alt="profile-logo" />
-            </button>
+         <button onClick={()=>navigate(`/user?email=${messageUser?.email}`)} className='show-member-button'>
+                <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
+          </button>
       
        <div className="message-wrapper">
-         <span className="message-name">{user?.userName}</span>
+         <span className="message-name">{messageUser?.userName}</span>
          <span className="message-date">{displayDate(createdAt)}</span>
        </div>
        <p className="message-text">{message}</p>
        {user?._id == messageUser?._id ? (
-         <Button img={trashIco} name='message-delete' type="button" onClick={()=>deleteMessage(_id!)} />
+         <Button img={trashIco} name='message-delete' type="button" onClick={()=>handleDelete(_id!)} />
 
-       ): (null)}
+       ): (
+        null
+       )}
      </div>
   )
 }

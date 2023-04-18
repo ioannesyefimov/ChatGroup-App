@@ -44,16 +44,16 @@ let router = createBrowserRouter([
   },
   {
     element: <ProtectedRoute />,
-    path:'/chat/',
+    path:'/chat',
     children: [
       {
 
        element: <ChatContainer  />,
-       path: ':channel',
+       path: ':channel?',
       },
       {
         element: <ChannelManager/>,
-        path: 'manage/',
+        path: 'manage',
         children: [
           {
             path:'create',

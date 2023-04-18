@@ -6,7 +6,7 @@ const AuthenticationForm = () => {
   let location = useLocation()
   if(location.pathname === '/auth') return <Navigate to='/auth/signin' replace/>
   if(!user?.email) return <Outlet/> 
-  return <Navigate to='/dashboard' replace/>
+  return <Navigate to='/chat' replace/>
 
   
   

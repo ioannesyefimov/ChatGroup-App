@@ -24,7 +24,7 @@ const useFetchChannels = () => {
             throwErr(response?.message)
         }
     
-        setChannels([response?.data.channels])
+        setChannels(response?.data.channels)
        } catch (error) {
         console.error(error)
         // setError(error)

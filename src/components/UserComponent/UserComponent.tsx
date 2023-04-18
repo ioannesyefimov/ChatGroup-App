@@ -14,13 +14,15 @@ const UserComponent = () => {
 
   useEffect(
     ()=>{
-      let query = new URLSearchParams(location.search)
+      let search = location.search
+      if(!search) return console.log(`Search is empty`);
+      let query = new URLSearchParams(search)
       console.log(`SEARCHD:`, searchedValue);
       
       let email = query.get('email')
       let userName = query.get('userName')
       let id = query.get('id')
-      handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USERS'})
+      handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USER'})
       return ()=>{setSearchedValue({});setShowedUser(null)}
 
     },[]

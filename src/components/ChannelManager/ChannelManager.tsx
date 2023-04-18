@@ -6,7 +6,7 @@ const ChannelManager = () => {
 
     let content = (
         <div className='channel-manager-component'>
-            {location.pathname === '/channel/manage' ? (
+            {location.pathname === '/chat/manage' ? (
             <>
                 <Link to={`join`}  replace>Join existing</Link>
                 <Link to={`create`}  replace>Create new</Link>

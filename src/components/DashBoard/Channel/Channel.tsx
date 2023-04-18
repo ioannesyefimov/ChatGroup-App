@@ -3,12 +3,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getFirstLetter } from '../../utils'
 import './Channel.scss'
+import { trashIco } from '../../../assets'
+import { UserType } from '../../types'
 type ChannelProps = {
     key:string|number
     name:string
     avatar?:string
+    id?:string
+    handleLeaveChannel?: (_id:string,)=>void
 }
-const Channel = ({key,name,avatar}:ChannelProps) => {
+const Channel = ({key,name,avatar,id,handleLeaveChannel}:ChannelProps) => {
   return (
     <div key={key} className="channel">
         {avatar ? (
@@ -16,7 +20,10 @@ const Channel = ({key,name,avatar}:ChannelProps) => {
         ) : (
             <div className="channel-logo">{getFirstLetter(name,2)}</div>
         )}
-        <Link className='link-tag' to={`/chat/${name?.trim().replaceAll(' ', '-')}`} replace><div className="channel-name">{name}</div></Link>
+        <Link className='link-tag' to={`/chat/?channel=${name?.replaceAll(' ', '-').trim()}`} replace><div className="channel-name">{name}</div></Link>
+        {handleLeaveChannel  && (
+            <button onClick={()=>handleLeaveChannel(id!)} className='left-btn'><img src={trashIco} alt="trash ico" /></button>
+        )}
     </div> 
    )
 }

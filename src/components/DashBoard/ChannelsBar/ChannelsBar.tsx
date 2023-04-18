@@ -10,9 +10,11 @@ import { useNavigate } from 'react-router-dom'
 import { ChannelType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
 import { ChannelsProps } from '../ChatContainer'
+import SearchBar from './SearchBar'
 
 const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
-  const {search,handleSearchChange} = useSearchChannels(channels)
+  const [searchedChannels,setSearchedChannels] = useState<ChannelType[]|null>(null)
+
   const navigate = useNavigate()
   const {user} = useAuth()
 
@@ -24,8 +26,8 @@ const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
             <span>Channels</span>
             <button onClick={()=>navigate('/channel/manage')} className='add-btn'></button>
             </div>
-            <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={handleSearchChange} value={search} />
-            <Channels channels={ channels  } />
+            <SearchBar channels={channels} setSearchedChannels={setSearchedChannels}  />
+            <Channels location={'bar'} channels={ searchedChannels ?? channels  } />
           </div>
       </div>
       <UserBar user={user} />
