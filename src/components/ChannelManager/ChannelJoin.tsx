@@ -4,26 +4,38 @@ import FormInput from '../FormInput/FormInput'
 import { APIFetch, convertBase64, throwErr, validateInput } from '../utils'
 import { useAuth, useAuthCookies, useChat, useError } from '../../hooks'
 import AuthForm from '../Authentication/AuthForm/AuthForm'
-import { ResponseType } from '../types'
+import { ChannelType, ResponseType } from '../types'
 import { useNavigate } from 'react-router-dom'
+import SearchBar from '../DashBoard/ChannelsBar/SearchBar'
+import Channels from '../DashBoard/Channels/Channels'
+import Button from '../Button/Button'
+import { joinIco } from '../../assets'
 
 const ChannelJoin = ()=>{
-    const [channelName,setChannelName] = useState<string>('')
+    const [searchedChannels,setSearchedChannels] = useState<ChannelType[] | null>(null)
 
     const {setError} = useError()
     const {serverUrl,setLoading} = useAuth()
     const {cookies} = useAuthCookies()
     const {setChannels,channels,} = useChat()
-
     if(!cookies?.accessToken) return (
         <div className='prompt'>       
             <h2 style={{marginBottom:'1rem', color:'red'}}>You need to log in again: </h2>
             <AuthForm type='signin' redirectType='newAccessToken' redirectUrl='/channel/join'/>
         </div>
     )
+
+
     const nameRef = useRef<null | HTMLLabelElement >(null)
-        const navigate = useNavigate()
-    const handleSubmit = 
+    const navigate = useNavigate()
+    useEffect(
+        ()=>{
+            console.log(`SEARCHED:`, searchedChannels);
+            
+        },[searchedChannels]
+    )
+    
+    const handleJoin = 
        async (e:React.MouseEvent)=>{
             e.preventDefault()
             try {
@@ -51,8 +63,10 @@ const ChannelJoin = ()=>{
     return (
         <div className='prompt-menu-component  box-shadow--gray'>
             <form>
-                <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>{setChannelName(e.target.value)}}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
-                <button className='submit-btn' onClick={(e)=>handleSubmit(e)}>Join</button>
+                <SearchBar channels={channels} searchType='CHANNELS' setSearchedChannels={setSearchedChannels}/>
+                <Channels location="search" fallbackText={`Nothing  was found...`}  channels={searchedChannels ?? channels}>
+                    <Button name="submit-btn" img={joinIco} onClick={(e)=>handleJoin(e)}/>
+                </Channels>
             </form>
         </div>
     )

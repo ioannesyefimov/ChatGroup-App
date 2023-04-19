@@ -88,25 +88,37 @@ input.error{
 .fallback-component {
   @extend .box-shadow--gray;
   position: absolute;
-  max-width: 500px;
-  max-height: 350px;
-  margin:auto;
+  max-width:400px;
+  width: 50%;
+  height: 40%;
+  max-height: 450px;
   z-index: 1000;
-  inset: 0;
+  left:0;
+  align-self: center;
+  right: 0;
+  margin:0 auto;
   padding: 2rem;
-  h1 {
-      font-size: 2rem;
-  }
-  display: flex ;
-  flex-direction: column;
-  align-items: center ;
-  justify-content: space-around ;
   
-  border-radius: 10px;
+  display: flex;
+  gap:1rem;
+
+
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
   background: #120F13 !important;
+  border-radius: 10px;
+  .error-type{
+    font-size: 1rem;
+  }
 
   button {
-      border: 1px solid black;
+    padding: .4rem 1rem;
+    margin: auto;
+    position: absolute;
+    bottom: 9px;
+    right: 9px;  
+    border: 1px solid black;
   }
 
 }

@@ -11,14 +11,19 @@ import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 import { Socket } from 'socket.io-client/build/esm/socket'
 import {io} from 'socket.io-client'
 export type ChannelsProps = {
-  setChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
+  setChannels?: React.Dispatch<React.SetStateAction<ChannelType[]>>
   channels : ChannelType[]
 }
 
 const ChatContainer = () => {
-  const {channels,setChannels} = useFetchChannels()
+  const {channels,fetchChannels} = useFetchChannels()
   const socket = useSocket()
   
+  useEffect(
+    ()=>{
+      fetchChannels()
+    },[]
+    )
 
     let content = (
       
@@ -26,7 +31,7 @@ const ChatContainer = () => {
         <div className='chat-container-inner '>  
             <ChannelsBar channels={channels} />
             {/* <CurrentChannel location={location.pathname} /> */}
-            <CurrentChannel socket={socket!}  setChannels={setChannels} channels={channels} />
+            <CurrentChannel socket={socket!}  channels={channels} />
           <Outlet/>
         </div>
       </div>
@@ -36,4 +41,4 @@ const ChatContainer = () => {
   return content
 }
 
-export default ChatContainer
+export default React.memo(ChatContainer)

@@ -3,7 +3,7 @@ import { ChildrenType } from '../types'
 import { loadingGif } from '../../assets'
 import { useError } from '../../hooks'
 import './Error.scss'
-import { isObj } from '../utils'
+import { Errors, isObj } from '../utils'
 
 
 export const ResponseFallback = ({children}:{children?: ReactNode | ReactNode[]})=>{
@@ -11,12 +11,39 @@ export const ResponseFallback = ({children}:{children?: ReactNode | ReactNode[]}
 console.log(`ERROR`,error);
 
     if(!error) return <>{children}</>
+    let notMember = (
+        <div>
+            <h2 className='error-type'>you are not a member of this channel</h2>
+            <a href='/chat/manage/join'>find and join</a>
+        </div>
+    )
+    let notFound = (
+        <div>
+            <h2  className='error-type'>{error?.message}</h2>
+            <button onClick={()=>setError('')} >Continue</button>
+        </div>
+    )
+    let isMessageObj = isObj(error?.message)
     let displayedError =(
         <>
         {isObj(error) ? (
-             Object.keys(error).map(err=>{
-                return (<span key={error[err]} className='error'>{err}: {JSON.stringify(error[err])}</span>)
-            })  
+             error?.name === Errors.NOT_A_MEMBER ? (
+                notMember
+             ) : (
+                error.name === Errors.NOT_FOUND ? (
+                    notFound
+                ) : 
+                Object.keys(error).map(err=>{
+                    return (<span key={error[err]} className='error'>{err}: {isMessageObj ? (
+                        Object.keys(error.message).map(msg=>{
+                            return `${msg}: ${error.message[msg]}`
+                        })
+                    ): (
+                        JSON.stringify(error[err])
+                    )
+                }</span>)
+                })  
+             )
         ): (
             JSON.stringify(error)
         )}
@@ -27,9 +54,9 @@ console.log(`ERROR`,error);
         <>
         {Object?.keys(error)?.length ? (
             <div className='fallback-component'>
-                <h2>ERROR:</h2>
                 {displayedError}
             <button  onClick={()=>setError('')}>Continue</button>
+                
             </div>
 
         ) : null}
@@ -71,7 +98,7 @@ export type UseErrorContextType = ReturnType<typeof useErrorContext>
 
 export const useErrorContext = (initErrorContextState: ErrorInitialState) => {
     const [hasError,setHasError]= useState(false)
-    const [error,setError] = useState<any>()
+    const [error,setError] = useState<any>({name:Errors.NOT_A_MEMBER})
 
     return {error,hasError,setHasError,setError}
 }

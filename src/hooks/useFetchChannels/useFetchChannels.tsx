@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { useAuth, useAuthCookies, useChat, useError } from '..'
-import { APIFetch, throwErr } from '../../components/utils'
+import { APIFetch, Errors, throwErr } from '../../components/utils'
 import { useNavigate } from 'react-router-dom'
 
 const useFetchChannels = () => {
@@ -19,6 +19,10 @@ const useFetchChannels = () => {
     
         let response = await APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
         console.log(`CHANNELS RESPONSE:`, response)
+        if( response.message.name == Errors.CHANNELS_NOT_FOUND){
+            setChannels([])
+            return
+        }
         if(!response?.success){
             console.log(`ERROR`)
             throwErr(response?.message)
@@ -34,13 +38,9 @@ const useFetchChannels = () => {
     },[]
     )
 
-    useEffect(
-        ()=>{
-            fetchChannels()
-        },[user]
-    )
+ 
   
-    return {channels,setChannels}
+    return {channels,fetchChannels}
 
 }
 

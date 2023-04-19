@@ -3,6 +3,7 @@ import { Navigate,Outlet, useLocation } from 'react-router-dom'
 import { useAuth, useAuthCookies } from '../../hooks'
 import ChatProvider from '../ChatProvider/ChatProvider'
 import NavigationBar from '../NavigationBar/NavigationBar'
+import SocketProvider from '../SocketContext/SocketProvider'
 
 const ProtectedRoute = () => {
   console.log(`PROTECTED ROUTE RENDER`);
@@ -13,10 +14,12 @@ const ProtectedRoute = () => {
 
   return  (
    <ChatProvider>
+    <SocketProvider>
     <>
       <NavigationBar />
        <Outlet/>
     </>
+    </SocketProvider>
    </ChatProvider>
   )
 }

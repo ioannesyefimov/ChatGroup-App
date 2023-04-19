@@ -35,15 +35,10 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
     if(!name.includes('?channel=')) {
       return setCurrentChannel(null)
     }
-    name = name.replace('?channel=','').replaceAll('-', ' ')
+    name = name?.trim().replace('?channel=','').replaceAll('-', ' ')
     if(!user.email) return 
     setLoading(true)
     console.log(`name:`, name);
-    
-   if(currentChannel?.channelName && name !== currentChannel.channelName) {
-     setCurrentChannel(null)
-   }
-   
    socket.emit('get_channel',{channelName:name,user})
    
     
@@ -62,13 +57,15 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
 
   useEffect(
     ()=>{
-      socket.on('receive_message',(data:SocketResponse)=>{
+      socket.connect()
+
+      let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
         if(data.data.messages){
           setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         }
-      })
-      socket.on('delete_message',(data:SocketResponse)=>{
+      }
+      let onDeleteMessage = (data:SocketResponse)=>{
         if(data.success){
           console.log(`SUCCESS DELETE`, data);
           
@@ -76,21 +73,30 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
         } else {
           setError(data.message)
         }
-      })
-      socket.on('get_channel',(data:SocketResponse)=>{
+      }
+      let onGetChannel = (data:SocketResponse)=>{
         console.log(`connection channel:`,data);
+        if(!data.success){
+          setError(data?.message)
+        }
         if(data?.data?.channels){
           setCurrentChannel(data.data?.channels)
          socket.emit('join_channel',data?.data?.channels?._id)
         }
-      })
+      }
+      socket.on('receive_message',onMessage)
+      socket.on('delete_message',onDeleteMessage)
+      socket.on('get_channel',onGetChannel)
       return ()=>{
-        console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
+        socket?.off('get_channel',onGetChannel)
+        socket?.off('delete_message',onDeleteMessage)
+        socket?.off('receive_message',onMessage)
         if(currentChannel?._id){
+          console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           socket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
         }
       }
-    },[socket,currentChannel]
+    },[socket]
   )
   const handleSubmitMessage = async(e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, value: any, setValue: Dispatch<SetStateAction<any>>, propsValue: any, setPropsValue: Dispatch<SetStateAction<any>>): Promise<void> =>{
     try {

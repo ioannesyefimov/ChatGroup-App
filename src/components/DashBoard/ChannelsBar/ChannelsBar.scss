@@ -10,35 +10,13 @@
 
         position: relative;
         .add-btn{
-            background: #252329;
+            // background: #252329;
             border-radius: 5px;
             min-width:30px !important;
             min-height: 30px;
-
-            position: relative;
-
-            &::after, &::before{
-                position: absolute;
-                content: '';
-                background-color: white;
-                width: 25%;
-                height: 1.8px;
-            }
-
-            &::after{
-                margin: 0 auto;
-                left: 0;
-                right: 0;
-
-            }
-
-            &::before{
-                // margin: 0 auto;
-                left: 0;
-                right: 0;
-                margin: 0 auto;
-                transform: rotate(90deg);
-            }
+            padding: .1rem;
+            border: 1px solid gray;
+        
         }
         .flex.flex--between{
             margin-bottom: 1rem;

@@ -4,12 +4,18 @@ import { APIFetch, Errors, throwErr } from '../components/utils'
 import useError from './useErrorContext/useError'
 import { useAuth } from '.'
 const useSearch = () => {
+    const {setLoading} = useAuth()
     type SearchedValueType = {
         
         users?:UserType[],channels?:ChannelType[]
     }
     const [search, setSearch] = useState<any>('')
-    const [searchedValue,setSearchedValue] = useState<SearchedValueType>()
+    const [searchedValue,setSearchedValue] = useState<SearchedValueType>(
+        {
+            users:[],
+            channels:[]
+        }
+    )
     const {setError} = useError()
  
     type ResultType = typeof searchedValue
@@ -18,7 +24,7 @@ const useSearch = () => {
         searchType:string
         channels?:ChannelType[]
     }
-    const SEARCH_TYPE = {
+    const SEARCH_TYPE: {[index:string]:string} = {
         CHANNELS: 'CHANNELS',
         CHANNEL: 'CHANNEL',
         USERS:'USERS',
@@ -27,7 +33,8 @@ const useSearch = () => {
     }
     const handleSearch = useCallback(async({search,searchType,channels}:HandleSearchType) =>{
         try {
-            if(!search) throwErr({name:Errors.MISSING_ARGUMENTS,arguments: 'search'}) 
+            setLoading(true)
+            if(!search)return
             let result:ResultType= {users: [], channels:[]}
             
             switch(searchType){
@@ -35,24 +42,18 @@ const useSearch = () => {
                     let response = await APIFetch({url:`http://localhost:5050/api/channels/`});
                     if(!response.success) return throwErr(response.message)
                     console.log(`RESPONSE:`, response);
-                    if(response.data.channels){
-                        let filtered = response.data.channels?.filter((channel:ChannelType)=>{
+                        let filtered = response?.data?.channels?.filter((channel:ChannelType)=>{
                             console.log(`CHANNEL :`, channel);
                             search = search.toLowerCase()
                             let name = channel.channelName.toLowerCase() 
                             return name.includes(search)
                         })
                         console.log(`FILTERED:`, filtered);
-                        result.channels = filtered
-                    }
+                    result.channels = filtered
                     break
                     
                 }
                 case SEARCH_TYPE.CHANNEL:{
-                    // let response = await APIFetch({url:`http://localhost:5050/api/channels/userChannels?userEmail=${user.email}`});
-                    // if(!response.success) return throwErr(response.message)
-                    // console.log(`RESPONSE:`, response);
-                    // if(response.data.channels){
                         let filtered = channels?.filter((channel:ChannelType)=>{
                             console.log(`CHANNEL :`, channel);
                             search = search.toLowerCase()
@@ -62,7 +63,6 @@ const useSearch = () => {
                         console.log(`FILTERED:`, filtered);
                         result.channels = filtered
                     break
-                    
                 }
                 case SEARCH_TYPE.USERS: {
                     let response = await APIFetch({url:`http://localhost:5050/api/user/get?${search}`});
@@ -70,16 +70,14 @@ const useSearch = () => {
                     result.users =  Array.isArray(response.data.users) ? response.data.users : [response.data.users]
                     break
                 }
-                case SEARCH_TYPE.USER: {
-                    let response = await APIFetch({url:`http://localhost:5050/api/user/get?${search}`});
-                    if(!response.success) throwErr(response.message)
-                    result.users =  Array.isArray(response.data.users) ? response.data.users : [response.data.users]
-                    break
-                }
+              
                 }
             setSearchedValue({channels:result?.channels,users:result?.users})            
         } catch (error) {
             setError(error)
+        } finally{
+            setLoading(false)
+
         }
             
     },[])

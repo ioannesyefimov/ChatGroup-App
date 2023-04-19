@@ -6,13 +6,13 @@ import './Channel.scss'
 import { trashIco } from '../../../assets'
 import { UserType } from '../../types'
 type ChannelProps = {
-    key:string|number
+    key:string
     name:string
     avatar?:string
-    id?:string
-    handleLeaveChannel?: (_id:string,)=>void
+    handleLeaveChannel?:(_id:string,)=>void 
+    children?: React.ReactNode
 }
-const Channel = ({key,name,avatar,id,handleLeaveChannel}:ChannelProps) => {
+const Channel = ({key,name,avatar,handleLeaveChannel, ...props}:ChannelProps) => {
   return (
     <div key={key} className="channel">
         {avatar ? (
@@ -21,9 +21,10 @@ const Channel = ({key,name,avatar,id,handleLeaveChannel}:ChannelProps) => {
             <div className="channel-logo">{getFirstLetter(name,2)}</div>
         )}
         <Link className='link-tag' to={`/chat/?channel=${name?.replaceAll(' ', '-').trim()}`} replace><div className="channel-name">{name}</div></Link>
-        {handleLeaveChannel  && (
-            <button onClick={()=>handleLeaveChannel(id!)} className='left-btn'><img src={trashIco} alt="trash ico" /></button>
-        )}
+        {handleLeaveChannel  ? (
+            <button onClick={()=>handleLeaveChannel(key!)} className='left-btn'><img src={trashIco} alt="trash ico" /></button>
+        ): null}
+        {props.children ?? null}
     </div> 
    )
 }

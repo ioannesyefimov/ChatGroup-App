@@ -1,6 +1,26 @@
 @use '../../utils/utils.scss' as * ;
 .App{
     position: relative;
+    .channels {
+        margin-top: 2rem;
+    
+        display: grid;
+        gap:.8rem;
+        
+      
+        .channel {
+
+            .left-btn {
+                margin-left: auto;
+                max-width: 20px;
+                padding: 0rem;
+                img{
+                    width: 100%;
+                    filter: invert(100%) brightness(70%);
+                }
+            }
+        }
+    }
     .left-wrapper{
         // position: absolute !important;
         @include respond-to(small){
@@ -12,26 +32,7 @@
             text-align: center;
             margin-top: 1rem;
         }
-        .channels {
-            margin-top: 2rem;
         
-            display: grid;
-            gap:.8rem;
-            
-          
-            .channel {
-
-                .left-btn {
-                    margin-left: auto;
-                    max-width: 20px;
-                    padding: 0rem;
-                    img{
-                        width: 100%;
-                        filter: invert(100%) brightness(70%);
-                    }
-                }
-            }
-        }
 
     }
 }

@@ -5,25 +5,28 @@ import { ChannelType, UserType } from '../../types'
 import { useSearch } from '../../../hooks'
 type PropsType ={
   channels:ChannelType[]
+  searchType:string
   setSearchedChannels: React.Dispatch<React.SetStateAction<ChannelType[] | null>>
 }
-const SearchBar = ({setSearchedChannels,channels}:PropsType) => {
+const SearchBar = ({setSearchedChannels,channels,searchType}:PropsType) => {
   const {search,SEARCH_TYPE,searchedValue,handleSearch ,handleSearchChange} = useSearch()
 
   useEffect(
     ()=>{
-        if(search){
+      let handle = ()=>handleSearch({search,searchType:SEARCH_TYPE[searchType],channels})
+      let timeout = setTimeout(handle,1500)
+      if(!search){
+        setSearchedChannels(null)
+        
+      }
+      return ()=>clearTimeout(timeout)
 
-            let handle = ()=>handleSearch({search,searchType:SEARCH_TYPE.CHANNEL,channels})
-            let timeout = setTimeout(handle,3000)
-            console.log(`value:`,searchedValue);
-            
-            setSearchedChannels(searchedValue?.channels!)
-            return ()=>clearTimeout(timeout)
-        }else {
-          setSearchedChannels(null)
-        }
-    },[search,searchedValue?.channels]
+    },[search]
+  )
+  useEffect(
+    ()=>{
+        setSearchedChannels(searchedValue?.channels! ?? null)
+    },[searchedValue]
   )
 
   return (

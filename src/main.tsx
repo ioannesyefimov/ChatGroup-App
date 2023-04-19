@@ -10,13 +10,11 @@ import { CookiesProvider } from 'react-cookie'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary   Fallback={()=>ErrorFallBack()}  >
-      <SocketProvider>
         <CookiesProvider>
           <AuthProvider >
             <App />
           </AuthProvider>
         </CookiesProvider>
-      </SocketProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 )
