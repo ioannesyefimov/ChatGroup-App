@@ -6,7 +6,7 @@ export type CookiesType = {
   user: UserType
   accessToken:string,
   refreshToken:string
-  channels: ChannelType | ChannelType[]
+  channels:  ChannelType[]
 }
 
 const useAuthCookies = () => {

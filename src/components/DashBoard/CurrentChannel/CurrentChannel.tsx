@@ -1,14 +1,15 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import './CurrentChannel.scss'
-import { useAuth, useChat, useError } from '../../../hooks'
-import { ChannelType, MessageType, UserType } from '../../types'
+import { useAuth, useChat,useSocket, useError } from '../../../hooks'
+import { ChannelType, MessageType, ResponseType, UserType } from '../../types'
 import Message from '../Message/Message'
-import { APIFetch, setter, throwErr, validateInput } from '../../utils'
+import { APIFetch, Errors, setter, throwErr, validateInput } from '../../utils'
 import {SubmitInput} from '../..'
 import { ChannelsProps } from '../ChatContainer'
 import { Socket } from 'socket.io-client'
 import Messages from '../../Messages/Messages'
+import { ResponseFallback } from '../../ErrorProvider/ErrorProvider'
 
 export type HandleClickType = {
   handleClick: (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | undefined, value: any, setValue: Dispatch<SetStateAction<any>>, propsValue: any, setPropsValue: Dispatch<SetStateAction<any>>) => Promise<void>
@@ -19,15 +20,16 @@ export type SocketResponse = {
   message?: any
 }
 
-const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Socket<any>}) => {
+const CurrentChannel = () => {
+  const socket = useSocket()!
   const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
-  // const socket = useSocket()!
   const {user,setLoading} = useAuth()
+  const [serverResponse,setServerResponse]= useState<ResponseType | null>(null)
   const {setError} = useError()
   const location = useLocation()
 
 
- const handleCurrentChannel = async(channels:ChannelType[] ,name:string)=>{
+ const handleCurrentChannel = async(name:string)=>{
 
   try {
     console.log(`NAME: ${name}`);
@@ -36,12 +38,10 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
       return setCurrentChannel(null)
     }
     name = name?.trim().replace('?channel=','').replaceAll('-', ' ')
-    if(!user.email) return 
     setLoading(true)
     console.log(`name:`, name);
    socket.emit('get_channel',{channelName:name,user})
    
-    
   } catch (error) {
     setError(error)
   } finally{
@@ -51,14 +51,14 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
 
   useEffect(
     ()=>{   
-      handleCurrentChannel(channels,location.search)
-     },[location.search]
+      let handle = ()=>handleCurrentChannel(location.search)
+      let timeout = setTimeout(handle,1000)
+      return ()=>clearTimeout(timeout)
+    },[location.search]
   )
 
   useEffect(
     ()=>{
-      socket.connect()
-
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
         if(data.data.messages){
@@ -77,13 +77,17 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
       let onGetChannel = (data:SocketResponse)=>{
         console.log(`connection channel:`,data);
         if(!data.success){
-          setError(data?.message)
+          setServerResponse(data?.message)
         }
         if(data?.data?.channels){
           setCurrentChannel(data.data?.channels)
          socket.emit('join_channel',data?.data?.channels?._id)
         }
       }
+      let onConnecting = ()=>{
+        console.log(`CONNECTED BY ID ${socket.id}`)
+      }
+      socket.on('connect',onConnecting)
       socket.on('receive_message',onMessage)
       socket.on('delete_message',onDeleteMessage)
       socket.on('get_channel',onGetChannel)
@@ -91,12 +95,13 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
         socket?.off('get_channel',onGetChannel)
         socket?.off('delete_message',onDeleteMessage)
         socket?.off('receive_message',onMessage)
-        if(currentChannel?._id){
+        socket?.off('connection',onConnecting)
+        if(currentChannel?._id ){
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           socket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
         }
       }
-    },[socket]
+    },[]
   )
   const handleSubmitMessage = async(e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, value: any, setValue: Dispatch<SetStateAction<any>>, propsValue: any, setPropsValue: Dispatch<SetStateAction<any>>): Promise<void> =>{
     try {
@@ -128,7 +133,14 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
     setLoading(false)
   }
 }
-
+  let channelResponse = (
+    (
+      <div className='main-wrapper'>
+        <h2 className='channel-title'>Choose your channel</h2>
+       </div>
+       
+     )
+  )
   let title = <h2 className='channel-title'>{currentChannel?.channelName}</h2>
     let channelContent =
     (
@@ -140,11 +152,10 @@ const CurrentChannel = ({socket,channels,setChannels}:ChannelsProps&{socket: Soc
           } } />
       </div>
   )
-  return currentChannel?.channelName ? channelContent : (
-   <div className='main-wrapper'>
-     <h2 className='channel-title'>Choose your channel</h2>
-    </div>
-    
+  return (
+    <ResponseFallback response={serverResponse} setResponse={setServerResponse}>
+      {currentChannel?.channelName ? channelContent : channelResponse}
+    </ResponseFallback>
   )
 }
 

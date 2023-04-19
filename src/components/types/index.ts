@@ -17,10 +17,12 @@ export type MessageType =  {
 
 }
 
-export type ResponseType  = {
-    message?: Object | null
-    success: boolean | null
-    data?: any
+export type ResponseType = {
+    name?:string
+    arguments?:any
+    message?:string
+    success?:boolean
+    data?:any
 }
 
 export type Member = UserType

@@ -28,7 +28,7 @@ const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
             <Button onClick={()=>navigate('/chat/manage')} name='add-btn' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels fallbackText={`You aren't member of any channels`} channels={ searchedChannels ?? channels  } />
+            <Channels type='leave' fallbackText={`You aren't member of any channels`} channels={ searchedChannels ?? channels  } />
           </div>
       </div>
       <UserBar user={user} />

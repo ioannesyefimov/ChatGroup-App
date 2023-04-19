@@ -10,6 +10,7 @@ import useSearchChannels from '../../hooks/useSearch'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 import { Socket } from 'socket.io-client/build/esm/socket'
 import {io} from 'socket.io-client'
+import { ResponseFallback } from '../ErrorProvider/ErrorProvider'
 export type ChannelsProps = {
   setChannels?: React.Dispatch<React.SetStateAction<ChannelType[]>>
   channels : ChannelType[]
@@ -17,7 +18,6 @@ export type ChannelsProps = {
 
 const ChatContainer = () => {
   const {channels,fetchChannels} = useFetchChannels()
-  const socket = useSocket()
   
   useEffect(
     ()=>{
@@ -31,7 +31,7 @@ const ChatContainer = () => {
         <div className='chat-container-inner '>  
             <ChannelsBar channels={channels} />
             {/* <CurrentChannel location={location.pathname} /> */}
-            <CurrentChannel socket={socket!}  channels={channels} />
+              <CurrentChannel />
           <Outlet/>
         </div>
       </div>

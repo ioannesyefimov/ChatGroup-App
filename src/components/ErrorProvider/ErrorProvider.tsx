@@ -1,68 +1,30 @@
-import React, {ReactElement, ReactNode, useState } from 'react'
-import { ChildrenType } from '../types'
-import { loadingGif } from '../../assets'
+import React, {ReactNode, SetStateAction, useState } from 'react'
+import { ResponseType } from '../types'
 import { useError } from '../../hooks'
 import './Error.scss'
 import { Errors, isObj } from '../utils'
+import Button from '../Button/Button'
+import { useNavigate } from 'react-router-dom'
 
-
-export const ResponseFallback = ({children}:{children?: ReactNode | ReactNode[]})=>{
-    const {error,setError} = useError()
-console.log(`ERROR`,error);
-
-    if(!error) return <>{children}</>
-    let notMember = (
-        <div>
-            <h2 className='error-type'>you are not a member of this channel</h2>
-            <a href='/chat/manage/join'>find and join</a>
+type ResponseFallbackType ={
+    children?:ReactNode| ReactNode[]
+    response:ResponseType | null
+    setResponse: React.Dispatch<SetStateAction<ResponseType|null>>
+    resetResponse:()=>void
+}
+export const ResponseFallback = ({children,response,setResponse,resetResponse}:ResponseFallbackType)=>{
+console.log(`response`,response);
+    const navigate = useNavigate()
+    if(!response) return <>{children}</>
+    let handleOnClick = response.name === Errors.NOT_A_MEMBER ? ()=>{navigate('/chat/manage/join');setResponse(null)} :()=> setResponse(null)
+    let displayedMsg = (
+        <div className='fallback-component'>
+            <span className='response-type'>{response.name ?? JSON.stringify(response)}</span>
+            <Button onClick={handleOnClick} text='Continue'name='continue-btn' />
         </div>
-    )
-    let notFound = (
-        <div>
-            <h2  className='error-type'>{error?.message}</h2>
-            <button onClick={()=>setError('')} >Continue</button>
-        </div>
-    )
-    let isMessageObj = isObj(error?.message)
-    let displayedError =(
-        <>
-        {isObj(error) ? (
-             error?.name === Errors.NOT_A_MEMBER ? (
-                notMember
-             ) : (
-                error.name === Errors.NOT_FOUND ? (
-                    notFound
-                ) : 
-                Object.keys(error).map(err=>{
-                    return (<span key={error[err]} className='error'>{err}: {isMessageObj ? (
-                        Object.keys(error.message).map(msg=>{
-                            return `${msg}: ${error.message[msg]}`
-                        })
-                    ): (
-                        JSON.stringify(error[err])
-                    )
-                }</span>)
-                })  
-             )
-        ): (
-            JSON.stringify(error)
-        )}
-        </>
-    )
+    ) 
+    return displayedMsg
 
-    return (
-        <>
-        {Object?.keys(error)?.length ? (
-            <div className='fallback-component'>
-                {displayedError}
-            <button  onClick={()=>setError('')}>Continue</button>
-                
-            </div>
-
-        ) : null}
-        {children}
-        </>
-    )
 }
 
 export const ErrorFallBack = () => {
@@ -98,7 +60,7 @@ export type UseErrorContextType = ReturnType<typeof useErrorContext>
 
 export const useErrorContext = (initErrorContextState: ErrorInitialState) => {
     const [hasError,setHasError]= useState(false)
-    const [error,setError] = useState<any>({name:Errors.NOT_A_MEMBER})
+    const [error,setError] = useState<any>()
 
     return {error,hasError,setHasError,setError}
 }
@@ -113,7 +75,7 @@ const ErrorProvider = ({children,Fallback}: ErrorProviderType) => {
 
     return (
         <ErrorContext.Provider value={value}>
-            {value.hasError ? (<ErrorFallBack />) : (<ResponseFallback>{children}</ResponseFallback>)}
+            {value.hasError ? (<ErrorFallBack />) :children}
         </ErrorContext.Provider>
     )
 }

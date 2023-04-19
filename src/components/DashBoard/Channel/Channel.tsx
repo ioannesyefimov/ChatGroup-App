@@ -3,28 +3,31 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { getFirstLetter } from '../../utils'
 import './Channel.scss'
-import { trashIco } from '../../../assets'
+import { joinIco, trashIco } from '../../../assets'
 import { UserType } from '../../types'
+import Button from '../../Button/Button'
 type ChannelProps = {
     key:string
+    id:string
     name:string
     avatar?:string
-    handleLeaveChannel?:(_id:string,)=>void 
-    children?: React.ReactNode
+    type?:string
+    handleChannel?:(_id:string,)=>void 
 }
-const Channel = ({key,name,avatar,handleLeaveChannel, ...props}:ChannelProps) => {
+const Channel = ({key,name,avatar,handleChannel,id,type}:ChannelProps) => {
   return (
-    <div key={key} className="channel">
+    <div className="channel">
         {avatar ? (
             <img src={avatar} alt="channel logo" className='channel-logo'/>
         ) : (
             <div className="channel-logo">{getFirstLetter(name,2)}</div>
         )}
         <Link className='link-tag' to={`/chat/?channel=${name?.replaceAll(' ', '-').trim()}`} replace><div className="channel-name">{name}</div></Link>
-        {handleLeaveChannel  ? (
-            <button onClick={()=>handleLeaveChannel(key!)} className='left-btn'><img src={trashIco} alt="trash ico" /></button>
-        ): null}
-        {props.children ?? null}
+        {type!==''  ? (
+            <Button onClick={()=>handleChannel!(id)} name='handle-btn' img={type==='leave' ? trashIco : type==='join' ? joinIco : ''}  />
+        ): (
+            null
+        )}
     </div> 
    )
 }

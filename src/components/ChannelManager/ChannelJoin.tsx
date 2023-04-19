@@ -64,9 +64,7 @@ const ChannelJoin = ()=>{
         <div className='prompt-menu-component  box-shadow--gray'>
             <form>
                 <SearchBar channels={channels} searchType='CHANNELS' setSearchedChannels={setSearchedChannels}/>
-                <Channels location="search" fallbackText={`Nothing  was found...`}  channels={searchedChannels ?? channels}>
-                    <Button name="submit-btn" img={joinIco} onClick={(e)=>handleJoin(e)}/>
-                </Channels>
+                <Channels handleJoinChannel={handleJoin} type="join" fallbackText={`Nothing  was found...`}  channels={searchedChannels ?? channels}/>
             </form>
         </div>
     )

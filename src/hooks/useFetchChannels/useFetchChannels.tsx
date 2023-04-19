@@ -5,9 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 const useFetchChannels = () => {
     const {setLoading,user,serverUrl} = useAuth()
-    const {cookies} = useAuthCookies()
+    const {cookies,setCookie} = useAuthCookies()
     const {setChannels,channels} = useChat()
-    const {setError} = useError();
     const navigate=useNavigate()
        const fetchChannels = useCallback(async()=>{
         try {
@@ -15,10 +14,15 @@ const useFetchChannels = () => {
               navigate('/auth/signin')
               return console.log(`USER IS UNDEFINED`)
           } 
+          if(cookies.channels || cookies.channels === null){
+            setChannels(cookies?.channels)
+            return
+          }
         setLoading(true)
     
         let response = await APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
         console.log(`CHANNELS RESPONSE:`, response)
+        setCookie('channels', response?.data?.channels ?? null, {maxAge: 450,path:'/'})
         if( response.message.name == Errors.CHANNELS_NOT_FOUND){
             setChannels([])
             return

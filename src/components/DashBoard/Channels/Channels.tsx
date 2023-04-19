@@ -6,23 +6,27 @@ import './Channels.scss'
 import { ChannelType } from '../../types'
 import Channel from '../Channel/Channel'
 import { useAuth, useChat, useError, useHandleChannel } from '../../../hooks'
-const Channels = ({...props}) => {
-  const {handleLeaveChannel} = useHandleChannel()
-
+type PropsType = {
+  type:string 
+  fallbackText:string 
+  channels: ChannelType[] | null
+}
+const Channels = ({type,fallbackText,channels}:PropsType) => {
+  const {handleLeaveChannel,handleJoinChannel} = useHandleChannel()
   
-  
+  let handleFc = type === 'leave' ? handleLeaveChannel: type==='join' ? handleJoinChannel : ()=>{}
   let content = (
-    Array.isArray(props.channels) && props.channels?.length ? (
+    Array.isArray(channels) && channels?.length ? (
       <div className='channels'>
-        {props.channels.map((channel:ChannelType)=>{
+        {channels.map((channel:ChannelType)=>{
           return (
-            <Channel key={channel?._id!} handleLeaveChannel={props?.location !== 'search'? handleLeaveChannel: undefined} name={channel?.channelName} avatar={channel?.channelAvatar} >{props.children ?? null}</Channel>
+            <Channel id={channel._id!} key={channel?._id!} handleChannel={handleFc} name={channel?.channelName} avatar={channel?.channelAvatar}/>
           )
         })
         }
       </div>
     ) : (
-        <h4 className='hint'>{props.fallbackText ?? 'There is no channels yet'}</h4>
+        <h4 className='hint'>{fallbackText ?? 'There is no channels yet'}</h4>
     )
   )
 
