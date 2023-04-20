@@ -1,15 +1,16 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { APIFetch, throwErr } from '../../components/utils';
 import { useAuth } from '..';
 import useChat from '../useChatContext/useChatContext';
 import useError from '../useErrorContext/useError';
-import { ResponseType } from '../../components/types';
+import { ChannelType, ResponseType, UserType } from '../../components/types';
+import { Socket } from 'socket.io-client';
 
 const useHandleChannel = () => {
     const {setError}=useError()
-    const {setLoading,user,serverUrl}=useAuth()
+    const {setLoading,serverUrl}=useAuth()
     const {setChannels} =useChat() 
-    const handleLeaveChannel = async(id:string)=>{
+    const handleLeaveChannel = async(id:string,user:UserType)=>{
         try {
           if(!id) return
           console.log(`ID:${id}`);
@@ -30,7 +31,7 @@ const useHandleChannel = () => {
       }
 
       const handleJoinChannel = 
-      async (id:string)=>{
+      async (id:string,user:UserType)=>{
            try {
                setLoading(true)
                let fields = {id}
@@ -49,7 +50,28 @@ const useHandleChannel = () => {
            }
        }
 
-      return {handleLeaveChannel,handleJoinChannel}
+       
+
+ const handleCurrentChannel = async(name:string,setter:Dispatch<SetStateAction<ChannelType| null>>,socket:Socket<any,any>,user:UserType)=>{
+
+  try {
+    console.log(`NAME: ${name}`);
+    if(!user.email) return
+    if(!name.includes('?channel=')) {
+      return setter(null)
+    }
+    name = name?.trim().replace('?channel=','').replaceAll('-', ' ')
+    setLoading(true)
+    console.log(`name:`, name);
+   socket.emit('get_channel',{channelName:name,user})
+   
+  } catch (error) {
+    setError(error)
+  } finally{
+    setLoading(false)
+  }
+}
+      return {handleLeaveChannel,handleJoinChannel,handleCurrentChannel}
 }
 
 export default useHandleChannel

@@ -11,14 +11,14 @@ const NavigationBar = () => {
 
   const navBar = (
     <div className="flex">
-       <button className='nav-btn' onClick={()=>clearState('/auth', navigate)}>Logout</button>
-      <button className='nav-btn back-btn' onClick={()=>navigate(-1)}>Back</button>
+       <button className='nav-btn link' onClick={()=>clearState('/auth', navigate)}>Logout</button>
+      <button className='nav-btn back-btn link' onClick={()=>navigate(-1)}>Back</button>
     </div>
   )
   const navigate = useNavigate()
     return (
     <div className='navbar-component' >
-        <button className='logo-btn' onClick={()=>navigate('/chat')}>
+        <button className='logo-btn link' onClick={()=>navigate('/chat')}>
           <img  src={chatifyIco} alt="logo" />
         </button>
       <div className="navbar-inner" id='navBarInner'>

@@ -24,18 +24,16 @@ export type InitialStateType = {
  socket: Socket | undefined
 }
 
-type UseSocketContextType = {
-    socket: Socket<any> | null
-}
 
-
-export const SocketContext = React.createContext<UseSocketContextType>({socket:null })
 
 export const useSocketContext = ()=>{
-    const socket:Socket<any> = io('http://localhost:5050');
+    const socket:Socket<any> = io('http://localhost:5050',{autoConnect:false});
 
-return {socket}
+return socket
 }
+type UseSocketContextType =ReturnType<typeof useSocketContext> 
+export const SocketContext = React.createContext<UseSocketContextType | null>(null)
+
 
 
  const SocketProvider  = (

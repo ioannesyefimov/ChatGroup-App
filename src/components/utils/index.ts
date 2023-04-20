@@ -163,6 +163,7 @@ interface validateProps {
 
  
 const Errors = {
+  INVALID_CHANNEL_NAME: `Channel name must not contain any special characters such as [*|\":<>[\]{}\`\()';@&$] `,
   CHANNEL_NOT_FOUND: `Such channel wasn't found. Try to type in differently`,
   CHANNELS_NOT_FOUND: `Channels weren't found`,
   USER_NOT_FOUND: `Such user isn't registereg`,
@@ -188,7 +189,7 @@ const Errors = {
   JWT_MALFORMED: `jwt malformed` ,
   MISSING_ARGUMENTS: `MISSING ARGUMENTS`,
   ABORTED_TRANSACTION: `ABORTED TRANSACTION`,
-  NOT_HAVE_PERMISSION: 'USER DO NOT HAVE PERMISSION'
+  NOT_HAVE_PERMISSION: 'USER DO NOT HAVE PERMISSION',
   
 }
 

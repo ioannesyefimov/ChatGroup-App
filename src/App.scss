@@ -126,3 +126,19 @@ input.error{
 button {
   border:1px solid rgb(11, 11, 17) 
 }
+a.link {
+  color:gold;
+  font-weight: 700;
+
+  &:hover{
+    color:aquamarine;
+    text-decoration: dashed;
+    transform: scale(1.1);
+  }
+}
+
+.prompt {
+  .prompt-heading {
+    color:red;
+  }
+}

@@ -9,14 +9,14 @@ import { useNavigate } from 'react-router-dom'
 type ResponseFallbackType ={
     children?:ReactNode| ReactNode[]
     response:ResponseType | null
-    setResponse: React.Dispatch<SetStateAction<ResponseType|null>>
-    resetResponse:()=>void
+    setResponse?: React.Dispatch<SetStateAction<ResponseType|null>>
+    resetResponse?:()=>void
 }
 export const ResponseFallback = ({children,response,setResponse,resetResponse}:ResponseFallbackType)=>{
 console.log(`response`,response);
     const navigate = useNavigate()
-    if(!response) return <>{children}</>
-    let handleOnClick = response.name === Errors.NOT_A_MEMBER ? ()=>{navigate('/chat/manage/join');setResponse(null)} :()=> setResponse(null)
+    if(!response?.name) return <>{children}</>
+    let handleOnClick = response.name === Errors.NOT_A_MEMBER ? resetResponse! :()=> setResponse!(null)
     let displayedMsg = (
         <div className='fallback-component'>
             <span className='response-type'>{response.name ?? JSON.stringify(response)}</span>

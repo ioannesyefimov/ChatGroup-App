@@ -1,8 +1,48 @@
+@use '../../../App.scss' as *;
 .main-wrapper {
     display: flex;flex-direction: column;
     gap:1rem;
 
     padding: 1.25rem;
+    .response-fallback {
+
+        h2{
+            text-align: center;
+        }
+        display: flex;
+        flex-direction: column; 
+        justify-content: space-around;
+
+
+            flex:1;
+        .users-wrapper {
+            display: flex;
+            gap:.75rem;            
+            .user{
+                outline: 1px solid black;
+                border-radius: 15px;
+                display: grid;
+                padding: .5rem;
+                gap:.5rem;
+                img{
+                    width: 45px;
+                    height: 45px;
+                    // max-width: 35px;
+                    object-fit: cover;
+                    margin: auto;
+                }
+                p.name {
+                    line-height: 1.25;
+                    font-size: 1rem;
+                }
+            }
+
+        }
+        .link{
+            font-weight:  700;
+            align-self:center;
+        }
+    }
     .channel-title{
         margin-top: .5rem;
         font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);   

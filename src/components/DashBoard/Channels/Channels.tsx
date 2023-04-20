@@ -20,7 +20,7 @@ const Channels = ({type,fallbackText,channels}:PropsType) => {
       <div className='channels'>
         {channels.map((channel:ChannelType)=>{
           return (
-            <Channel id={channel._id!} key={channel?._id!} handleChannel={handleFc} name={channel?.channelName} avatar={channel?.channelAvatar}/>
+            <Channel type={type} id={channel._id!} key={channel?._id!} handleChannel={handleFc} name={channel?.channelName} avatar={channel?.channelAvatar}/>
           )
         })
         }
