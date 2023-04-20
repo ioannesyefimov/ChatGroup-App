@@ -9,6 +9,8 @@ import CurrentChannel from './components/DashBoard/CurrentChannel/CurrentChannel
 import ChannelManager from './components/ChannelManager/ChannelManager'
 import ChannelJoin from './components/ChannelManager/ChannelJoin'
 import UserComponent from './components/UserComponent/UserComponent'
+import { useAuth, useAuthCookies } from './hooks'
+import { useEffect } from 'react'
 
 
 
@@ -91,6 +93,7 @@ let router = createBrowserRouter([
   
 ])
 function App() {
+
   return (
     <div className="App">
      <RouterProvider router={router} />

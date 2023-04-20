@@ -8,7 +8,7 @@ const useFetchChannels = () => {
     const {cookies,setCookie} = useAuthCookies()
     const {setChannels,channels} = useChat()
     const navigate=useNavigate()
-       const fetchChannels = useCallback(async()=>{
+       const fetchChannels = async()=>{
         try {
           if(!user?.email && !cookies.user.email ) {
               navigate('/auth/signin')
@@ -23,15 +23,10 @@ const useFetchChannels = () => {
         let response = await APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
         console.log(`CHANNELS RESPONSE:`, response)
         setCookie('channels', response?.data?.channels ?? null, {maxAge: 450,path:'/'})
-        if( response.message.name == Errors.CHANNELS_NOT_FOUND){
-            setChannels([])
-            return
-        }
         if(!response?.success){
             console.log(`ERROR`)
             throwErr(response?.message)
         }
-    
         setChannels(response?.data.channels)
        } catch (error) {
         console.error(error)
@@ -39,8 +34,8 @@ const useFetchChannels = () => {
        } finally{
             setLoading(false)
        }
-    },[]
-    )
+    }
+    
 
  
   

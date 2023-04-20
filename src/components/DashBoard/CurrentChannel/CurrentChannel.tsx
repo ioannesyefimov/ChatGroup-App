@@ -125,10 +125,7 @@ const CurrentChannel = () => {
   
   let fallbackContent = (
     (
-      <div className='main-wrapper'>
         <h2 className='channel-title'>Choose your channel</h2>
-       </div>
-       
      )
   )
   let title = <h2 className='channel-title'>{currentChannel?.channelName}</h2>

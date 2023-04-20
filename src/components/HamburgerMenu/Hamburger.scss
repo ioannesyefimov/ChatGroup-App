@@ -96,8 +96,7 @@
 }
 
 .hamburger-outer{
-    // position: relative;
-
+    
     transition: all .5s ease-in-out;
     display: flex;
     .hamburger-btn {
@@ -109,10 +108,7 @@
          height: 25px;
         left: .2rem;
          top:5px;
-         img{
-            //  width: 100%;
          }
-    }
     
 .hamburger.channels {
     transition: .3s all ease-in-out;

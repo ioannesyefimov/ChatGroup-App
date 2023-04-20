@@ -47,8 +47,8 @@ const ChannelCreate = ()=>{
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
                 let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar,channelDescription},method:'POST'})
                 if(!response.success) throwErr(response?.message)
-                setChannels({...channels, ...response?.data })
-                navigate(`/chat/${channelName}`)
+                setChannels(prev=>({...prev, ...response?.data }))
+                navigate(`/chat?channel=${channelName}`)
                 console.log(`RESPONSE : `, response)
             } catch (error) {
                 console.log(`ERROR:`,error)

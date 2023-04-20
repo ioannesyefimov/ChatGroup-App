@@ -41,4 +41,4 @@ const ChatContainer = () => {
   return content
 }
 
-export default React.memo(ChatContainer)
+export default ChatContainer

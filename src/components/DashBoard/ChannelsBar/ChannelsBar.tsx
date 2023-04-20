@@ -15,7 +15,6 @@ import { Button } from '../..'
 
 const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
   const [searchedChannels,setSearchedChannels] = useState<ChannelType[]|null>(null)
-
   const navigate = useNavigate()
   const {user} = useAuth()
 
@@ -25,10 +24,10 @@ const ChannelsBar = ({channels,setChannels}:ChannelsProps) => {
           <div className="left-wrapper-inner"  id="leftWrapperInner">
             <div className="flex flex--between">
             <span>Channels</span>
-            <Button onClick={()=>navigate('/chat/manage')} name='add-btn' img={settingIco} />
+            <Button onClick={()=>navigate('/chat/manage')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels type='leave' fallbackText={`You aren't member of any channels`} channels={ searchedChannels ?? channels  } />
+            <Channels type='leave' fallbackText={`You aren't member of any channels`} channels={searchedChannels?.length ? searchedChannels: channels} />
           </div>
       </div>
       <UserBar user={user} />

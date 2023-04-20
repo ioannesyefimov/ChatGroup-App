@@ -7,8 +7,7 @@ import useChat from "../useChatContext/useChatContext"
 
 export default () =>{
     const {user,loading,serverUrl,response,setUser,setLoading,setResponse} = useContext(AuthContext)
-    const {removeCookie,cookies} = useAuthCookies()
-
+    const {setCookie,removeCookie,cookies} = useAuthCookies()
     useEffect(
       ()=>{
         let isLogged = cookies?.user
@@ -17,6 +16,7 @@ export default () =>{
         }
       },[cookies?.user]
     )
+ 
     const clearState = useCallback((replace:string, navigate?:NavigateFunction) => {
         // console.log('CLEARNING STATE')
         setUser(initAuthContextState.user)

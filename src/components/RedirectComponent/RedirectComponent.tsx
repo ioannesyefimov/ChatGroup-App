@@ -1,39 +1,46 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useAuth, useChat, useError } from '../../hooks'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, throwErr } from '../utils'
+import { UserType } from '../types'
 
-type HandleLoginProps = {
-    accessToken: string
-    type: string
-    loggedThrough: string
-    signal?: AbortSignal
-}
 
 
 const RedirectComponent = () => {
     const URL = `http://localhost:5050/api`
-    
-    const {setCookie} = useAuthCookies()
+    const [serverResponse,setServerResponse]=useState<{user:UserType | null,accessToken:string|null}>({user:null,accessToken:null})
+    const {setLoading,serverUrl}=useAuth()
+    const {setCookie,cookies} = useAuthCookies()
     const {setError} = useError() 
     let location = useLocation()
+    type HandleLoginProps = {
+        accessToken: string
+        type: string
+        loggedThrough: string
+        signal?: AbortSignal
+    }
     let navigate = useNavigate()
-    let handleLogin = useCallback(
+    let handleLogin = 
         async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
-           
-            let response = await APIFetch({url:`${URL}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
+           try {
+            setLoading(true)
+            let response = await APIFetch({url:`${serverUrl}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
             if(!response?.success){
-                setError(response?.message)
-                return    
+                throwErr(response?.message)
             }
-            setCookie('user', response?.data?.user,{path:'/',maxAge:2000})
-            console.log(`response: ` , response)
-        },[]
-    )
-      let handleRedirect = useCallback(
-        async(controller:AbortController,signal:AbortSignal)=>{
+            setServerResponse({user:response.data.user,accessToken:response.data.accessToken})
+        } catch (error) {
+            setError(error)
+           }finally {
+            setLoading(false)
+           }
+        }
+    
+      let handleRedirect = 
+        async()=>{
             try {
+                setLoading(true)
                 let query = new URLSearchParams(location.search)
                 let type = query.get('type')
                 let loggedThrough = query.get('loggedThrough')
@@ -45,8 +52,7 @@ const RedirectComponent = () => {
                     throwErr({name:Errors.MISSING_ARGUMENTS,arguments:'accessToken'})
                 }
                 if(!type) throwErr({name:Errors.MISSING_ARGUMENTS,arguments:'type'})
-                setCookie('accessToken', accessToken, {path:'/',maxAge: 2000})
-
+                // setCookies('accessToken', accessToken, {path:'/',maxAge: 2000})
                 if(type==='newAccessToken'){
                     let redirect = query.get('redirectUrl')!
                     navigate(redirect)
@@ -54,26 +60,32 @@ const RedirectComponent = () => {
                     return 
                 }
                 if(type && loggedThrough && accessToken){
-                    handleLogin({accessToken,type,loggedThrough,signal})
+                    handleLogin({accessToken,type,loggedThrough});
                 }
-        
-                console.log(type)
                 
             } catch (error) {
                 setError(error)
+            }finally {
+                setLoading(false)
             }
-    },[])
+    }
     useEffect(
         ()=>{
-            let controller = new AbortController()
-            let signal = controller.signal
-            
-            handleRedirect(controller,signal)
-
-            return ()=> controller.abort()
+            handleRedirect()
         },[])
 
-
+        useEffect(
+            ()=>{
+                console.log(`RESPONSE:`, serverResponse);
+                if(serverResponse.user){
+                    setCookie('user',serverResponse.user,{path:'/',maxAge:2000})
+                }else if(serverResponse.accessToken){
+                    setCookie('accessToken',serverResponse?.accessToken,{path:'/',maxAge:2000})
+                    
+                }
+            },[serverResponse]
+        )
+        
 
     return <Outlet/>
 
