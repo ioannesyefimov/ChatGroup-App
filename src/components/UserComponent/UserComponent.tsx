@@ -10,7 +10,7 @@ import NavigationBar from '../NavigationBar/NavigationBar'
 const UserComponent = () => {
   const location = useLocation()
   const [showedUser,setShowedUser] = useState<UserType|null>()
-  const {handleSearch,searchedValue,setSearchedValue} = useSearch([])
+  const {handleSearch,searchedValue,setSearchedValue} = useSearch()
 
   useEffect(
     ()=>{
@@ -22,7 +22,7 @@ const UserComponent = () => {
       let email = query.get('email')
       let userName = query.get('userName')
       let id = query.get('id')
-      handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USER'})
+      handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USERS'})
       return ()=>{setSearchedValue({});setShowedUser(null)}
 
     },[]
@@ -40,7 +40,7 @@ const UserComponent = () => {
         {showedUser?.channels ? ( 
            showedUser.channels.map((c)=>{
             let channel = c.channel ?? c
-            return <Channel key={channel._id ?? '13'} name={channel.channelName} avatar={channel.channelAvatar} />
+            return <Channel id={channel._id!} key={channel._id ?? '13'} name={channel.channelName} avatar={channel.channelAvatar} />
              })
           ): (
           <h4>isn't member of any channels</h4>
@@ -51,7 +51,7 @@ const UserComponent = () => {
   let content = (
     <>
       <div className='user-component' >
-       <User user={showedUser} key={showedUser?._id}/>
+       <User user={showedUser!} key={showedUser?._id}/>
         {userChannels}
 
         <Link to='/chat' replace className='back-btn flex'><img src={backIco} alt="back-icon" /> Home</Link>
@@ -59,7 +59,16 @@ const UserComponent = () => {
     </>
   )
 
-  return content
+
+  return showedUser ? (
+    content
+  ) : (
+    <div className="user-component">
+      <h2>Not Found...</h2>
+      <span>Check spelling if you are sure there is such user...</span>
+      <Link to="/search">Search again</Link>
+    </div>
+  )
 } 
 
 export default UserComponent

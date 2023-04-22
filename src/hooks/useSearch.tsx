@@ -1,19 +1,20 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChannelType, UserType } from '../components/types'
-import { APIFetch, Errors, throwErr } from '../components/utils'
+import { APIFetch, Errors, sleep, throwErr } from '../components/utils'
 import useError from './useErrorContext/useError'
 import { useAuth } from '.'
 const useSearch = () => {
     const {setLoading} = useAuth()
     type SearchedValueType = {
         
-        users?:UserType[],channels?:ChannelType[]
+        users?:UserType[],channels?:ChannelType[],filtered:ChannelType[] | UserType[] | []
     }
     const [search, setSearch] = useState<any>('')
     const [searchedValue,setSearchedValue] = useState<SearchedValueType>(
         {
             users:[],
-            channels:[]
+            channels:[],
+            filtered:[],
         }
     )
     const {setError} = useError()
@@ -31,11 +32,13 @@ const useSearch = () => {
         USER:'USER',
         
     }
-    const handleSearch = useCallback(async({search,searchType,channels}:HandleSearchType) =>{
+    const handleSearch = async({search,searchType,channels}:HandleSearchType) =>{
         try {
             setLoading(true)
             if(!search)return
-            let result:ResultType= {users: [], channels:[]}
+            let result:ResultType= {users: [], channels:[],filtered:[]}
+            console.log(`SEARCH:`, search);
+            console.log(`type:`,searchType)
             
             switch(searchType){
                 case SEARCH_TYPE.CHANNELS:{
@@ -65,14 +68,30 @@ const useSearch = () => {
                     break
                 }
                 case SEARCH_TYPE.USERS: {
-                    let response = await APIFetch({url:`http://localhost:5050/api/user/get?${search}`});
+                    let response = await APIFetch({url:`http://localhost:5050/api/auth/user/users`});
                     if(!response.success) throwErr(response.message)
+                    console.log(`users search response:`, response);
                     result.users =  Array.isArray(response.data.users) ? response.data.users : [response.data.users]
+                    break
+                }
+                case SEARCH_TYPE.USER: {
+                    if(!searchedValue.users?.length) return console.error(`SEARCHED USERS IS `,searchedValue.users) 
+                    let filtered = searchedValue?.users?.filter((user:UserType)=>{
+                        console.log(`USER:`, user)
+                        search = search.toLowerCase()
+                        let username=user.userName.toLocaleLowerCase()
+                        let id = user._id?.toLocaleLowerCase()
+                        let email = user.email.toLocaleLowerCase()
+                        if(username.includes(search) || id?.includes(search) || email.includes(search)){
+                            return user
+                        }
+                    })
+                        result.filtered = filtered
                     break
                 }
               
                 }
-            setSearchedValue({channels:result?.channels,users:result?.users})            
+            setSearchedValue(result)            
         } catch (error) {
             setError(error)
         } finally{
@@ -80,11 +99,10 @@ const useSearch = () => {
 
         }
             
-    },[])
-    const  handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void =>{
-        const value = e?.target.value
-            setSearch(value)
-      } 
+    }
+    const  handleSearchChange = async(e: React.ChangeEvent<HTMLInputElement>) =>{
+        setSearch(e.target.value)
+    } 
 
      
 

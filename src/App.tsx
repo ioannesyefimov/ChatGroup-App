@@ -31,12 +31,12 @@ let router = createBrowserRouter([
     path: '/search',
     children:[
       {
-        path:'user/:search',
+        path:'user/:search?',
         element:<MemberInfo/>
       },
       {
         element: <ChannelSearch/>,
-        path: 'channel?/:search'
+        path: 'channel/:search?'
       },
     ]
 

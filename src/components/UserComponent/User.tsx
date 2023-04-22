@@ -1,12 +1,13 @@
 import React from 'react'
 import { userIco } from '../../assets'
 import { UserType } from '../types'
+import { Link } from 'react-router-dom'
 
-const User = ({key,user}:{key?:string,user?:UserType}) => {
+const User = ({user}:{user?:UserType}) => {
     return (
-      <div className='user' key={key}>
+      <div className='user' >
           <img src={user?.picture ? user.picture : userIco} alt="avatar" className='profile-img' />
-        <p className='name'>{user?.userName}</p>
+        <Link className='name' to={`/user?userName=${user?.userName}`}>{user?.userName}</Link>
         
       </div>
     )

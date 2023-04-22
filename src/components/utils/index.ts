@@ -272,6 +272,9 @@ function countWords(str:string) {
 
   return arr.filter(word => word !== '').length;
 }
+export function sleep(ms:number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function getFirstLetter(str:string,words?:number){
   if(!str) return Errors.MISSING_ARGUMENTS
