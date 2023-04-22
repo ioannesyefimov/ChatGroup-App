@@ -3,11 +3,11 @@ import { ErrorContext } from "../../components/ErrorProvider/ErrorProvider"
 
 
 const useError = () =>{
-    const {error,hasError,setError,setHasError} = useContext(ErrorContext)
+    const {error,setError,serverResponse,setServerResponse} = useContext(ErrorContext)
     const value = useMemo(
         ()=>({
-            error,hasError,setError,setHasError
-        }),[error,hasError]
+            error,serverResponse,setError,setServerResponse
+        }),[error,serverResponse]
     )
     return value
 }

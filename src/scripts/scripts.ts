@@ -6,6 +6,7 @@ export type AddScriptProps ={
 }
 export const addScript = ({id,src,text=''}:AddScriptProps)=> new Promise((resolve,reject)=>{
     const element = document.getElementById(id)
+    
     if(element){
         return resolve(true)
     }
@@ -20,8 +21,16 @@ export const addScript = ({id,src,text=''}:AddScriptProps)=> new Promise((resolv
         script.appendChild(inlineScript)
     }
     script.addEventListener('load', resolve)
-    script.addEventListener('error', ()=> reject(new Error(`Error loading ${id}`)))
-    script.addEventListener('abort', ()=> reject(new Error(`${id} loading aborted`)))
+    script.addEventListener('error', ()=> {
+        document?.getElementById(id)?.remove()
+       return reject(new Error(`Error loading ${id}`))
+    })
+    script.addEventListener('abort', ()=> {
+        document?.getElementById(id)?.remove()
+
+       return reject(new Error(`${id} loading aborted`))
+    })
+        
     document.getElementsByTagName('head')[0].appendChild(script)
 })
 

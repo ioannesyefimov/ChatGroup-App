@@ -10,16 +10,16 @@ export type SocialBtnProps = {
 const SocialBtn =  ({authType,id,execFunc,icon,socialType}:SocialBtnProps) => {
 
   let googleBtn = (
-    <div className="social-btn-container"  >
+    <div className="social-btn-outer"  >
       <img src={icon} alt={`${socialType} icon`} />
-      <button className="social-btn" id={id}></button> 
+      <button type="button" className="social-btn"  id={id}></button> 
      </div>
   )
 
   let socialBtn = (
-    <div className="social-btn-container"  >
+    <div className="social-btn-outer"  >
       <img src={icon} alt={`${socialType} icon`} />
-      <button onClick={()=> execFunc(authType)}   className="social-btn" id={id}> </button>
+      <button onClick={(e)=> {e.preventDefault(); execFunc(authType)}} type="button"  className="social-btn" id={id}></button>
     </div>
   )
     return socialType === 'Google' ? googleBtn : socialBtn

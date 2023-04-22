@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './CurrentChannel.scss'
 import { useAuth, useChat,useSocket, useError, useHandleChannel } from '../../../hooks'
@@ -26,26 +26,22 @@ export type SocketResponse = {
 }
 
 const CurrentChannel = () => {
-  const [serverResponse,setServerResponse]= useState<ResponseType | null>(null)
   const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
-  const socket = useSocket()!
   const {user,setLoading} = useAuth()
-  const {setError} = useError()
+  const {setError,setServerResponse} = useError()
+  const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
+  const scrollToRef = useRef<HTMLDivElement | undefined>()
+  const socket = useSocket()!
   const location = useLocation()
-  const navigate = useNavigate()
-  const {handleCurrentChannel} =  useHandleChannel()
-
   useEffect(
-    ()=>{   
+    ()=>{    
       setLoading(true)
-      let handle = ()=>handleCurrentChannel(location.search,setCurrentChannel,socket,user)
-      let timeout = setTimeout(handle,1500)
-      return ()=>clearTimeout(timeout)
-    },[location.search,user.email]
-  )
-
-  useEffect(
-    ()=>{
+  
+      const controller = new AbortController()
+      const {signal}=controller
+      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket,scrollToRef,user,signal})
+      let timeout = setTimeout(handle,2000)
+      socket.connect()
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
         if(data.data.messages){
@@ -58,47 +54,42 @@ const CurrentChannel = () => {
           
           setCurrentChannel(data.data.channel)
         } else {
-          setError(data.message)
-        }
-      }
-      let onGetChannel = (data:SocketResponse)=>{
-        console.log(`connection channel:`,data);
-        if(!data.success){
-          setServerResponse(data?.message)
-        }
-        if(data?.data?.channels){
-          setCurrentChannel(data.data?.channels)
-         socket.emit('join_channel',data?.data?.channels?._id)
+          setServerResponse(data.message)
         }
       }
       let onConnecting = ()=>{
         console.log(`CONNECTED BY ID ${socket.id}`)
       }
-      socket.connect()
+      let onJoinChannel=(data:SocketResponse)=>{
+        console.log(`JOINED CHANNEL ${data.data.room}`);
+        
+      }
       socket.on('connect',onConnecting)
       socket.on('receive_message',onMessage)
       socket.on('delete_message',onDeleteMessage)
-      socket.on('get_channel',onGetChannel)
+      socket.on('join_channel',onJoinChannel)
+    
       return ()=>{
-        socket?.off('get_channel',onGetChannel)
         socket?.off('delete_message',onDeleteMessage)
         socket?.off('receive_message',onMessage)
         socket?.off('connect',onConnecting)
+        clearTimeout(timeout)
+        controller?.abort()
         if(currentChannel?._id ){
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           socket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
         }
       }
-    },[socket]
+  },[location.search,user]
   )
-
   const handleSubmitMessage =useCallback(async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
     try {
         console.log(`SUBMITTING MESSAGE`)
       setLoading(true)
       if(!value) return console.log(`MESSAGE ISN'T TYPED `)
       if(!propsValue) return
-       socket.emit('send_message',{message:value,channelId: currentChannel?._id,user,room:currentChannel?._id})
+      if(!user.email) return console.log(`USER IS ${user}`)
+       socket.emit('send_message',{message:value,channelId: propsValue?._id,user,room:propsValue?._id})
     } catch (error) {
       setError(error)
       console.error(`error:`, error)
@@ -107,14 +98,21 @@ const CurrentChannel = () => {
       setValue('')
     }
  },[])
+
+
  const handleDeleteMessage = async(_id:string) => {
-  console.log(`DELETING :`, _id);
-  console.log(`USER:`, user);
-  console.log(`channel:`, currentChannel);
-  
-  if(!_id) return
-  try {
-    setLoading(true)
+   try {
+    if(!socket.connected){
+      socket.connect()
+    }
+     setLoading(true)
+     console.log(`DELETING :`, _id);
+     console.log(`USER:`, user);
+     console.log(`socket:`, socket);
+     console.log(`channel:`, currentChannel);
+     
+     if(!_id) return console.error(`missing id`);
+     
     socket.emit('delete_message',{channel_id:currentChannel?._id,message_id:_id,userEmail:user.email,})
   } catch (error) {
     setError(error)
@@ -122,47 +120,25 @@ const CurrentChannel = () => {
     setLoading(false)
   }
 }
-  
-  let fallbackContent = (
-    (
-        <h2 className='channel-title'>Choose your channel</h2>
-     )
-  )
-  let title = <h2 className='channel-title'>{currentChannel?.channelName}</h2>
     let channelContent =
     (
       <>
-      {title}
-        <Messages handleDelete={handleDeleteMessage} currentChannel={currentChannel} user={user} />
+        <h2 className='channel-title'>{currentChannel?.channelName}</h2> 
+        <Messages scrollToRef={scrollToRef} handleDelete={handleDeleteMessage} currentChannel={currentChannel} user={user} />
         <SubmitInput  handleClick={handleSubmitMessage} setPropsValue={setCurrentChannel} propsValue={currentChannel} name="message-input" placeholder="Type a message here" e={undefined} value={undefined} setValue={function (value: any): void {
-            throw new Error('Function not implemented.')
-          } } />
+          throw new Error('Function not implemented.')
+        } } />
       </>
       )
           return (
-    <ResponseFallback  response={serverResponse} resetResponse={()=>setServerResponse(prev=>({...prev,name:'',code:''}))}>
+    
       <div className="main-wrapper">
-      {currentChannel?.channelName ? channelContent : serverResponse?.arguments.channel ? (
-          <div className='response-fallback'>
-            <h2>Members of this channel</h2>
-            <div className="users-wrapper">
-              {serverResponse?.arguments?.channel?.members.map((member: {member:UserType,roles:string[],_id:string})=>{
-                console.log(`MEMBER:`, member.member);
-                
-                return (
-                  <User key={member.member._id} user={member?.member}/>
-                )
-              })}
-            </div>
-              <Link className='link' to={`/chat/manage/join?search=${serverResponse.arguments.channel.channelName.replaceAll(' ', '-')}`} replace >Join</Link>
-            </div>
-        ) :
+      {currentChannel?.channelName ? channelContent : 
         (
-          fallbackContent
+          <h2 className='channel-title'>Choose your channel</h2>
           ) 
         }
         </div>
-    </ResponseFallback>
   )
 }
 

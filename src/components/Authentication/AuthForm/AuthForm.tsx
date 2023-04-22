@@ -1,12 +1,13 @@
 import React, { ChangeEvent, ReactPropTypes, useState } from 'react'
 import FormInput from '../../FormInput/FormInput'
-import {lockerIco, mailIco, profileIco}   from '../../../assets/index' 
+import {lockerIco, mailIco, profileIco,authBg}   from '../../../assets/index' 
 import './AuthForm.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { APIFetch, throwErr, validateInput } from '../../utils'
 import { useAuth, useError } from '../../../hooks'
 import useAuthCookies from '../../../hooks/useAuthCookies/useAuthCookies'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
+import Canvas from '../../CanvasBg/Canvas'
 type AuthProps = {
   type: string
   redirectType: string
@@ -28,13 +29,13 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
   }
 
   const {serverUrl,setLoading} = useAuth()
-  const {setError} = useError()
+  const {setServerResponse} = useError()
   const navigate = useNavigate()
   const EmailRef =React.createRef<HTMLLabelElement>()
   const PasswordRef =React.createRef<HTMLLabelElement>()
   const UserNameRef =React.createRef<HTMLLabelElement>()
   const handleSubmit = async(e:React.MouseEvent<HTMLButtonElement, MouseEvent>, type:string)=>{
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       if(!type){
@@ -78,7 +79,7 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
         
 
     } catch (error:any) {
-      setError(error)
+      setServerResponse(error)
     } finally{
       setLoading(false)
     }
@@ -102,12 +103,12 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
         <FormInput value={form.email} onChange={(e)=>handleFormChange(e)} labelName='email' name="email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
         <FormInput value={form.password} onChange={(e)=>handleFormChange(e)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
         <button className='submit-btn' onClick={(e)=>handleSubmit(e,'register')}>Register</button>
-        <AuthSocialButtons authType='signin' />
 
         </form>
       </div>
 
         <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
+        <AuthSocialButtons authType='signin' />
       </div>
  )
 
@@ -118,16 +119,21 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
         <form action="submit">
         <FormInput value={form.email} onChange={(e)=>handleFormChange(e)} labelName='email' name="email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
         <FormInput value={form.password} onChange={(e)=>handleFormChange(e)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
+        <button className='submit-btn' onClick={(e)=>handleSubmit(e, 'signin')}>Signin</button>
+        <AuthSocialButtons authType='signin' redirectUrl={redirectUrl} />
         </form>
-       <button className='submit-btn' onClick={(e)=>handleSubmit(e, 'signin')}>Signin</button>
-      <AuthSocialButtons authType='signin' redirectUrl={redirectUrl} />
          </div>
       {!redirectUrl && <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span> }
        
     </div>
  )
 
-  return type === 'signin' ? signinContent : registerContent
+  return (
+    <>
+    <Canvas bgUrl={authBg} />
+    {type === 'signin' ? signinContent : registerContent}
+    </>
+  )
 }
 
 export default AuthForm

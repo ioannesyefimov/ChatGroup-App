@@ -35,10 +35,10 @@ const displayDate = (date:{day:string,time:string}) => {
 
 
 
-const Message = ({handleDelete,user,createdAt,message,messageUser,key,_id}:PropsType) => {
+const Message = React.forwardRef(({handleDelete,user,createdAt,message,messageUser,_id}:PropsType,ref) => {
 const navigate = useNavigate()
   return (
-    <div key={key} className='message'>
+    <div  className='message'>
          <button onClick={()=>navigate(`/user?email=${messageUser?.email}`)} className='show-member-button'>
                 <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
           </button>
@@ -54,8 +54,9 @@ const navigate = useNavigate()
        ): (
         null
        )}
+    <div className="scrolledToDiv" ref={ref}></div>
      </div>
   )
-}
+})
 
 export default Message

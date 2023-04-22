@@ -1,16 +1,23 @@
-
+@use '../utils/utils.scss' as *;
 .landing-component{
-    margin: auto;
+    @include respond-to(small){
+        margin: 0rem;
+        
+    }
+    margin: 0 0 0 6rem;
+    background: rgba(10, 10, 26, 0.669);
+    align-self: flex-start;
     display: flex;
     flex-direction: column;
     border-radius: 10px;
     gap:2.2rem;
     padding: 1rem 2rem;
     position: relative;
+    max-width: 500px;
     .wrapper{
         display: grid;
         gap:1rem;
-
+        text-align: center;
         flex:1;
         h3{
             line-height: 1.2;
@@ -18,7 +25,8 @@
             margin: 0 auto;
         }
         p{
-            font-size: .8rem
+            font-size: .8rem;
+            
         }
         &:nth-child(1){
 
@@ -37,8 +45,8 @@
         max-width: 40ch;
         font-size: clamp(0.9rem, 0.794rem + 0.451vw, 1.2rem);
     }
-        
-    button{
+        .link{
+            color:bisque;
         margin: 0 auto;
         padding: .2rem 1.5rem; 
         font-size: .8rem;

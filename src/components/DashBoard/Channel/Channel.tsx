@@ -6,14 +6,20 @@ import './Channel.scss'
 import { joinIco, trashIco } from '../../../assets'
 import { UserType } from '../../types'
 import Button from '../../Button/Button'
+import { useAuth, useHandleChannel } from '../../../hooks'
 type ChannelProps = {
     id:string
     name:string
     avatar?:string
     type?:string
-    handleChannel?:(_id:string,)=>void 
+    handleChannel?:(_id:string,user:UserType)=>void 
 }
 const Channel = ({name,avatar,handleChannel,id,type}:ChannelProps) => {
+    const {user}=useAuth()
+    const {handleLeaveChannel,handleJoinChannel} = useHandleChannel()
+    console.log(`type:${type}`);
+    
+    let handleFc = type === 'leave' ? ()=>handleLeaveChannel(id!,user!): type==='join' ? ()=> handleJoinChannel(id,user) : ()=>{}
   return (
     <div className="channel">
         {avatar ? (
@@ -23,7 +29,7 @@ const Channel = ({name,avatar,handleChannel,id,type}:ChannelProps) => {
         )}
         <Link className='link-tag' to={`/chat/?channel=${name?.replaceAll(' ', '-').trim()}`} replace><div className="channel-name">{name}</div></Link>
         {type!==''  ? (
-            <Button onClick={()=>handleChannel!(id)} name={type??''} img={type==='leave' ? trashIco : type==='join' ? joinIco : ''}  />
+            <Button onClick={handleFc} name={type??''} img={type==='leave' ? trashIco : type==='join' ? joinIco : ''}  />
         ): (
             null
         )}

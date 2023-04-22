@@ -25,5 +25,16 @@
 
     }
   
+    .delete-btn {
+        padding: 0;
+        position: absolute;
+        bottom: 15%;
+        right: 3%;
+        width:25px;
+        img{
+            width: 100% !important;
+            height:  100% !important;
+        }
+    }
 
 }

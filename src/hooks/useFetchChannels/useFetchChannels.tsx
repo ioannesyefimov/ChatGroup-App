@@ -14,10 +14,7 @@ const useFetchChannels = () => {
               navigate('/auth/signin')
               return console.log(`USER IS UNDEFINED`)
           } 
-          if(cookies.channels || cookies.channels === null){
-            setChannels(cookies?.channels)
-            return
-          }
+          
         setLoading(true)
     
         let response = await APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})

@@ -7,20 +7,20 @@
 
 }
 .auth-form-component{
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
-    border-radius: 20px;
-    gap:.5rem;
     @include respond-to(small){
         width: 100%;
         padding: 0;
     }
-padding:1.2rem clamp(3rem, 1.944rem + 4.507vw, 6rem) ;
-h2{
-    font-size: 1.4rem;
-}
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    gap:.5rem;
+    padding:1.2rem clamp(3rem, 1.944rem + 4.507vw, 6rem) ;
+    h2{
+        font-size: 1.4rem;
+    }
  .hint{
     text-align: center;
     margin: 0 auto;
@@ -34,19 +34,31 @@ h2{
      display: flex;
      flex-direction: column;
     gap:1rem;
- }
 
- label{
-    font-size: 1rem;
- }
- .submit-btn{
-    padding: .4rem 2rem;
-    border: solid 1px black;
-    margin:  0 auto;
 
-    &:hover{
-        border-color:wheat !important;
+    form {
+        display: flex;
+        flex-direction: column;
+        gap:.3rem;
+
+        label{
+           font-size: 1rem;
+        }
+        input {
+            &:focus{
+                background-color: gainsboro;
+            }
+        }
+        .submit-btn{
+           padding: .4rem 2rem;
+           border: solid 1px black;
+           align-self: center;
+           &:hover{
+               border-color:wheat !important;
+           }
+       
+        }
     }
-
  }
+
 }

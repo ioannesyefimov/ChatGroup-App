@@ -6,6 +6,8 @@ import SearchComponent from "./SearchComponent/SearchComponent";
 import ChannelSearch from "./ChannelSearch/ChannelSearch";
 import AuthSocialButtons from "./AuthButtons/AuthSocialButtons";
 
+import UploadInput from "./UploadInput/UploadInput";
+
 import Dashboard from "./DashBoard/Dashboard";
 import RedirectComponent from "./RedirectComponent/RedirectComponent";
 import ChannelCreate from "./ChannelManager/ChannelCreate";
@@ -13,6 +15,8 @@ import Button from "./Button/Button";
 import SubmitInput from "./SubmitInput/SubmitInput";
 import MemberInfo from "./UserSearch/UserSearch";
 
+
+import OnlineStatusProvider  from "./CheckConnectionContext/Provider";
 import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
 import AuthProvider from "./Authentication/Provider/AuthProvider";
@@ -20,7 +24,7 @@ import SocketProvider from "./SocketContext/SocketProvider";
 export 
 {
     ChatProvider,AuthProvider,ErrorProvider,  Authentication, 
-    Button,SubmitInput,MemberInfo,SearchComponent,ChannelSearch,
+    Button,SubmitInput , UploadInput,MemberInfo,SearchComponent,ChannelSearch,
     
     FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons,ChannelCreate,SocketProvider
 }

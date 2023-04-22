@@ -62,7 +62,7 @@
             bottom:0%;
         }
         img{
-            filter: invert(100%) brightness(50%);
+            // filter: invert(100%) brightness(50%);
             width: 50px;
             height: 50px;
             object-fit: cover;   
@@ -86,5 +86,5 @@
         padding: 0.5rem 3rem;
         border: 1px solid black
     }
-
+   
 }

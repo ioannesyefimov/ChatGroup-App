@@ -14,6 +14,7 @@ import { ResponseFallback } from '../ErrorProvider/ErrorProvider'
 export type ChannelsProps = {
   setChannels?: React.Dispatch<React.SetStateAction<ChannelType[]>>
   channels : ChannelType[]
+  fetchChannels?: () => Promise<void>
 }
 
 const ChatContainer = () => {
@@ -29,7 +30,7 @@ const ChatContainer = () => {
       
       <div className='chat-container-outer '>  
         <div className='chat-container-inner '>  
-            <ChannelsBar channels={channels} />
+            <ChannelsBar fetchChannels={fetchChannels} channels={channels} />
             {/* <CurrentChannel location={location.pathname} /> */}
               <CurrentChannel />
           <Outlet/>

@@ -1,85 +1,70 @@
 import React, { useEffect } from 'react'
 import ReactFacebookLogin, { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
-import { useAddScript, useAuth, useAuthCookies, useError } from '../index';
-import { Errors,APIFetch } from '../../components/utils';
+import { useAddScript, useAuth, useAuthCookies, useError, useOnlineStatus } from '../index';
+import { Errors,APIFetch, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
+import { useNavigate } from 'react-router-dom';
 
-const useFacebook = (type:string) => {
+const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
 
-    const {setError,setHasError} = useError()
-    const {setCookie} = useAuthCookies()
+    const {setError,setServerResponse} = useError()
     const {clearState,setLoading} = useAuth()
     const {handleDelete} = useFetch()
-
+    const navigate = useNavigate()
    
     useEffect(
         ()=>{
-            const appendScript = async()=>{
+            const initFacebook = async()=>{
                 try {
-                    const params = {
-                        appId: import.meta.env.VITE_APP_FACEBOOK_APP_ID,
-                        cookies: false,
-                        xfbml: true,
-                        version: 'v16.0'
+                    let FB = (window as any).FB
+                    if(FB){
+                        console.log(`initializing facebook oauth`);
+                        console.log(`fb appid `, import.meta.env.VITE_APP_FACEBOOK_APP_ID);
+                        
+                        const params = {
+                            appId: import.meta.env.VITE_APP_FACEBOOK_APP_ID,
+                            cookies: false,
+                            xfbml: true,
+                            version: 'v16.0'
+                        }
+    
+                        FB?.init(params);
+                         FB?.getLoginStatus((resp:ReactFacebookFailureResponse)  =>{
+                            console.log(`FB:status==: ${resp.status}`)
+                        })
                     }
-
-                    FB?.init(params);
-                    FB?.getLoginStatus((resp:ReactFacebookFailureResponse)  =>{
-                        console.log(`FB:status: ${resp.status}`)
-                    })
-                } catch (error:any) {
-                    console.log(error.name, ':', error.message)
+                } catch (error:{name?:any,message?:any}) {
+                    console.error(error?.name, ':', error?.message)
                     
                 }
             }
-            appendScript()
+            let timeout = setTimeout(initFacebook,1500)
+
+            return ()=>clearTimeout(timeout)
         }, []
     )
 
     const url = `https://authentic-app-backend.onrender.com/api/`
 
-    let newURL = location.href.split("?")[0];
 
-    const handleFacebookRegister = async(credentials:ReactFacebookLoginInfo)=>{
-        try {
-            setLoading(true)
-            console.log(`FB REGISTERING`)
-            const response = await APIFetch({url: `${url}auth/facebook/register`, method:'POST', body: {credentials}});
-            console.log(response)
-            if(!response.success){
-                clearState('')
-                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
-            }
-            
-            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: 2000})
-            localStorage.setItem('LOGIN_TYPE', 'signin')
-
-        } catch (error) {
-             setError({message: error})
-
-        } finally {
-            setLoading(false)
-        }
-    }
-
-    const handleFacebookLogin = async({credentials,type}:{credentials:any,type:string}) =>{
+    const handleFacebookLogin = async({credentials}:{credentials:any}) =>{
         try {
             setLoading(true)
             console.log(`FB SIGNIN IN`)
-            const response = await APIFetch({url: `${url}auth/facebook/${type}`, method:'POST', body: {credentials}});
+            const response = await APIFetch({url: `${url}auth/facebook`, method:'POST', body: {credentials}});
             console.log(response)
             if(!response.success){
                 clearState('')
-                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
+                throwErr({message: response?.message, loggedThrough:response?.loggedThrough})
+            } if(redirectUrl){
+                console.log(`REDIRECT ULR : ${redirectUrl}`)
+                navigate(`/auth/redirect/?type=newAccessToken&accessToken=${response?.data.accessToken}&redirectUrl=${redirectUrl}`)
+                return 
             }
-            
-            setCookie('accessToken', response?.data?.accessToken, {path: '/', maxAge: 2000})
-            localStorage.setItem('LOGIN_TYPE', 'signin')
-
+                
         } catch (error) {
-               setError({message: error})
-
+               setError( error)
         } finally {
             setLoading(false)
         }
@@ -87,21 +72,11 @@ const useFacebook = (type:string) => {
 
     const onSuccess = async(response:ReactFacebookLoginInfo, type:string)=>{
         try {
-            localStorage.setItem('LOGIN_TYPE', type)
-            localStorage.setItem('LOGGED_THROUGH', 'Facebook')
-            console.log('ONSUCCESS TRIGGERED')
-            console.log(`response: `, response)
             if(response?.email){
-                // return type === 'register' ? 
-                // await handleFacebookRegister({credentials: response})
-                // : type === 'signin' ? 
-                // await handleFacebookSignin({credentials: response})
                 return type === 'delete' ?
                 await handleFacebookDelete( response)
                 :  
-                await handleFacebookLogin({credentials: response, type})
-
-                console.log('invalid type')
+                await handleFacebookLogin({credentials: response})
             }
         } catch (error) {
             return setError({message:error})
@@ -112,13 +87,15 @@ const useFacebook = (type:string) => {
 
         try {
             setLoading(true)
-            const params ={
-                provider: 'facebook',
-                fbAccessToken:''
-            }; 
-            let FB:any
-            console.log(`FACEBOOK HANDLING`)
+            let FB = (window as any).FB
+            if(FB){
 
+                const params ={
+                    provider: 'facebook',
+                    fbAccessToken:''
+                }; 
+                console.log(`FACEBOOK HANDLING`)
+    
                 FB.getLoginStatus((resp:any)=>{
                     console.log(`FB:status: ${resp.status}`)
                     if(resp.status === 'connected'){
@@ -132,30 +109,36 @@ const useFacebook = (type:string) => {
                         });
                     }
                 });
-
-          
+    
                 
-            FB.login((resp:any)=>{
-                if(resp.authResponse){
-                    params.fbAccessToken = resp.authResponse.accessToken
-                    FB.api(
-                        '/me',
-                        'GET',
-                        {"fields":"email,name,birthday,photos{picture,images,from},about,hometown,picture{url}"},
-                        (response:any)=>{
-                            console.log(response)
-                            console.log(`GOOD to see you, ${response?.name}.`)
-                            console.log(`type: ${type}`)
-                            onSuccess(response, type)
-                        });
-
-                } else {
-                    console.log('User cancelled login or did not fully authorize.');
-                   }
-            }, {scope: 'email,name,photos{picture,images,from'});
-            console.log(params)
-
-            
+                    
+                FB.login((resp:any)=>{
+                    console.log(`FB RESP`, resp);
+                    
+                    if(resp.authResponse){
+                        params.fbAccessToken = resp.authResponse.accessToken
+                        FB.api(
+                            '/me',
+                            'GET',
+                            {"fields":"about,email,name,picture"},
+                            (response:any)=>{
+                                console.log(response)
+                                console.log(`GOOD to see you, ${response?.name}.`)
+                                console.log(`type: ${type}`)
+                                onSuccess(response, type)
+                            });
+                            
+                        
+                    } else {
+                        console.log('User cancelled login or did not fully authorize.');
+                       }
+                }, {scope: 'email,name,photos{picture,images'});
+                console.log(params)
+    
+                
+            } else {
+                return console.log('FACEBOOK SCRIPT WAS NOT ADDED')
+            }
         } catch (error) {
             console.log(error)
             return {message:error,success:false}
@@ -193,11 +176,7 @@ const useFacebook = (type:string) => {
     }
 
 
-    return {handleFacebookDelete, handleFacebook,handleFacebookRegister}
+    return {handleFacebookDelete, handleFacebook}
 }
 
 export default useFacebook
-
-function setLoading(arg0: boolean) {
-    throw new Error('Function not implemented.');
-}

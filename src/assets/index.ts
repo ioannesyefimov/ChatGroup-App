@@ -21,16 +21,21 @@ import uploadIco from './uploadIco.svg'
 import sendIco from './sendIco.svg'
 import trashIco from './trashIco.svg'
 import chatifyIco from './chatify-logo.svg'
+import refreshIco from './refreshIco.svg'
 import joinIco from './joinIco.svg'
 import settingIco from './settingsIco.svg'
+import landingBg from './landingBg.jpg'
+import authBg from './authenticationBg.jpg'
+
+
 export interface Icons {
   icon: File
 }
 export  {
-  questionIco, searchIco,  loadingGif,uploadIco,
+  questionIco,authBg, searchIco,refreshIco,  loadingGif,uploadIco,
     triangleIco, logoutIco, backIco,cameraIco,correctUploadIco,
       groupIco, hamburgerIco,trashIco,
         facebookIco, GithubIco, GoogleIco,
         TwitterIco, mailIco, lockerIco,profileIco,notFoundIco,
-        chatifyIco,sendIco,userIco,joinIco,settingIco
+        chatifyIco,sendIco,userIco,joinIco,settingIco,landingBg
 } 

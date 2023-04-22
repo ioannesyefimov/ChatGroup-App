@@ -1,14 +1,16 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, MutableRefObject, SetStateAction, useCallback } from 'react'
 import { APIFetch, throwErr } from '../../components/utils';
 import { useAuth } from '..';
 import useChat from '../useChatContext/useChatContext';
 import useError from '../useErrorContext/useError';
 import { ChannelType, ResponseType, UserType } from '../../components/types';
 import { Socket } from 'socket.io-client';
+import { useNavigate } from 'react-router-dom';
 
-const useHandleChannel = () => {
-    const {setError}=useError()
+const useHandleChannel = (setCurrent:Dispatch<SetStateAction<any>> | undefined) => {
+    const {setError,setServerResponse}=useError()
     const {setLoading,serverUrl}=useAuth()
+  const navigate = useNavigate()
     const {setChannels} =useChat() 
     const handleLeaveChannel = async(id:string,user:UserType)=>{
         try {
@@ -29,49 +31,69 @@ const useHandleChannel = () => {
           setLoading(false)
         }
       }
-
-      const handleJoinChannel = 
-      async (id:string,user:UserType)=>{
-           try {
-               setLoading(true)
-               let fields = {id}
-               console.log(`FIELDS: `, fields)
-               // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
-               let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
-               if(!response.success) throwErr(response?.message)
-               setChannels(prev=>({...prev, ...response?.data?.channel }))
-               window.location.replace(`/chat/${response?.data?.channel?.channelName.replaceAll(' ','-')}`)
-               console.log(`RESPONSE : `, response)
-           } catch (error) {
-               console.log(`ERROR:`,error)
-               setError(error)
-           }finally{
-               setLoading(false)
-           }
-       }
+    const handleJoinChannel = async (id:string,user:UserType)=>{
+          try {
+              setLoading(true)
+              let fields = {id}
+              console.log(`FIELDS: `, fields)
+              // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
+              let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
+              if(!response.success) throwErr(response?.message)
+              setChannels(prev=>({...prev, ...response?.data?.channel }))
+              navigate(`/chat/channel=${response?.data?.channel?.channelName.replaceAll(' ','-')}`)
+              console.log(`RESPONSE : `, response)
+          } catch (error) {
+              console.log(`ERROR:`,error)
+              setError(error)
+          }finally{
+              setLoading(false)
+          }
+      }
 
        
+    type HandleCurrentChannelProps ={
+      setter: Dispatch<SetStateAction<ChannelType| null>>
+      name:string
+      socket:Socket<any,any>
+      scrollToRef: MutableRefObject<HTMLDivElement |undefined>  
+      user:UserType
+      signal?:AbortSignal
+    } 
 
- const handleCurrentChannel = async(name:string,setter:Dispatch<SetStateAction<ChannelType| null>>,socket:Socket<any,any>,user:UserType)=>{
-
-  try {
-    console.log(`NAME: ${name}`);
-    if(!user.email) return
-    if(!name.includes('?channel=')) {
-      return setter(null)
+    const handleCurrentChannel =
+      async({name,setter,socket,scrollToRef,user,signal}:HandleCurrentChannelProps)=>{
+        try {
+        setLoading(true)
+        console.log(`NAME: ${name}`);
+        let query = new URLSearchParams(name)
+        let channelName = query.get('channel')
+        console.log(`channelName:`, channelName);
+        console.log(`user:`, user);
+        if(!user?.email){
+          return
+        } 
+        if(!channelName){
+            setter(null)
+          return
+        }
+            let response = await APIFetch({url:`${serverUrl}/channels/channel/${channelName}?userEmail=${user?.email}`,signal});
+            console.log(`RESPONSE::`, response);
+        if(!response.success){
+          setServerResponse(response.message)
+          return
+        }
+        setter!(response.data.channels)
+        socket.emit('join_channel',{room:response.data.channels._id})
+          } catch (error) {
+        setError(error)
+      } finally{
+        setLoading(false)
+        scrollToRef?.current?.scrollIntoView({behaivor:'smooth'})
+      }
     }
-    name = name?.trim().replace('?channel=','').replaceAll('-', ' ')
-    setLoading(true)
-    console.log(`name:`, name);
-   socket.emit('get_channel',{channelName:name,user})
-   
-  } catch (error) {
-    setError(error)
-  } finally{
-    setLoading(false)
-  }
-}
-      return {handleLeaveChannel,handleJoinChannel,handleCurrentChannel}
+
+
+    return {handleLeaveChannel,handleJoinChannel,handleCurrentChannel}
 }
 
 export default useHandleChannel

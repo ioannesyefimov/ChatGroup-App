@@ -74,17 +74,17 @@ const RedirectComponent = () => {
             handleRedirect()
         },[])
 
-        useEffect(
-            ()=>{
-                console.log(`RESPONSE:`, serverResponse);
-                if(serverResponse.user){
-                    setCookie('user',serverResponse.user,{path:'/',maxAge:2000})
-                }else if(serverResponse.accessToken){
-                    setCookie('accessToken',serverResponse?.accessToken,{path:'/',maxAge:2000})
-                    
+    useEffect(
+        ()=>{
+            console.log(`RESPONSE:`, serverResponse);
+            if(serverResponse.user){
+                setCookie('user',serverResponse.user,{path:'/',maxAge:2000})
+            }
+            if(serverResponse.accessToken){
+                setCookie('accessToken',serverResponse?.accessToken,{path:'/',maxAge:2000})
                 }
-            },[serverResponse]
-        )
+        },[serverResponse]
+    )
         
 
     return <Outlet/>

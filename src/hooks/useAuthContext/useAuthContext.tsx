@@ -6,7 +6,7 @@ import useChat from "../useChatContext/useChatContext"
 
 
 export default () =>{
-    const {user,loading,serverUrl,response,setUser,setLoading,setResponse} = useContext(AuthContext)
+    const {user,loading,serverUrl,setUser,setLoading} = useContext(AuthContext)
     const {setCookie,removeCookie,cookies} = useAuthCookies()
     useEffect(
       ()=>{
@@ -20,7 +20,6 @@ export default () =>{
     const clearState = useCallback((replace:string, navigate?:NavigateFunction) => {
         // console.log('CLEARNING STATE')
         setUser(initAuthContextState.user)
-        setResponse(initAuthContextState.response)
         removeCookie('accessToken', {path:'/'})
         removeCookie('refreshToken', {path:'/'})
         if(!replace){
@@ -33,12 +32,6 @@ export default () =>{
         window.localStorage.clear()
         removeCookie('user', {path:'/'})
       },[])
-
-      const value = useMemo(
-        ()=>({
-          user,loading,response,serverUrl,setUser,setResponse,setLoading,clearState
-        }),
-        [user,loading,response]
-      )
-    return value
+ 
+    return {user,loading,serverUrl,setUser,setLoading,clearState}
 }

@@ -14,23 +14,20 @@ export type InitialStateType = {
 type UseAuthContextType = ReturnType<typeof useAuthContext>
 
 export const initAuthContextState: UseAuthContextType ={
-  user: { userName: '', email: '', picture: '', id: '', loggedThrough: '',channels:[] },
+  user: { userName: '', email: '', picture: '', _id: '', loggedThrough: '',channels:[] },
   loading: false,
-  response: { success: false, message: null },
   setUser: () => { },
   setLoading: () => { },
-  setResponse: () => { },
   serverUrl:'http://localhost:5050/api'
 }
 export const AuthContext = React.createContext<UseAuthContextType>(initAuthContextState)
 
 export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   const [loading, setLoading] = useState<boolean>(false)
-  const [response,setResponse] = useState<ResponseType>()
   const [user, setUser] = useState(initAuthContextState.user)
   const serverUrl =  initAuthContextState.serverUrl
 
-  return {user,loading,response,serverUrl,setUser,setLoading,setResponse}
+  return {user,loading,serverUrl,setUser,setLoading}
 }
 
 

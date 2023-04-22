@@ -5,10 +5,23 @@
     .left-wrapper{
         display: flex;
         flex-direction: column;
-
+        position: relative;
         padding: .9rem 2.2rem;
 
-        position: relative;
+        &-inner {
+            display: flex;
+            flex-direction: column;
+            gap:.5rem;
+            .refetch {
+                padding: 0;
+                align-self: flex-end;
+                width: 20px;
+                position: absolute;
+                bottom: 8%;
+                right: 5%;
+            }
+        }
+
         .link{
             // background: #252329;
             border-radius: 5px;
@@ -18,6 +31,7 @@
             border: 1px solid gray;
         
         }
+        
         .flex.flex--between{
             margin-bottom: 1rem;
                 align-items: center;

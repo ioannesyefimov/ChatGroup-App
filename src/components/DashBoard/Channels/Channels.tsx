@@ -12,15 +12,14 @@ type PropsType = {
   channels: ChannelType[] | null
 }
 const Channels = ({type,fallbackText,channels}:PropsType) => {
-  const {handleLeaveChannel,handleJoinChannel} = useHandleChannel()
   
-  let handleFc = type === 'leave' ? handleLeaveChannel: type==='join' ? handleJoinChannel : ()=>{}
+ 
   let content = (
     Array.isArray(channels) && channels?.length ? (
       <div className='channels'>
         {channels.map((channel:ChannelType)=>{
           return (
-            <Channel type={type} id={channel._id!} key={channel?._id!} handleChannel={handleFc} name={channel?.channelName} avatar={channel?.channelAvatar}/>
+            <Channel type={type} id={channel._id!} key={channel?._id!}  name={channel?.channelName} avatar={channel?.channelAvatar ?? getFirstLetter(channel?.channelName,2)}/>
           )
         })
         }

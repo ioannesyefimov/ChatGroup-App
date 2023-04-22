@@ -1,10 +1,9 @@
 
-.social-wrapper {
-    display: flex;
+.social-btns-wrapper {
+    display:  flex !important;
     margin: 0 auto;
-    gap:.8rem;
-    flex-wrap: wrap;
-   
+    gap:.5rem;
+    // flex-wrap: wrap;
     .hint {
         position: absolute;
         bottom: 10px;
@@ -16,48 +15,39 @@
 
  
 
-    .social-btn-container{
-        #googleBtn{
-            & > * {
-                position: absolute !important;
-                inset: 0;
-                opacity: 0;
-            }
-            img{
-                // position: absolute;
-                // cursor: pointer
-            };
+    .social-btn-outer{
+        &:hover{
+            cursor: pointer;
         }
-        display: flex;
+        #googleBtn{
+            iframe {
+                opacity: 0 !important;
+            }
+        }
+        display: flex !important;
         align-items: center;
         justify-content: center;
         flex: 1;
+        padding: 0;
         position: relative;
         z-index: 55;
         border-radius: 50%;
-        width: 35px;
-        height: 35px;
+        width: 33px;
+        height: 33px;
         img{
-            position: absolute;
-            // width: 100%;
-            // height: 100%;
-            &:hover{
-                cursor: pointer;
-            }
+            position: absolute !important;
+            z-index: -1;
         }
-        button {
-            // opacity: 0;
-            width: 100%;
-            z-index: 55;
-            // width: 55px;
-        }
-         
-    
+        
+        
         .social-btn {
             border-radius: 50%;
-            background: transparent;
-        
-           
+            flex:1;
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            
+          
         }
        
      }

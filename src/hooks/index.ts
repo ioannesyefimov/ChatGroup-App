@@ -5,7 +5,7 @@ import useError  from "./useErrorContext/useError";
 
 import useAddScript from "./useScripts/useAddScript";
 import useWindowSize from "./useWindowSize/useWindowSize";
-
+import useOnlineStatus from "./useOnlineStatus";
 import useSearch from "./useSearch";
 import useFacebook from "./useFacebook/useFacebook";
 import useGithub from "./useGithub/useGithub";
@@ -18,5 +18,5 @@ import useHandleChannel from "./useHandleChannel/useHandleChannel";
 export {
     useAuth,useSocket,useAuthCookies,useChat,useError,useSearch,
     useFacebook,useGithub,useGoogle,useTwitter,useHandleChannel,
-    useAddScript,useWindowSize,useImageUpload
+    useAddScript,useWindowSize,useImageUpload,useOnlineStatus
 }

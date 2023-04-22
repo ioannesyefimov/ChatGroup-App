@@ -1,29 +1,19 @@
-import { ChangeEvent, FormEvent, MouseEventHandler, ReactEventHandler, ReactNode, useState } from "react"
-import { useAuth, useAuthCookies, useError, useImageUpload } from "../../hooks"
-import { convertBase64 } from "../utils/index"
-import { APIFetch } from "../utils"
-import { Errors } from "../utils"
 import { ChannelType } from "../types"
 import './UploadInput.scss'
-import FormInput from "../FormInput/FormInput"
-import { uploadIco } from "../../assets"
 import React from "react"
+import { Button } from ".."
+import { trashIco, uploadIco } from "../../assets"
 type PropsType ={
     channel?: Partial<ChannelType>
     labelName?:string
     id:string
     img?:string
+    removeImg: () => void
     onChange: (e:React.ChangeEvent<HTMLInputElement>)=>void
     value?:  string
 }
-// type PropsType ={
-//     channel?: Partial<ChannelType>
-//     labelName?:string
-//     setter: React.Dispatch<React.SetStateAction<File|undefined>>
-//     id:string
-// }
 
-const UploadInput = React.forwardRef(({channel,labelName,id,onChange,value}: PropsType,ref?: React.Ref<HTMLLabelElement>) => {
+const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, value}: PropsType,ref?: React.Ref<HTMLLabelElement>) => {
 
     return(
 
@@ -31,6 +21,8 @@ const UploadInput = React.forwardRef(({channel,labelName,id,onChange,value}: Pro
             {labelName ?? ''}
             <img className="converted-img"  src={value==='' ? uploadIco : value}  />
             <input  type="file" name={'upload'} id={id} onChange={onChange}  />
+            <Button img={trashIco} name='delete-btn' onClick={removeImg}/>
+
         </label>
     )
    

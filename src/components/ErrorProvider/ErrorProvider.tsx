@@ -1,25 +1,31 @@
 import React, {ReactNode, SetStateAction, useState } from 'react'
-import { ResponseType } from '../types'
+import { ResponseType, UserType } from '../types'
 import { useError } from '../../hooks'
 import './Error.scss'
 import { Errors, isObj } from '../utils'
 import Button from '../Button/Button'
 import { useNavigate } from 'react-router-dom'
+import User from '../UserComponent/User'
 
 type ResponseFallbackType ={
     children?:ReactNode| ReactNode[]
-    response:ResponseType | null
-    setResponse?: React.Dispatch<SetStateAction<ResponseType|null>>
-    resetResponse?:()=>void
+
 }
-export const ResponseFallback = ({children,response,setResponse,resetResponse}:ResponseFallbackType)=>{
-console.log(`response`,response);
+export const ResponseFallback = ({children}:ResponseFallbackType)=>{
+    const {serverResponse,setServerResponse}= useError()
+    if(!serverResponse?.name) return <>{children}</>
     const navigate = useNavigate()
-    if(!response?.name) return <>{children}</>
-    let handleOnClick = response.name === Errors.NOT_A_MEMBER ? resetResponse! :()=> setResponse!(null)
+    let handleOnClick = serverResponse.name === Errors.NOT_A_MEMBER ? ()=>{serverResponse(null);navigate('/chat')} :()=> setServerResponse!(null)
     let displayedMsg = (
         <div className='fallback-component'>
-            <span className='response-type'>{response.name ?? JSON.stringify(response)}</span>
+            {serverResponse?.arguments?.channel?.members.map((member: {member:UserType,roles:string[],_id:string})=>{
+         console.log(`MEMBER:`, member.member);
+                
+                return (
+                  <User key={member.member._id} user={member?.member}/>
+                )
+              })}
+            <span className='response-type'>{serverResponse.name ?? JSON.stringify(serverResponse)}</span>
             <Button onClick={handleOnClick} text='Continue'name='continue-btn' />
         </div>
     ) 
@@ -29,29 +35,31 @@ console.log(`response`,response);
 
 export const ErrorFallBack = () => {
     const {error} = useError()
+    console.error(error);
+    
+    let  err = error.message === 'Failed to fetch' ? `server may be down, please try again later(●'◡'●)` : error?.message
     return(
-       
-            <div className='fallback-component' style={{gap:'1rem',margin: '4rem auto',display:'grid', width: '60%', maxWidth: '500px'}}>
-                <h1 style={{fontSize: '2.2rem',textAlign: 'center'}}>Error has happened!</h1>
-                <p>{JSON.stringify(error) ?? 'SOMETHING WENT WRONG'}</p>
-                <button style={{borderRadius: "15PX", margin: '0 auto', padding: '.5rem 5rem' }} onClick={()=>window.location.reload()}>Reload</button>
-            </div>
+        <div className='error-fallback' >
+        <h1 className='error-heading'>Error has happened!</h1>
+            <p className='error-name'>{err  ?? error.name ??  'SOMETHING WENT WRONG'}</p>
+            <button onClick={()=>window.location.reload()}>Reload</button>
+        </div>
     )
 }
 type ErrorInitialState ={
-    hasError: boolean,
+    serverResponse: any,
     error: any,
-    setHasError: React.Dispatch<React.SetStateAction<boolean>>,
+    setServerResponse: React.Dispatch<React.SetStateAction<any>>,
     setError: React.Dispatch<React.SetStateAction<{
         [index: string]: any;
     } | undefined>>,
 }
 
 const initialState:ErrorInitialState = {
-    hasError: false,
-    error:undefined,
+    serverResponse: null,
+    error:null,
     setError: ()=>{},
-    setHasError: ()=>{},
+    setServerResponse: ()=>{},
 }
 
 export const ErrorContext = React.createContext<UseErrorContextType>(initialState)
@@ -59,10 +67,9 @@ export const ErrorContext = React.createContext<UseErrorContextType>(initialStat
 export type UseErrorContextType = ReturnType<typeof useErrorContext>
 
 export const useErrorContext = (initErrorContextState: ErrorInitialState) => {
-    const [hasError,setHasError]= useState(false)
     const [error,setError] = useState<any>()
-
-    return {error,hasError,setHasError,setError}
+    const [serverResponse,setServerResponse]=useState<any>()
+    return {error,setError,serverResponse,setServerResponse}
 }
 
 type ErrorProviderType = {
@@ -75,7 +82,7 @@ const ErrorProvider = ({children,Fallback}: ErrorProviderType) => {
 
     return (
         <ErrorContext.Provider value={value}>
-            {value.hasError ? (<ErrorFallBack />) :children}
+            {value.error ? (<ErrorFallBack />) :children}
         </ErrorContext.Provider>
     )
 }

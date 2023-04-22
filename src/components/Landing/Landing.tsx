@@ -1,20 +1,29 @@
 import React from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import './Landing.scss'
+import Canvas from '../CanvasBg/Canvas'
 const Landing: React.FC = () => {
   let location = useLocation()
     const navigate = useNavigate()
-  return (
+
+  const content = (
+    <>
+    <Canvas bgUrl='../../assets/landingBg.jpg' bgSize='cover' bgPosition='center'/>
     <div className='landing-component box-shadow--gray'>
-    <div className="wrapper">
-    <h3>Join our community and start communicating with them or your friends right now</h3>
-    <button type='button' onClick={()=> navigate('/auth/register')}>Register</button>
-    </div>
-    <div className="wrapper">
-    <p>or log in to your account and contunie communicating!</p>
-    <button type='button' onClick={()=> navigate('/auth/signin')}>Sign In</button>
-    </div>
-</div>  )
+      <div className="wrapper">
+      <h3>Join our community and start communicating with them or your friends right now</h3>
+      {/* <button type='button' onClick={()=> navigate('/auth/register')}>Register</button> */}
+      <Link className='link' to="/auth/register">Register</Link>
+      </div>
+      <div className="wrapper">
+      <h4>or log in to your account and contunie communicating!</h4>
+      {/* <button type='button' onClick={()=> navigate('/auth/signin')}>Sign In</button> */}
+      <Link className='link' to="/auth/signin">Signin</Link>
+      </div>
+</div>  
+    </>
+  )
+    return content
 }
 
 export default Landing
