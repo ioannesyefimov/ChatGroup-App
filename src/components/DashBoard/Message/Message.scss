@@ -1,6 +1,9 @@
 .messages-wrapper{
+    padding: .2rem 1rem;
+
     overflow-y: scroll;
-display: grid;
+display: flex;
+flex:1;
 flex-direction: column;
 gap:1rem;
 &::-webkit-scrollbar {
@@ -35,30 +38,41 @@ scrollbar-color: gray black ;
     transform: scale(2);
     bottom:20%;
 }
+.message.sent {
+    margin-right: auto;
+}
+.message.received {
+    margin-left: auto;
+
+}
+
 .message{
+    border-radius: 6px;
+    box-shadow: 0 0 1px 1px gray;
     position: relative;
     display: grid;
-    // padding: 1rem 2rem ;
     grid-template-areas: 
-
     'member-img wrapper wrapper'
     'member-img text text '
     ;
-    margin-right: auto;
     gap:.2rem;
     
     // outline: 1px solid green;
     button.show-member-button {
         all: unset;
         margin-right:  1rem;
+        border:1px solid gray;
         align-self: center;
         grid-area: member-img;
+        max-width: 40px;
+        width: 40px;
+        height: 40px;
+        max-height: 40px;
+        border-radius: 5px;
         img{
-            max-width: 40px;
-            width: 40px;
-            height: 40px;
-            max-height: 40px;
-            border-radius: 5px;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
     }
     &-wrapper{

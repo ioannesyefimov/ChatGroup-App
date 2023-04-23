@@ -1,4 +1,4 @@
-import React, { SetStateAction } from 'react'
+import React, { ForwardedRef, SetStateAction } from 'react'
 import './Message.scss'
 import { APIFetch, createDate, throwErr } from '../../utils'
 import Button from '../../Button/Button'
@@ -35,10 +35,11 @@ const displayDate = (date:{day:string,time:string}) => {
 
 
 
-const Message = React.forwardRef(({handleDelete,user,createdAt,message,messageUser,_id}:PropsType,ref) => {
+const Message = React.forwardRef(({handleDelete,user,createdAt,message,messageUser,_id}:PropsType,ref:ForwardedRef<HTMLDivElement>) => {
 const navigate = useNavigate()
-  return (
-    <div  className='message'>
+  let sentBy = user?._id === messageUser?._id ? 'received' : 'sent'  
+return (
+    <div  className={`message ${sentBy}`}>
          <button onClick={()=>navigate(`/user?email=${messageUser?.email}`)} className='show-member-button'>
                 <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
           </button>

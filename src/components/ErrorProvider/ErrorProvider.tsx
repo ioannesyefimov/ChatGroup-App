@@ -14,8 +14,7 @@ type ResponseFallbackType ={
 export const ResponseFallback = ({children}:ResponseFallbackType)=>{
     const {serverResponse,setServerResponse}= useError()
     if(!serverResponse?.name) return <>{children}</>
-    const navigate = useNavigate()
-    let handleOnClick = serverResponse.name === Errors.NOT_A_MEMBER ? ()=>{serverResponse(null);navigate('/chat')} :()=> setServerResponse!(null)
+    let handleOnClick = serverResponse.name === Errors.NOT_A_MEMBER ? ()=>{serverResponse(null);window.location.replace('/chat')} :()=> setServerResponse!(null)
     let displayedMsg = (
         <div className='fallback-component'>
             {serverResponse?.arguments?.channel?.members.map((member: {member:UserType,roles:string[],_id:string})=>{

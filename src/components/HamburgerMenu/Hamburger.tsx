@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { hamburgerIco } from '../../assets'
 import './Hamburger.scss'
 import { ChildrenType } from '../types'
+import { useWindowSize } from '../../hooks'
 type PropsType = {
     children?: ReactNode
     type:string
@@ -15,34 +16,35 @@ declare module 'react' {
 }
 
 const Hamburger = ({children,type}:PropsType) => {
-    const [isToggled, setIsToggled] = useState<'loaded'|'toggled'|'untoggled'>('loaded')
-
+    const [isToggled, setIsToggled] = useState<'loaded'|'toggled'|'untoggled'|''>('loaded')
+    const {width} = useWindowSize()
+    let isShowed = width < 500 ? 'animate animate--fast animate--forwards' : ''
     let toggle = ()=>{
         if(isToggled === 'loaded'){
-            setIsToggled('untoggled')
+            setIsToggled('toggled')
         } else if(isToggled==='toggled') {
             setIsToggled('untoggled')
         } else if (isToggled==='untoggled'){
             setIsToggled('toggled')
-        }
+        } 
     }
     let content = (
         <div className={`hamburger navbar `} data-istoggled={isToggled}  >
             <button onClick={toggle} className='hamburger-btn'>
                 <img src={hamburgerIco} alt="hamburgerIco" />
             </button>
-            <div data-istoggled={isToggled ?? 'untoggled'} className={`hamburger-children   animate animate--fast animate--forwards }`}>
+            <div data-istoggled={isToggled ?? 'untoggled'} className={`hamburger-children   ${isShowed}`}>
             {children}
             </div> 
         </div>  
     ) 
 
     let navBar = (
-        <div className={`hamburger navbar `} data-istoggled={isToggled}  >
+        <div className={`hamburger navbar `}  >
             <button onClick={toggle} className='hamburger-btn'>
                 <img src={hamburgerIco} alt="hamburgerIco" />
             </button>
-            <div data-istoggled={isToggled} className={`hamburger-children  animate animate--fast animate--forwards`}>
+            <div data-istoggled={isToggled==='loaded' ? 'loaded-bar' : isToggled} className={`hamburger-children  ${isShowed}`}>
             {children}
             </div> 
         </div>  
@@ -52,7 +54,7 @@ const Hamburger = ({children,type}:PropsType) => {
             <button onClick={toggle} className='hamburger-btn'><img src={hamburgerIco} alt="hamburgerIco" /></button>
             <div className={`hamburger channels`} data-istoggled={isToggled} >
                 
-            <div   className={`hamburger-children  animate animate--fast animate--forwards"    `}>
+            <div   className={`hamburger-children  ${isShowed}`}>
                 {children}
             </div> 
         </div>

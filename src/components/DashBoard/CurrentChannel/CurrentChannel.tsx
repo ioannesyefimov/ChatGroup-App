@@ -1,16 +1,11 @@
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './CurrentChannel.scss'
-import { useAuth, useChat,useSocket, useError, useHandleChannel } from '../../../hooks'
+import { useAuth, useError, useHandleChannel } from '../../../hooks'
 import { ChannelType, MessageType, ResponseType, UserType } from '../../types'
-import Message from '../Message/Message'
-import { APIFetch, Errors, setter, throwErr, validateInput } from '../../utils'
-import {Button, SubmitInput} from '../..'
-import { ChannelsProps } from '../ChatContainer'
-import { Socket } from 'socket.io-client'
+import {SubmitInput} from '../..'
+import {  io } from 'socket.io-client'
 import Messages from '../../Messages/Messages'
-import { ResponseFallback } from '../../ErrorProvider/ErrorProvider'
-import User from '../../UserComponent/User'
 
 export type HandleClickType = {
   e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, 
@@ -24,24 +19,30 @@ export type SocketResponse = {
   data?: any
   message?: any
 }
-
+const currentChannelSocket = io('http://localhost:5050/currentChannel')
 const CurrentChannel = () => {
   const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
   const {user,setLoading} = useAuth()
   const {setError,setServerResponse} = useError()
   const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
   const scrollToRef = useRef<HTMLDivElement | undefined>()
-  const socket = useSocket()!
+  // const {currentChannelSocket} = useSocket()!
   const location = useLocation()
   useEffect(
     ()=>{    
+      // currentChannelSocket.connect()
       setLoading(true)
-  
-      const controller = new AbortController()
-      const {signal}=controller
-      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket,scrollToRef,user,signal})
+      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:currentChannelSocket,scrollToRef,user})
       let timeout = setTimeout(handle,2000)
-      socket.connect()
+      let onGetChannel = (data:SocketResponse)=>{
+        console.log(`GETTING CHANNEL`, data)
+        setCurrentChannel(data?.data?.channels ?? null)
+        currentChannelSocket.emit('join_channel',{room:data.data.channels._id})
+
+        if(!data.success && data.message){
+          setServerResponse(data?.message)
+        }
+      }
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
         if(data.data.messages){
@@ -58,38 +59,39 @@ const CurrentChannel = () => {
         }
       }
       let onConnecting = ()=>{
-        console.log(`CONNECTED BY ID ${socket.id}`)
+        console.log(`CONNECTED BY ID ${currentChannelSocket.id}`)
       }
       let onJoinChannel=(data:SocketResponse)=>{
         console.log(`JOINED CHANNEL ${data.data.room}`);
         
       }
-      socket.on('connect',onConnecting)
-      socket.on('receive_message',onMessage)
-      socket.on('delete_message',onDeleteMessage)
-      socket.on('join_channel',onJoinChannel)
+      currentChannelSocket.on('get_channel',onGetChannel)
+      currentChannelSocket.on('connect',onConnecting)
+      currentChannelSocket.on('receive_message',onMessage)
+      currentChannelSocket.on('delete_message',onDeleteMessage)
+      currentChannelSocket.on('join_channel',onJoinChannel)
     
       return ()=>{
-        socket?.off('delete_message',onDeleteMessage)
-        socket?.off('receive_message',onMessage)
-        socket?.off('connect',onConnecting)
+        currentChannelSocket?.off('delete_message',onDeleteMessage)
+        currentChannelSocket?.off('receive_message',onMessage)
+        currentChannelSocket?.off('connect',onConnecting)
+        currentChannelSocket?.off('get_channel',onGetChannel)
         clearTimeout(timeout)
-        controller?.abort()
         if(currentChannel?._id ){
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
-          socket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
+          currentChannelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
         }
       }
-  },[location.search,user]
+  },[location.search,currentChannelSocket.connected]
   )
-  const handleSubmitMessage =useCallback(async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
+  const handleSubmitMessage=async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
     try {
         console.log(`SUBMITTING MESSAGE`)
       setLoading(true)
-      if(!value) return console.log(`MESSAGE ISN'T TYPED `)
-      if(!propsValue) return
-      if(!user.email) return console.log(`USER IS ${user}`)
-       socket.emit('send_message',{message:value,channelId: propsValue?._id,user,room:propsValue?._id})
+      // if(!value) return console.log(`MESSAGE ISN'T TYPED `)
+      // if(!propsValue) return
+      // if(!user.email) return console.log(`USER IS`,user)
+      currentChannelSocket.emit('send_message',{message:value,channelId: propsValue?._id,user,room:propsValue?._id})
     } catch (error) {
       setError(error)
       console.error(`error:`, error)
@@ -97,23 +99,20 @@ const CurrentChannel = () => {
       setLoading(false)
       setValue('')
     }
- },[])
+ }
 
 
  const handleDeleteMessage = async(_id:string) => {
    try {
-    if(!socket.connected){
-      socket.connect()
-    }
      setLoading(true)
      console.log(`DELETING :`, _id);
      console.log(`USER:`, user);
-     console.log(`socket:`, socket);
+     console.log(`socket:`, currentChannelSocket);
      console.log(`channel:`, currentChannel);
      
      if(!_id) return console.error(`missing id`);
      
-    socket.emit('delete_message',{channel_id:currentChannel?._id,message_id:_id,userEmail:user.email,})
+     currentChannelSocket.emit('delete_message',{channel_id:currentChannel?._id,message_id:_id,userEmail:user.email,})
   } catch (error) {
     setError(error)
   } finally{

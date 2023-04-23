@@ -3,7 +3,7 @@ import {useAuth, useAuthCookies, useError} from '../index'
 import { APIFetch, getUrlWithQueryParams } from '../../components/utils'
 
 const useTwitter = (loginType:string) => {
-    const {setError,setHasError} = useError()
+    const {setError,setServerResponse} = useError()
     const {setCookie} = useAuthCookies()
     const {clearState, setLoading} = useAuth()
     
@@ -39,7 +39,7 @@ const useTwitter = (loginType:string) => {
             // window.location.reload()
 
         } catch (error) {
-            setError({message: error})
+            setServerResponse({message: error})
 
         } finally {
             setLoading(false)

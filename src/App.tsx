@@ -1,17 +1,13 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Authentication, ChannelCreate,NotFound,AuthForm, Dashboard, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch} from './components'
+import { Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch} from './components'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Landing from './components/Landing/Landing'
 import ChatContainer from './components/DashBoard/ChatContainer'
-import CurrentChannel from './components/DashBoard/CurrentChannel/CurrentChannel'
 import ChannelManager from './components/ChannelManager/ChannelManager'
 import ChannelJoin from './components/ChannelManager/ChannelJoin'
 import UserComponent from './components/UserComponent/UserComponent'
-import { useAuth, useAuthCookies, useError, useOnlineStatus } from './hooks'
-import { useEffect } from 'react'
-import { throwErr } from './components/utils'
 
 
 
@@ -94,7 +90,6 @@ let router = createBrowserRouter([
   
 ])
 function App() {
- 
   return (
     <div className="App">
         <RouterProvider router={router} />

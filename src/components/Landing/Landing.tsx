@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import './Landing.scss'
+import { landingBg } from '../../assets'
 import Canvas from '../CanvasBg/Canvas'
 const Landing: React.FC = () => {
   let location = useLocation()
@@ -8,7 +9,7 @@ const Landing: React.FC = () => {
 
   const content = (
     <>
-    <Canvas bgUrl='../../assets/landingBg.jpg' bgSize='cover' bgPosition='center'/>
+    <Canvas bgUrl={landingBg} bgSize='cover' bgPosition='center'/>
     <div className='landing-component box-shadow--gray'>
       <div className="wrapper">
       <h3>Join our community and start communicating with them or your friends right now</h3>

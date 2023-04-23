@@ -4,7 +4,6 @@
     gap:1rem;
 
     padding: 1.25rem;
-    .response-fallback {
 
         h2{
             text-align: center;
@@ -42,10 +41,9 @@
             font-weight:  700;
             align-self:center;
         }
-    }
     .channel-title{
         margin-top: .5rem;
-        font-size: clamp(0.8rem, 0.588rem + 0.902vw, 1.4rem);   
+        font-size: 1.5rem; 
      }
     
 

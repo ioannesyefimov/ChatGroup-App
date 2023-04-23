@@ -6,11 +6,9 @@ import { initAuthContextState } from './components/Authentication/Provider/AuthP
 import ErrorBoundary, { ErrorFallBack, ResponseFallback } from './components/ErrorProvider/ErrorProvider'
 import './index.scss'
 import { CookiesProvider } from 'react-cookie'
-import OnlineStatusProvider from './components/CheckConnectionContext/Provider'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <OnlineStatusProvider>
     <ErrorBoundary   Fallback={()=>ErrorFallBack()}  >
         <CookiesProvider>
           <ResponseFallback >
@@ -20,6 +18,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           </ResponseFallback>
         </CookiesProvider>
     </ErrorBoundary>
-    </OnlineStatusProvider>
   </React.StrictMode>,
 )

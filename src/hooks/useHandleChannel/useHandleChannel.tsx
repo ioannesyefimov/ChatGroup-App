@@ -7,7 +7,7 @@ import { ChannelType, ResponseType, UserType } from '../../components/types';
 import { Socket } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
 
-const useHandleChannel = (setCurrent:Dispatch<SetStateAction<any>> | undefined) => {
+const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined) => {
     const {setError,setServerResponse}=useError()
     const {setLoading,serverUrl}=useAuth()
   const navigate = useNavigate()
@@ -76,14 +76,14 @@ const useHandleChannel = (setCurrent:Dispatch<SetStateAction<any>> | undefined) 
             setter(null)
           return
         }
-            let response = await APIFetch({url:`${serverUrl}/channels/channel/${channelName}?userEmail=${user?.email}`,signal});
-            console.log(`RESPONSE::`, response);
-        if(!response.success){
-          setServerResponse(response.message)
-          return
-        }
-        setter!(response.data.channels)
-        socket.emit('join_channel',{room:response.data.channels._id})
+        socket.emit('get_channel', {channelName,user})
+            // let response = await APIFetch({url:`${serverUrl}/channels/channel/${channelName}?userEmail=${user?.email}`,signal});
+            // console.log(`RESPONSE::`, response);
+        // if(!response.success){
+          // setServerResponse(response.message)
+          // return
+        // }
+        // setter!(response.data.channels)
           } catch (error) {
         setError(error)
       } finally{

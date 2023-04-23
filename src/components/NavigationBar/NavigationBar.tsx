@@ -2,17 +2,23 @@ import React, { useEffect } from 'react'
 import './NavigationBar.scss'
 import NavLink from './NavLink'
 import { useAuth, useWindowSize } from '../../hooks'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { chatifyIco } from '../../assets'
 import Hamburger from '../HamburgerMenu/Hamburger'
 const NavigationBar = () => {
-  const {clearState} = useAuth()
+  const {clearState,user} = useAuth()
   const windowSize= useWindowSize()
 
-  const navBar = (
+  const navBar = user.email ? (
+
     <div className="flex">
        <button className='nav-btn link' onClick={()=>clearState('/auth', navigate)}>Logout</button>
       <button className='nav-btn back-btn link' onClick={()=>navigate(-1)}>Back</button>
+    </div>
+  ) : (
+    <div className="flex">
+       <Link to='/auth/register' replace >Register</Link>
+       <Link to='/auth/signin' replace >Signin</Link>
     </div>
   )
   const navigate = useNavigate()

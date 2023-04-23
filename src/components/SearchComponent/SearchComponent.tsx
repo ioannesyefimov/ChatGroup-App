@@ -1,5 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import './SearchComponent.scss'
+import NavigationBar from '../NavigationBar/NavigationBar'
 
 
 const SearchComponent = () => {
@@ -11,7 +12,7 @@ const SearchComponent = () => {
             <Link to='channel' replace>Search Channel</Link>
         </div>
     )
-   return  location.pathname === '/search' ? content  : <Outlet/>
+   return <><NavigationBar/> {location.pathname === '/search' ? content  : <Outlet/>}</> 
 }
 
 export default SearchComponent

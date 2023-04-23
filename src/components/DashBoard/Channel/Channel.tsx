@@ -16,8 +16,7 @@ type ChannelProps = {
 }
 const Channel = ({name,avatar,handleChannel,id,type}:ChannelProps) => {
     const {user}=useAuth()
-    const {handleLeaveChannel,handleJoinChannel} = useHandleChannel()
-    console.log(`type:${type}`);
+    const {handleLeaveChannel,handleJoinChannel} = useHandleChannel(null)
     
     let handleFc = type === 'leave' ? ()=>handleLeaveChannel(id!,user!): type==='join' ? ()=> handleJoinChannel(id,user) : ()=>{}
   return (

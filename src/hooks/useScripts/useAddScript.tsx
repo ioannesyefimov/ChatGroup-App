@@ -2,10 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { AddScriptType,addScript } from '../../scripts/scripts'
-import useOnlineStatus from '../useOnlineStatus'
 
 const useAddScript = ({...params}:PropsType) => {
-    const isOnline =useOnlineStatus()
     const [error,setError]=useState(false)
     let appendScript = async({...params}:PropsType)=>{
       try {
@@ -22,7 +20,7 @@ const useAddScript = ({...params}:PropsType) => {
     useEffect(
         ()=>{
           appendScript(params)
-        },[isOnline]
+        },[]
     
       )
         useEffect(
