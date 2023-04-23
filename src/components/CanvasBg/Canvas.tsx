@@ -4,8 +4,9 @@ type PropsType= {
     bgSize?:'cover'|'contain' |'auto' ,
     bgPosition?:string,
     bgRepeat?:string
+    style:{[index:string]:string}
 }
-const Canvas = ({bgUrl,bgColor,bgSize,bgPosition,bgRepeat}:PropsType) => {
+const Canvas = ({bgUrl,bgColor,bgSize,bgPosition,bgRepeat,style}:PropsType) => {
   return (
     <div 
     style={
@@ -19,10 +20,11 @@ const Canvas = ({bgUrl,bgColor,bgSize,bgPosition,bgRepeat}:PropsType) => {
         backgroundRepeat:bgRepeat ?? 'no-repeat',
         backgroundImage: `url(${bgUrl})` ,
         backgroundSize: bgSize ?? 'cover',
+        opacity:".8"
         }
     }
     className='canvas' id={'canvas'}>
-        
+
     </div>
   )
 }

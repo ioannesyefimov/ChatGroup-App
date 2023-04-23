@@ -5,9 +5,8 @@ import ChatProvider from '../ChatProvider/ChatProvider'
 import NavigationBar from '../NavigationBar/NavigationBar'
 
 const ProtectedRoute = () => {
-  console.log(`PROTECTED ROUTE RENDER`);
-  
     const {user} = useAuth()
+
     const {cookies} = useAuthCookies()
     if(!user?.email && !cookies?.user?.email) return <Navigate to="/auth/signin" replace/> 
 

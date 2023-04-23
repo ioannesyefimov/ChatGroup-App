@@ -1,16 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth, useChat, useError } from '../../hooks'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth, useChat, useError, useGithub } from '../../hooks'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, throwErr } from '../utils'
 import { UserType } from '../types'
+import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 
 
 
 const RedirectComponent = () => {
     const URL = `http://localhost:5050/api`
     const [serverResponse,setServerResponse]=useState<{user:UserType | null,accessToken:string|null}>({user:null,accessToken:null})
-    const {setLoading,serverUrl}=useAuth()
+    const {setLoading,loading,serverUrl}=useAuth()
+    const {handleGitHubLogin}=useGithub('')
     const {setCookie,cookies} = useAuthCookies()
     const {setError} = useError() 
     let location = useLocation()
@@ -38,13 +40,18 @@ const RedirectComponent = () => {
         }
     
       let handleRedirect = 
-        async()=>{
+        async(signal:AbortSignal)=>{
             try {
+                if(signal.aborted) return
                 setLoading(true)
                 let query = new URLSearchParams(location.search)
                 let type = query.get('type')
                 let loggedThrough = query.get('loggedThrough')
                 let accessToken = query.get('accessToken')
+                let code = query.get("code")
+                if(code){
+                    return await handleGitHubLogin(code,signal);
+                }
                 console.log(`type: ${type}`)
                 console.log(`loggedThrough: ${loggedThrough}`)
                 console.log(`accessToken: ${accessToken}`)
@@ -60,18 +67,22 @@ const RedirectComponent = () => {
                     return 
                 }
                 if(type && loggedThrough && accessToken){
-                    handleLogin({accessToken,type,loggedThrough});
+                    handleLogin({accessToken,type,loggedThrough,signal});
                 }
                 
-            } catch (error) {
-                setError(error)
+            } catch (error:any) {
+                setServerResponse(error)
             }finally {
                 setLoading(false)
             }
     }
     useEffect(
         ()=>{
-            handleRedirect()
+            let controller = new AbortController()
+            let {signal} = controller
+            handleRedirect(signal)
+            signal?.addEventListener('abort',()=>console.log(`Aborted`))
+            return ()=>controller?.abort(); 
         },[])
 
     useEffect(
@@ -86,9 +97,16 @@ const RedirectComponent = () => {
         },[serverResponse]
     )
         
-
-    return <Outlet/>
-
+        if(loading){
+            return <LoadingFallback/>
+        }
+        else {
+            return (
+            <>
+                <Link to='/chat' replace>Home</Link>
+            </>
+            )
+        }
 
 }
 
