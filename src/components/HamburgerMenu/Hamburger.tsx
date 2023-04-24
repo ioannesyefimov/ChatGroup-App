@@ -3,6 +3,7 @@ import { hamburgerIco } from '../../assets'
 import './Hamburger.scss'
 import { ChildrenType } from '../types'
 import { useWindowSize } from '../../hooks'
+import { useLocation } from 'react-router-dom'
 type PropsType = {
     children?: ReactNode
     type:string
@@ -19,6 +20,10 @@ const Hamburger = ({children,type}:PropsType) => {
     const [isToggled, setIsToggled] = useState<'loaded'|'toggled'|'untoggled'|''>('loaded')
     const {width} = useWindowSize()
     let isShowed = width < 500 ? 'animate animate--fast animate--forwards' : ''
+
+    let location = useLocation()
+
+  
     let toggle = ()=>{
         if(isToggled === 'loaded'){
             setIsToggled('toggled')
@@ -50,9 +55,9 @@ const Hamburger = ({children,type}:PropsType) => {
         </div>  
     ) 
     let channels = (
-        <div className='hamburger-outer' data-istoggled={isToggled}>
+        <div className='hamburger-outer'data-istoggled={isToggled}>
             <button onClick={toggle} className='hamburger-btn'><img src={hamburgerIco} alt="hamburgerIco" /></button>
-            <div className={`hamburger channels`} data-istoggled={isToggled==='loaded' ? 'loaded-bar' : isToggled} >
+            <div className={`hamburger channels`} data-istoggled={isToggled} >
                 
             <div   className={`hamburger-children  ${isShowed}`}>
                 {children}

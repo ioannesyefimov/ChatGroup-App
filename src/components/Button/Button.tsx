@@ -11,7 +11,10 @@ const Button = ({text,onClick,name,img,type='button'}:ButtonProps) => {
 
   
   return (
-    <button ref={btnRef}  className={name} type={type} onClick={onClick}>{text?   text : <img src={img} alt={`${name} image`}/>}</button>
+    <button ref={btnRef}  className={name} type={type} onClick={onClick}>
+      {text?   text : null }
+      {img ? <img src={img} alt={`${name} image`}/> : null}
+      </button>
   )
 }
 

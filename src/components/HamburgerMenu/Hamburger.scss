@@ -28,12 +28,13 @@
     filter:brightness(100%) invert(100%);
     position: absolute;
     background: none;
-    padding: .2rem;
+    padding: .25rem;
     z-index: 1555;
+    width: 33px !important;
+    height: 33px;
 
     &:hover{
-        background-color: aquamarine;
-        filter:brightness(0%) invert(50%) hue-rotate(100%);
+        background-color: darkgrey;
 
     }
 }
@@ -47,7 +48,7 @@
    bottom:0;
    width: 50%;
    max-width: 300px;
-   z-index: 102 !important;
+   z-index:414 !important;
    
 
     .hamburger-btn {
@@ -111,20 +112,15 @@
     }    
     transition: all .5s ease-in-out;
     display: flex;
-    .hamburger-btn {
-        @include respond-to(small){
-            left: .2rem;
-        }
-        position: absolute;
-            width: 25px;
-         height: 25px;
-        left: .2rem;
-         top:5px;
-         }
+    
     
 .hamburger.channels {
     transition: .3s all ease-in-out;
- 
+
+    &[data-istoggled=loaded]{
+        position: absolute;
+        transform: translateX(-120%);
+    }
     &[data-istoggled=toggled] {
         @include respond-to(medium){
             position: relative;
@@ -133,6 +129,7 @@
         animation-name: appearFromLeft;
         animation-duration: 1s;
         animation-fill-mode: forwards;
+        width: 100%;
     }
 
     &[data-istoggled=untoggled]{
@@ -140,13 +137,6 @@
         animation-name: disappearToLeft;
         animation-duration: 1s;
         animation-fill-mode: forwards;
-    }
-    &[data-istoggled=loaded-bar],&[data-istoggled=toggled]{
-        @include respond-to(small){
-
-        }
-        position: absolute;
-        width: 100%;
     }
     
     // &[data-istoggled=toggled]{

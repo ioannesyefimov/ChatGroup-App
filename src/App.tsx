@@ -1,7 +1,7 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch} from './components'
+import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile} from './components'
 
 
 
@@ -38,16 +38,20 @@ let router = createBrowserRouter([
       },
       {
         element: <ProtectedRoute />,
-        path:'/chat',
+        path:'',
         children: [
+          {
+            element:<Profile/>,
+            path:'/profile'
+          },
           {
     
            element: <ChatContainer  />,
-           path: ':channel?',
+           path: '/chat/:channel?',
           },
           {
             element: <ChannelManager/>,
-            path: 'manage',
+            path: '/chat/manage',
             children: [
               {
                 path:'create',

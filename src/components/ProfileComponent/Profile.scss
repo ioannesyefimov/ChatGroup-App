@@ -1,0 +1,24 @@
+@use '../utils/utils.scss' as *;
+
+.profile-component {
+
+    display: grid;
+    max-width: 1020px;
+    margin: 0 auto;
+
+    .user {
+        margin: auto;
+        &-img{
+            border-radius: 10px;
+        }
+        &-name {
+            text-align: center;
+        }
+
+    }
+
+    .channels{
+        min-width: 320px;
+    }
+
+}

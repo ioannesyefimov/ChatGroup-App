@@ -16,7 +16,32 @@
     bottom: 0;
     padding: .5rem 1rem;
     width: 100%;
+
+    .dropdown{
+        display: grid;
+        gap:.8rem;
+        position: absolute;
+        bottom:95%;
+        padding: .5rem;
+        outline: 1px solid white;
+        background-color: #120F13 !important;
+        // left:  60%;
+        width: calc(100% - 2rem);
+        // padding:1rem;
+        z-index: 555;
+        .link {
+            display: flex;
+            gap:.5rem;
+            img{
+                max-width: 25px;
+                order:-11;
+            }
+            padding: 0;
+        }
+    }
     .dropdown-img {
+        padding: 0;
+        
         filter: brightness(50%) invert(60%);
         max-width: 20px;
         margin-left: auto;
