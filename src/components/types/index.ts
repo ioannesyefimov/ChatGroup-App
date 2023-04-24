@@ -23,6 +23,7 @@ export type ResponseType = {
     message?:string
     success?:boolean
     data?:any
+    err?:any
 }
 
 export type Member = UserType

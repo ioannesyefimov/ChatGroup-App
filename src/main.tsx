@@ -11,11 +11,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary   Fallback={()=>ErrorFallBack()}  >
         <CookiesProvider>
-          <ResponseFallback >
             <AuthProvider >
               <App />
             </AuthProvider>
-          </ResponseFallback>
         </CookiesProvider>
     </ErrorBoundary>
   </React.StrictMode>,

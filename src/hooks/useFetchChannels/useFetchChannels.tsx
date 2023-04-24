@@ -22,7 +22,7 @@ const useFetchChannels = () => {
         setCookie('channels', response?.data?.channels ?? null, {maxAge: 450,path:'/'})
         if(!response?.success){
             console.log(`ERROR`)
-            throwErr(response?.message)
+            throwErr(response?.err)
         }
         setChannels(response?.data.channels)
        } catch (error) {

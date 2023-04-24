@@ -22,7 +22,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
             userEmail:user.email,channel_id:id
           }})
           if(!response.success){
-            throwErr(response.message)
+            throwErr(response.err)
           }
           setChannels(response.data.channel)
         } catch (error) {
@@ -38,7 +38,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               console.log(`FIELDS: `, fields)
               // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
               let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
-              if(!response.success) throwErr(response?.message)
+              if(!response.success) throwErr(response?.err)
               setChannels(prev=>({...prev, ...response?.data?.channel }))
               navigate(`/chat/channel=${response?.data?.channel?.channelName.replaceAll(' ','-')}`)
               console.log(`RESPONSE : `, response)

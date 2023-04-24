@@ -20,7 +20,7 @@ const Canvas = ({bgUrl,bgColor,bgSize,bgPosition,bgRepeat,style}:PropsType) => {
         backgroundRepeat:bgRepeat ?? 'no-repeat',
         backgroundImage: `url(${bgUrl})` ,
         backgroundSize: bgSize ?? 'cover',
-        opacity:".8"
+        opacity:".85"
         }
     }
     className='canvas' id={'canvas'}>

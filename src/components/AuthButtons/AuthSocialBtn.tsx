@@ -1,3 +1,4 @@
+import { useError } from "../../hooks"
 
 
 export type SocialBtnProps = {
@@ -8,7 +9,6 @@ export type SocialBtnProps = {
     socialType:string
 }
 const SocialBtn =  ({authType,id,execFunc,icon,socialType}:SocialBtnProps) => {
-
   let googleBtn = (
     <div className="social-btn-outer"  >
       <img src={icon} alt={`${socialType} icon`} />

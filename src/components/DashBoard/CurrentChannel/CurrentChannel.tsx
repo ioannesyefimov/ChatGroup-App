@@ -18,6 +18,7 @@ export type SocketResponse = {
   success:boolean
   data?: any
   message?: any
+  err?:any
 }
 const currentChannelSocket = io('http://localhost:5050/currentChannel')
 const CurrentChannel = () => {
@@ -32,7 +33,9 @@ const CurrentChannel = () => {
     ()=>{    
       // currentChannelSocket.connect()
       setLoading(true)
-      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:currentChannelSocket,scrollToRef,user})
+      let controller = new AbortController()
+      let {signal} = controller
+      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:currentChannelSocket,scrollToRef,user,signal})
       let timeout = setTimeout(handle,2000)
       let onGetChannel = (data:SocketResponse)=>{
         console.log(`GETTING CHANNEL`, data)
@@ -40,11 +43,12 @@ const CurrentChannel = () => {
         currentChannelSocket.emit('join_channel',{room:data.data.channels._id})
 
         if(!data.success && data.message){
-          setServerResponse(data?.message)
+          setServerResponse(data?.err)
         }
       }
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
+        
         if(data.data.messages){
           setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         }
@@ -55,7 +59,7 @@ const CurrentChannel = () => {
           
           setCurrentChannel(data.data.channel)
         } else {
-          setServerResponse(data.message)
+          setServerResponse(data?.err)
         }
       }
       let onConnecting = ()=>{
@@ -77,6 +81,7 @@ const CurrentChannel = () => {
         currentChannelSocket?.off('connect',onConnecting)
         currentChannelSocket?.off('get_channel',onGetChannel)
         clearTimeout(timeout)
+        controller?.abort()
         if(currentChannel?._id ){
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           currentChannelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})

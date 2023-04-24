@@ -5,16 +5,16 @@ import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, sleep, throwErr } from '../utils'
 import { UserType } from '../types'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
-
+import './RedirectComponent.scss'
 
 
 const RedirectComponent = () => {
     const URL = `http://localhost:5050/api`
-    const [serverResponse,setServerResponse]=useState<{user:UserType | null,accessToken:string|null}>({user:null,accessToken:null})
+    const [data,setData]=useState<{user:UserType | null,accessToken:string|null}>({user:null,accessToken:null})
     const {setLoading,loading,serverUrl}=useAuth()
     const {handleGitHubLogin}=useGithub('')
     const {setCookie,cookies} = useAuthCookies()
-    const {setError} = useError() 
+    const {setError,setServerResponse} = useError() 
     let location = useLocation()
     type HandleLoginProps = {
         accessToken: string
@@ -23,17 +23,18 @@ const RedirectComponent = () => {
         signal?: AbortSignal
     }
     let navigate = useNavigate()
-    let handleLogin = 
+let handleLogin = 
         async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
            try {
             setLoading(true)
             let response = await APIFetch({url:`${serverUrl}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
             if(!response?.success){
-                throwErr(response?.message)
+                throwErr(response?.err)
             }
-            setServerResponse({user:response.data.user,accessToken:response.data.accessToken})
+            setData({user:response.data.user,accessToken:response.data.accessToken})
         } catch (error) {
-            setError(error)
+            setServerResponse(error)
+            
            }finally {
             setLoading(false)
            }
@@ -42,16 +43,18 @@ const RedirectComponent = () => {
       let handleRedirect = 
         async(signal:AbortSignal)=>{
             try {
-                await sleep(10000);
-                if(signal.aborted) return
-                console.log(`STARTED `);
-                
                 setLoading(true)
+                if(!location.search) {
+                    return 
+                }
                 let query = new URLSearchParams(location.search)
                 let type = query.get('type')
                 let loggedThrough = query.get('loggedThrough')
                 let accessToken = query.get('accessToken')
                 let code = query.get("code")
+                if(signal.aborted) return
+                await sleep(3000);
+                console.log(`STARTED `);
                 if(code){
                     return await handleGitHubLogin(code,signal);
                 }
@@ -72,7 +75,6 @@ const RedirectComponent = () => {
                 if(type && loggedThrough && accessToken){
                     handleLogin({accessToken,type,loggedThrough,signal});
                 }
-                
             } catch (error:any) {
                 setServerResponse(error)
             }finally {
@@ -84,32 +86,29 @@ const RedirectComponent = () => {
             let controller = new AbortController()
             let {signal} = controller
             handleRedirect(signal)
-            signal?.addEventListener('abort',()=>console.log(`Aborted`))
-            return ()=>controller?.abort(); 
-        },[])
+            // signal?.addEventListener('abort',()=>console.log(`Aborted`))
+            // return ()=>controller?.abort(); 
+        },[location?.search])
 
     useEffect(
         ()=>{
-            console.log(`RESPONSE:`, serverResponse);
-            if(serverResponse.user){
-                setCookie('user',serverResponse.user,{path:'/',maxAge:2000})
+            if(data.user){
+                setCookie('user',data.user,{path:'/',maxAge:2000})
             }
-            if(serverResponse.accessToken){
-                setCookie('accessToken',serverResponse?.accessToken,{path:'/',maxAge:2000})
+            if(data.accessToken){
+                setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2000})
                 }
-        },[serverResponse]
+        },[data]
     )
         
-        if(loading){
-            return <LoadingFallback/>
-        }
-        else {
+    if(loading) return <LoadingFallback/>
+       
             return (
-            <>
+            <div className='redirect-component'>
+                
                 <Link to='/chat' replace>Home</Link>
-            </>
+            </div>
             )
-        }
 
 }
 

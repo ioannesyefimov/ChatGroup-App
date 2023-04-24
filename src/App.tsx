@@ -1,90 +1,88 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch} from './components'
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import Landing from './components/Landing/Landing'
-import ChatContainer from './components/DashBoard/ChatContainer'
-import ChannelManager from './components/ChannelManager/ChannelManager'
-import ChannelJoin from './components/ChannelManager/ChannelJoin'
-import UserComponent from './components/UserComponent/UserComponent'
-
+import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch} from './components'
 
 
 
 let router = createBrowserRouter([
-
   {
-    element: <NotFound />,
-    path: '*'
-  },
-  {
-    element: <Landing />,
-    path: '/'
-  },
-  {
-    element:<SearchComponent/>,
-    path: '/search',
+    element:<ServerResponseFallback/>,
     children:[
       {
-        path:'user/:search?',
-        element:<MemberInfo/>
+        element: <NotFound />,
+        path: '*'
       },
       {
-        element: <ChannelSearch/>,
-        path: 'channel/:search?'
-      },
-    ]
-
-  },
-  {
-    element: <UserComponent />,
-    path: '/user/:search?'
-  },
-  {
-    element: <ProtectedRoute />,
-    path:'/chat',
-    children: [
-      {
-
-       element: <ChatContainer  />,
-       path: ':channel?',
+        element: <Landing />,
+        path: '/'
       },
       {
-        element: <ChannelManager/>,
-        path: 'manage',
-        children: [
+        element:<SearchComponent/>,
+        path: '/search',
+        children:[
           {
-            path:'create',
-            element: <ChannelCreate/>
+            path:'user/:search?',
+            element:<MemberInfo/>
           },
           {
-            path:'join',
-            element: <ChannelJoin/>
-          }
+            element: <ChannelSearch/>,
+            path: 'channel/:search?'
+          },
         ]
-   
-       },
-    ]
-  },
-  {
-    element: <Authentication />,
-    path: '/auth',
-    children: [
-      {
-        element: <RedirectComponent />,
-        path: 'redirect?/:params'
+    
       },
       {
-        element: <AuthForm redirectType='auth/user' type="register" />,
-        path:'register'
+        element: <UserComponent />,
+        path: '/user/:search?'
       },
       {
-        element: <AuthForm redirectType='auth/user' type="signin" />,
-        path:'signin'
+        element: <ProtectedRoute />,
+        path:'/chat',
+        children: [
+          {
+    
+           element: <ChatContainer  />,
+           path: ':channel?',
+          },
+          {
+            element: <ChannelManager/>,
+            path: 'manage',
+            children: [
+              {
+                path:'create',
+                element: <ChannelCreate/>
+              },
+              {
+                path:'join',
+                element: <ChannelJoin/>
+              }
+            ]
+       
+           },
+        ]
+      },
+      {
+        element: <Authentication />,
+        path: '/auth/',
+        children: [
+          {
+            element: <RedirectComponent />,
+            path: 'redirect/:params?'
+          },
+          {
+            element: <AuthForm redirectType='auth/user' type="register" />,
+            path:'register'
+          },
+          {
+            element: <AuthForm redirectType='auth/user' type="signin" />,
+            path:'signin'
+    
+          }
+        ],
+      },
 
-      }
-    ],
+    ]
   },
   
   

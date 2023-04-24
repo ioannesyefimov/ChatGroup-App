@@ -103,12 +103,12 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
         <FormInput value={form.email} onChange={(e)=>handleFormChange(e)} labelName='email' name="email" id="emailInput" type="email" placeholder='Type in email...' ref={EmailRef} photo={mailIco} />
         <FormInput value={form.password} onChange={(e)=>handleFormChange(e)} name="password" labelName='Password' id="passwordInput" type="password" placeholder='Type in password...' ref={PasswordRef} photo={lockerIco} />
         <button className='submit-btn' onClick={(e)=>handleSubmit(e,'register')}>Register</button>
+        <AuthSocialButtons authType='signin' />
 
         </form>
       </div>
 
         <span  className='hint'>Already have an account? <Link to='/auth/signin'>Sing in</Link></span>
-        <AuthSocialButtons authType='signin' />
       </div>
  )
 

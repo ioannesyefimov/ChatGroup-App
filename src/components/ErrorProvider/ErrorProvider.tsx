@@ -6,31 +6,9 @@ import { Errors, isObj } from '../utils'
 import Button from '../Button/Button'
 import { useNavigate } from 'react-router-dom'
 import User from '../UserComponent/User'
+import AuthSocialButtons from '../AuthButtons/AuthSocialButtons'
 
-type ResponseFallbackType ={
-    children?:ReactNode| ReactNode[]
 
-}
-export const ResponseFallback = ({children}:ResponseFallbackType)=>{
-    const {serverResponse,setServerResponse}= useError()
-    if(!serverResponse?.name) return <>{children}</>
-    let handleOnClick = serverResponse.name === Errors.NOT_A_MEMBER ? ()=>{serverResponse(null);window.location.replace('/chat')} :()=> setServerResponse!(null)
-    let displayedMsg = (
-        <div className='fallback-component'>
-            {serverResponse?.arguments?.channel?.members.map((member: {member:UserType,roles:string[],_id:string})=>{
-         console.log(`MEMBER:`, member.member);
-                
-                return (
-                  <User key={member.member._id} user={member?.member}/>
-                )
-              })}
-            <span className='response-type'>{serverResponse.name ?? JSON.stringify(serverResponse)}</span>
-            <Button onClick={handleOnClick} text='Continue'name='continue-btn' />
-        </div>
-    ) 
-    return displayedMsg
-
-}
 
 export const ErrorFallBack = () => {
     const {error} = useError()
@@ -67,7 +45,7 @@ export type UseErrorContextType = ReturnType<typeof useErrorContext>
 
 export const useErrorContext = (initErrorContextState: ErrorInitialState) => {
     const [error,setError] = useState<any>()
-    const [serverResponse,setServerResponse]=useState<any>()
+    const [serverResponse,setServerResponse]=useState<any>({})
     return {error,setError,serverResponse,setServerResponse}
 }
 

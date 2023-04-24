@@ -7,7 +7,7 @@ const NotFound: React.FC = () =>{
     return (
       <div className='notFound'>
         <img src={notFoundIco} alt="not found img" />
-        <button onClick={() => navigate('/dashboard')}>Back to main</button>
+        <button onClick={() => navigate('/chat')}>Back to main</button>
       </div>
     )
   }

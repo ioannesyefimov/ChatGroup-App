@@ -7,6 +7,7 @@ import useChat from "../useChatContext/useChatContext"
 
 export default () =>{
     const {user,loading,serverUrl,setUser,setLoading} = useContext(AuthContext)
+    
     const {setCookie,removeCookie,cookies} = useAuthCookies()
     useEffect(
       ()=>{

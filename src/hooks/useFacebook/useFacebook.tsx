@@ -50,6 +50,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
 
     const handleFacebookLogin = async({credentials}:{credentials:any}) =>{
         try {
+            setServerResponse(null)
             setLoading(true)
             console.log(`FB SIGNIN IN`)
             const response = await APIFetch({url: `${url}auth/facebook`, method:'POST', body: {credentials}});

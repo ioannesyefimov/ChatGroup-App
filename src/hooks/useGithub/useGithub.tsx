@@ -11,15 +11,9 @@ const useGithub = (TYPE?:string) => {
     const {clearState,setLoading,user,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
     const navigate = useNavigate()
-
-
-    let newURL = location.href.split("?")[0];
     const handleGitHub = (type:string) => {
+        setServerResponse(null)
         window.location.assign(`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_APP_GITHUB_APP_ID}`)
-        // console.log('GHHH')
-        // console.log(`type: ${type}`);
-        window.localStorage.setItem('LOGIN_TYPE', type)
-        window.localStorage.setItem('LOGGED_THROUGH', 'Github')
     }
 
     const handleGitHubLogin = async(codeParams:string,signal?:AbortSignal)=>{
@@ -41,11 +35,12 @@ const useGithub = (TYPE?:string) => {
             console.log(`RESPONSE:`, response);
             
             if(!response.success){
-                throwErr(response.message)
+                throwErr(response.err)
             }
             setCookie('user',response?.data?.user,{path:'/',maxAge:3000})
         } catch (error) {
-
+            console.error(error);
+            
              setServerResponse(error)
         }   finally{
             setLoading(false)

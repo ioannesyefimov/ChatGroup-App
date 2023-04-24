@@ -52,8 +52,9 @@ body {
 
 .notFound {
    display: grid;
-   width: 100%;
-
+   width: 80%;
+   max-width: 500px;
+  margin: auto;
    img{
     width: 100%;
     // width: 300px;
@@ -88,18 +89,16 @@ input.error{
 .fallback-component {
   @extend .box-shadow--gray;
   position: absolute;
-  max-width:400px;
-  width: 50%;
-  height: 40%;
-  max-height: 450px;
-  z-index: 1000;
-  left:0;
-  align-self: center;
-  right: 0;
-  margin:0 auto;
-  padding: 2rem;
+  inset: 0;
   
   display: flex;
+  height:40%;
+  width: 50%;
+  max-width:400px;
+  max-height: 450px;
+  z-index: 99999;
+  margin: auto;
+  padding: 2rem;
   gap:1rem;
 
 

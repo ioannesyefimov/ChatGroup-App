@@ -52,7 +52,7 @@ const Hamburger = ({children,type}:PropsType) => {
     let channels = (
         <div className='hamburger-outer' data-istoggled={isToggled}>
             <button onClick={toggle} className='hamburger-btn'><img src={hamburgerIco} alt="hamburgerIco" /></button>
-            <div className={`hamburger channels`} data-istoggled={isToggled} >
+            <div className={`hamburger channels`} data-istoggled={isToggled==='loaded' ? 'loaded-bar' : isToggled} >
                 
             <div   className={`hamburger-children  ${isShowed}`}>
                 {children}

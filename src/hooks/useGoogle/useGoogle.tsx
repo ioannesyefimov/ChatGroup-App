@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
-    const {setError} = useError()
+    const {setError,setServerResponse} = useError()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user} = useAuth()
     const {handleDelete} = useFetch()
@@ -18,6 +18,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
     
     const handleGoogle = async(googleResponse:any)=>{
         try {
+            setServerResponse(null)
             // let loginType = window.localStorage.getItem('LOGIN_TYPE')
             console.log(loginType)
             console.log(googleResponse)
@@ -86,7 +87,6 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
                 // return console.log('USER IS NOT DELETED')
             }
             clearState('/auth/signin')
-            // setCookie("accessToken", dbResponse?.accessToken,  {path: '/'}, {maxAge : "1200"});
         
             setLoading(false)
             

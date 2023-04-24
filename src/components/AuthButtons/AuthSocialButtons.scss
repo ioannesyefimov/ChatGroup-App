@@ -29,25 +29,33 @@
         justify-content: center;
         flex: 1;
         padding: 0;
-        position: relative;
+        position:relative;
         z-index: 55;
         border-radius: 50%;
         width: 33px;
         height: 33px;
+
         img{
             position: absolute !important;
             z-index: -1;
+            inset: 0;
+            margin: auto;
         }
         
         
         .social-btn {
             border-radius: 50%;
             flex:1;
+            margin: auto;
+            position: relative;
+            left: 0;
+            top:0;
             height: 100%;
             width: 100%;
+            // position: absolute;
             padding: 0;
-            
-          
+            // border: none;    
+        //   
         }
        
      }

@@ -1,6 +1,7 @@
 import React from 'react'
 import Message from '../DashBoard/Message/Message';
 import { ChannelType, MessageType, UserType } from '../types';
+import Button from '../Button/Button';
 type PropsType ={
     handleDelete: (_id:string) => Promise<void>
     currentChannel: ChannelType | null
@@ -24,7 +25,7 @@ const Messages = ({handleDelete,currentChannel,user,scrollToRef}:PropsType) => {
                 <h4 key="no-message">There is no messages in {currentChannel?.channelName}</h4>
                 )
             }
-            <button  onClick={()=>{document.getElementById('messagesWrapper')!.scrollTop = 10000}} id={'downBtn'} className='down-btn'>↓</button>
+            <Button onClick={()=>{document.getElementById('messagesWrapper')!.scrollTop = 10000}} name='down-btn' text="↓"/>
         </div>
       </>
     )
