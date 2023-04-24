@@ -24,7 +24,9 @@ const useGithub = (TYPE?:string) => {
 
     const handleGitHubLogin = async(codeParams:string,signal?:AbortSignal)=>{
         try {
-            if(signal?.aborted) return
+            if(signal?.aborted){
+                return
+            }
             setLoading(true)
 
             let ghToken = await getGithubAccessToken(codeParams,signal);

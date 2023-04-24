@@ -273,7 +273,17 @@ function countWords(str:string) {
   return arr.filter(word => word !== '').length;
 }
 export function sleep(ms:number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve => {
+    let i=0
+  let timer = setInterval(()=>{
+      i++;
+      console.log(`waiting for ${i} seconds...`)
+    },1000)
+     return setTimeout(()=>{
+      clearInterval(timer) 
+      return resolve(true)
+    }, ms)
+  });
 }
 
 function getFirstLetter(str:string,words?:number){

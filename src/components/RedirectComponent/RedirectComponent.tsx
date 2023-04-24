@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useAuth, useChat, useError, useGithub } from '../../hooks'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
-import { APIFetch, Errors, throwErr } from '../utils'
+import { APIFetch, Errors, sleep, throwErr } from '../utils'
 import { UserType } from '../types'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 
@@ -42,7 +42,10 @@ const RedirectComponent = () => {
       let handleRedirect = 
         async(signal:AbortSignal)=>{
             try {
+                await sleep(10000);
                 if(signal.aborted) return
+                console.log(`STARTED `);
+                
                 setLoading(true)
                 let query = new URLSearchParams(location.search)
                 let type = query.get('type')
