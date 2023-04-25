@@ -2,6 +2,10 @@ import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile} from './components'
+import { useAuthCookies } from './hooks'
+import { useSetUser, useUser } from './hooks/useAuthContext/useAuthContext'
+import { useEffect } from 'react'
+import { log } from 'console'
 
 
 
@@ -92,6 +96,19 @@ let router = createBrowserRouter([
   
 ])
 function App() {
+  const {cookies} = useAuthCookies()
+  const setUser = useSetUser()
+  useEffect(
+    ()=>{
+      console.log(`APP RENDER`);
+      
+      let isLogged = cookies?.user
+      if(isLogged){
+        setUser(isLogged)
+      }
+    },[cookies?.user]
+  )
+  
   return (
     <div className="App">
         <RouterProvider router={router} />

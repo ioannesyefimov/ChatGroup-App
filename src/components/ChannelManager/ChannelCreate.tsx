@@ -18,14 +18,6 @@ const ChannelCreate = ()=>{
     const {cookies} = useAuthCookies()
     const {setChannels} = useChat()
 
-    if(!cookies?.accessToken) return (
-        <div className='prompt'>       
-            <h2 style={{marginBottom:'1rem', color:'red'}}>You need to log in again: </h2>
-            <AuthForm type='signin' redirectType='newAccessToken' redirectUrl='/channel/manage'/>
-        </div>
-    )
-    
-     
 
     const nameRef = useRef<null | HTMLLabelElement >(null)
     const descriptionRef = useRef<null | HTMLLabelElement >(null)

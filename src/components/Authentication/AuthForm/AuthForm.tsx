@@ -8,6 +8,7 @@ import { useAuth, useError } from '../../../hooks'
 import useAuthCookies from '../../../hooks/useAuthCookies/useAuthCookies'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 import Canvas from '../../CanvasBg/Canvas'
+import { useServerUrl, useSetLoading } from '../../../hooks/useAuthContext/useAuthContext'
 type AuthProps = {
   type: string
   redirectType: string
@@ -27,13 +28,15 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
   const handleFormChange =(e:ChangeEvent<HTMLInputElement>)=>{
     setForm({...form,[e.target.name]:e.target.value})
   }
-
-  const {serverUrl,setLoading} = useAuth()
+  const serverUrl = useServerUrl()
+  const setLoading = useSetLoading()
   const {setServerResponse} = useError()
+
   const navigate = useNavigate()
   const EmailRef =React.createRef<HTMLLabelElement>()
   const PasswordRef =React.createRef<HTMLLabelElement>()
   const UserNameRef =React.createRef<HTMLLabelElement>()
+
   const handleSubmit = async(e:React.MouseEvent<HTMLButtonElement, MouseEvent>, type:string)=>{
     e.preventDefault();
 

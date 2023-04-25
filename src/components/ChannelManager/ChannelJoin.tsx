@@ -15,15 +15,6 @@ const ChannelJoin = ()=>{
     const [searchedChannels,setSearchedChannels] = useState<ChannelType[] | null>(null)
     const {cookies} = useAuthCookies()
     const {channels,} = useChat()
-    const location = useLocation()
-    if(!cookies?.accessToken) return (
-        <div className='prompt'>       
-            <h2 className='prompt-heading'>You need to log in again: </h2>
-            <AuthForm type='signin' redirectType='newAccessToken' redirectUrl='/channel/join'/>
-        </div>
-    )
-  
-    
    
     return (
         <div className='prompt-menu-component  box-shadow--gray'>

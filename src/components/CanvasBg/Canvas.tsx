@@ -4,7 +4,7 @@ type PropsType= {
     bgSize?:'cover'|'contain' |'auto' ,
     bgPosition?:string,
     bgRepeat?:string
-    style:{[index:string]:string}
+    style?:{[index:string]:string}
 }
 const Canvas = ({bgUrl,bgColor,bgSize,bgPosition,bgRepeat,style}:PropsType) => {
   return (

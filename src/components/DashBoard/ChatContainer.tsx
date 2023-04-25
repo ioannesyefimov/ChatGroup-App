@@ -2,15 +2,10 @@ import React, { ReactNode, useCallback, useEffect } from 'react'
 import CurrentChannel from './CurrentChannel/CurrentChannel'
 import ChannelsBar from './ChannelsBar/ChannelsBar'
 import "./ChatContainer.scss"
-import { useSearch, useSocket } from '../../hooks'
+import { useSearch } from '../../hooks'
 import { ChannelType, UserType } from '../types'
-import { APIFetch, throwErr } from '../utils'
-import { Outlet, useLocation } from 'react-router-dom'
-import useSearchChannels from '../../hooks/useSearch'
+import { Outlet} from 'react-router-dom'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
-import { Socket } from 'socket.io-client/build/esm/socket'
-import {io} from 'socket.io-client'
-import { ResponseFallback } from '../ErrorProvider/ErrorProvider'
 export type ChannelsProps = {
   setChannels?: React.Dispatch<React.SetStateAction<ChannelType[]>>
   channels : ChannelType[]

@@ -1,6 +1,7 @@
+@use '../../utils/utils.scss' as *;
+
 .messages-wrapper{
-    position: relative;
-    padding: .2rem 1rem;
+    padding: .2rem 1.2rem;
 
     overflow-y: scroll;
 display: flex;
@@ -35,9 +36,9 @@ scrollbar-color: gray black ;
     width: 25px;
     transform: scale(1.4);
     height: 25px;
-    position: absolute;
-    left: 0%;
-    bottom:0%;
+    position:absolute;
+    right: 1%;
+    bottom:20%;
 }
 .message.sent {
     margin-right: auto;

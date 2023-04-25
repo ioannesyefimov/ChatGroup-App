@@ -2,11 +2,16 @@ import React, { useCallback, useEffect } from 'react'
 import { useAuth, useAuthCookies, useChat, useError } from '..'
 import { APIFetch, Errors, throwErr } from '../../components/utils'
 import { useNavigate } from 'react-router-dom'
+import { useLoading, useServerUrl, useSetLoading, useUser } from '../useAuthContext/useAuthContext'
+import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
 
 const useFetchChannels = () => {
-    const {setLoading,user,serverUrl} = useAuth()
+    const user = useUser()
+    const serverUrl = useServerUrl()
+    const setLoading = useSetLoading()
     const {cookies,setCookie} = useAuthCookies()
-    const {setChannels,channels} = useChat()
+    const channels = useChannels()
+    const setChannels = useSetChannels()
     const navigate=useNavigate()
        const fetchChannels = async()=>{
         try {

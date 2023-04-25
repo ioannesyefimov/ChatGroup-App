@@ -22,7 +22,7 @@ const Messages = ({handleDelete,currentChannel,user,scrollToRef}:PropsType) => {
                 )
               })
               ) : (
-                <h4 key="no-message">There is no messages in {currentChannel?.channelName}</h4>
+                <h4 key="no-message">There is no messages in "{currentChannel?.channelName}"</h4>
                 )
             }
             <Button onClick={()=>{document.getElementById('messagesWrapper')!.scrollTop = 10000}} name='down-btn' text="↓"/>

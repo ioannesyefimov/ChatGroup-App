@@ -5,7 +5,8 @@ import { APIFetch, throwErr } from "../../components/utils"
 import { UserType } from "../../components/types"
 import { CookiesType } from "../useAuthCookies/useAuthCookies"
 
-
+export const useChannels = ()=>useContext(ChatContext).channels
+export const useSetChannels = ()=>useContext(ChatContext).setChannels
  const useChat = () =>{
     const {channels, setChannels } = useContext(ChatContext)
 

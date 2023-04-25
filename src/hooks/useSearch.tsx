@@ -42,17 +42,22 @@ const useSearch = () => {
             
             switch(searchType){
                 case SEARCH_TYPE.CHANNELS:{
-                    let response = await APIFetch({url:`http://localhost:5050/api/channels/`});
+                    let response = await APIFetch({url:`https://localhost:5050/api/channels`});
                     if(!response.success) return throwErr(response.message)
                     console.log(`RESPONSE:`, response);
                         let filtered = response?.data?.channels?.filter((channel:ChannelType)=>{
                             console.log(`CHANNEL :`, channel);
                             search = search.toLowerCase()
-                            let name = channel.channelName.toLowerCase() 
-                            return name.includes(search)
+                            let name = channel?.channelName?.toLowerCase() 
+                            return name?.includes(search)
                         })
                         console.log(`FILTERED:`, filtered);
-                    result.channels = filtered
+                        if(filtered.length){
+                            result.channels = filtered 
+                        } else {
+                            result.channels = response?.data?.channels 
+
+                        }
                     break
                     
                 }
@@ -68,7 +73,7 @@ const useSearch = () => {
                     break
                 }
                 case SEARCH_TYPE.USERS: {
-                    let response = await APIFetch({url:`http://localhost:5050/api/auth/user/users`});
+                    let response = await APIFetch({url:`https://localhost:5050/api/auth/user/users`});
                     if(!response.success) throwErr(response.message)
                     console.log(`users search response:`, response);
                     result.users =  Array.isArray(response.data.users) ? response.data.users : [response.data.users]

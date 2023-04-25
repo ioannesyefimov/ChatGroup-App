@@ -17,12 +17,15 @@ const Channels = ({type,fallbackText,channels}:PropsType) => {
   let content = (
     Array.isArray(channels) && channels?.length ? (
       <div className='channels'>
-        {channels.map((channel:ChannelType)=>{
-          return (
-            <Channel type={type} id={channel._id!} key={channel?._id!}  name={channel?.channelName} avatar={channel?.channelAvatar ?? getFirstLetter(channel?.channelName,2)}/>
-          )
-        })
-        }
+        <div className="channels-wrapper">
+          {channels.map((channel:ChannelType)=>{
+            return (
+              <Channel type={type} id={channel._id!} key={channel?._id!}  name={channel?.channelName} avatar={channel?.channelAvatar ?? getFirstLetter(channel?.channelName,2)}/>
+            )
+          })
+          }
+         
+        </div>
       </div>
     ) : (
         <h4 className='hint'>{fallbackText ?? 'There is no channels yet'}</h4>

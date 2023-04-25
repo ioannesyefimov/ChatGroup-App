@@ -26,13 +26,7 @@ const CurrentChannel = () => {
   const scrollToRef = useRef<HTMLDivElement | undefined>()
   const location = useLocation()
   useEffect(
-    ()=>{    
-      // channelSocket.connect()
-      setLoading(true)
-      let controller = new AbortController()
-      let {signal} = controller
-      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
-      let timeout = setTimeout(handle,2000)
+    ()=>{
       let onGetChannel = (data:SocketResponse)=>{
         console.log(`GETTING CHANNEL`, data)
         setCurrentChannel(data?.data?.channels ?? null)
@@ -69,18 +63,31 @@ const CurrentChannel = () => {
       channelSocket.on('receive_message',onMessage)
       channelSocket.on('delete_message',onDeleteMessage)
       channelSocket.on('join_channel',onJoinChannel)
-    
       return ()=>{
-        channelSocket.off('delete_message',onDeleteMessage)
-        channelSocket.off('receive_message',onMessage)
-        channelSocket.off('connect',onConnecting)
-        channelSocket.off('get_channel',onGetChannel)
-        clearTimeout(timeout)
-        controller?.abort()
+        channelSocket.off('delete_message',onDeleteMessage);
+        channelSocket.off('receive_message',onMessage);
+        channelSocket.off('connect',onConnecting);
+        channelSocket.off('get_channel',onGetChannel);
         if(currentChannel?._id ){
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
-        }
+        };
+    }
+     
+    },[location.search]
+  )
+  useEffect(
+    ()=>{    
+      // channelSocket.connect()
+      setLoading(true)
+      let controller = new AbortController()
+      let {signal} = controller
+      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
+      let timeout = setTimeout(handle,2000)
+     return()=>{
+        clearTimeout(timeout)
+        controller?.abort()
+        
       }
   },[location.search]
   )

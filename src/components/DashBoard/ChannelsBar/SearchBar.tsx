@@ -23,9 +23,9 @@ const SearchBar = ({setSearchedChannels,channels,searchType}:PropsType) => {
         handle = ()=>handleSearch({search,searchType:SEARCH_TYPE[searchType],channels})
         }
       let timeout = setTimeout(handle,1500)
-      if(!search){
-        setSearchedChannels(null)
-      }
+      // if(!search){
+        // setSearchedChannels(null)
+      // }
       return ()=>clearTimeout(timeout)
 
     },[search,location.search]
