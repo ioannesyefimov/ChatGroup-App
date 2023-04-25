@@ -9,7 +9,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
 
     const {setError,setServerResponse} = useError()
-    const {clearState,setLoading} = useAuth()
+    const {clearState,setLoading,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
     const navigate = useNavigate()
    
@@ -53,7 +53,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
             setServerResponse(null)
             setLoading(true)
             console.log(`FB SIGNIN IN`)
-            const response = await APIFetch({url: `${url}auth/facebook`, method:'POST', body: {credentials}});
+            const response = await APIFetch({url: `${serverUrl}auth/facebook`, method:'POST', body: {credentials}});
             console.log(response)
             if(!response.success){
                 clearState('')
@@ -150,12 +150,13 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
 
 
     }
-    const handleFacebookDelete = async(credentials:ReactFacebookLoginInfo)=>{
+    const handleFacebookDelete = async(credentials:any)=>{
         try {
             console.log(`credentials: `, credentials);
             if(!credentials) return setError({message:Errors.MISSING_ARGUMENTS})
             setLoading(true)
-            const response = await APIFetch({url: `${url}auth/facebook/signin`, method:'POST', body: {credentials}});
+            let params = new URLSearchParams(credentials)
+            const response = await APIFetch({url: `${serverUrl}auth/facebook?credentials=${params}`, method:'DELETE', body: {credentials}});
             console.log(`deleting facebook`)
             console.log(response)
             if(!response.success){

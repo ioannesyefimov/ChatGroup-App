@@ -18,7 +18,7 @@ export const initAuthContextState: UseAuthContextType ={
   loading: false,
   setUser: () => { },
   setLoading: () => { },
-  serverUrl:'http://localhost:5050/api'
+  serverUrl:'https://localhost:5050/api'
 }
 export const AuthContext = React.createContext<UseAuthContextType>(initAuthContextState)
 

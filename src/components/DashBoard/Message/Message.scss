@@ -1,4 +1,5 @@
 .messages-wrapper{
+    position: relative;
     padding: .2rem 1rem;
 
     overflow-y: scroll;
@@ -31,12 +32,12 @@ scrollbar-color: gray black ;
 
 .down-btn {
     padding: 0;
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    transform: scale(1.4);
+    height: 25px;
     position: absolute;
-    right: 4%;
-    transform: scale(2);
-    bottom:20%;
+    left: 0%;
+    bottom:0%;
 }
 .message.sent {
     margin-right: auto;

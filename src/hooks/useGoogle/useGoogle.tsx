@@ -9,10 +9,10 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
     const {setError,setServerResponse} = useError()
     const {setCookie} = useAuthCookies()
-    const {clearState,setLoading,user} = useAuth()
+    const {clearState,setLoading,user,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
     const navigate = useNavigate()
-    let url = `http://localhost:5050/api/auth`
+  
 
    
     
@@ -23,7 +23,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             console.log(loginType)
             console.log(googleResponse)
             if(!googleResponse?.credential) return console.log(`MISSING GOOGLE'S RESPONSE `)
-            let response = await APIFetch({url:`${url}/google`,method:'POST',body:{credential:googleResponse.credential}})
+            let response = await APIFetch({url:`${serverUrl}/auth/google`,method:'POST',body:{credential:googleResponse.credential}})
             if(!response?.success){
                 throwErr(response?.message)
             }
@@ -38,7 +38,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             setError(error)
         }
 
-    }
+}
     useEffect(
         () => {
             let googleBnt = document.getElementById('googleBtn') as HTMLButtonElement
@@ -73,7 +73,8 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
         try {
             // console.log(`DELETING USER GOOGLE`)
             setLoading(true)
-            let response = await APIFetch({url:`${url}google/signin`, method:'POST',body: {credential: googleResponse?.credential, loggedThrough: 'Google'} })
+            let params = new URLSearchParams(googleResponse)
+            let response = await APIFetch({url:`${serverUrl}/google/delete?credentials=${params}`, method:'DELETE',body: {credential: googleResponse?.credential, loggedThrough: 'Google'} })
             // console.log(data)
             if(!response?.success && response?.message){
                 // console.log(response)

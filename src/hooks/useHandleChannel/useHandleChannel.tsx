@@ -76,14 +76,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
             setter(null)
           return
         }
-        socket.emit('get_channel', {channelName,user})
-            // let response = await APIFetch({url:`${serverUrl}/channels/channel/${channelName}?userEmail=${user?.email}`,signal});
-            // console.log(`RESPONSE::`, response);
-        // if(!response.success){
-          // setServerResponse(response.message)
-          // return
-        // }
-        // setter!(response.data.channels)
+        socket.emit('get_channel', {channelName,userEmail:user?.email})
           } catch (error) {
         setError(error)
       } finally{

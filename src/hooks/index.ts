@@ -12,9 +12,8 @@ import useGoogle from "./useGoogle/useGoogle";
 import useTwitter from "./useTwitter/useTwitter";
 import useImageUpload from "./useImageUpload/useImageUpload";
 import useHandleChannel from "./useHandleChannel/useHandleChannel";
-
 export {
     useAuth,useAuthCookies,useChat,useError,useSearch,
     useFacebook,useGithub,useGoogle,useTwitter,useHandleChannel,
-    useAddScript,useWindowSize,useImageUpload,
+    useAddScript,useWindowSize,useImageUpload
 }

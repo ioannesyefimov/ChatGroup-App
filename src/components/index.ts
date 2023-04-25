@@ -19,14 +19,13 @@ import ChannelCreate from "./ChannelManager/ChannelCreate";
 import Button from "./Button/Button";
 import SubmitInput from "./SubmitInput/SubmitInput";
 import MemberInfo from "./UserSearch/UserSearch";
+import Profile from "./ProfileComponent/Profile";
+import UserComponent from "./UserComponent/UserComponent";
 
 import ChatContainer from "./DashBoard/ChatContainer";
 import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
 import AuthProvider from "./Authentication/Provider/AuthProvider";
-import UserComponent from "./UserComponent/UserComponent";
-import Profile from "./ProfileComponent/Profile";
-
 export 
 {
     ChatProvider,Profile, AuthProvider,ErrorProvider,  Authentication, 

@@ -25,7 +25,12 @@ export type ResponseType = {
     data?:any
     err?:any
 }
-
+export type SocketResponse = {
+    success:boolean
+    data?: any
+    message?: any
+    err?:any
+  }
 export type Member = UserType
 
 export type ChannelType = {

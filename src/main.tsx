@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import {AuthProvider, SocketProvider} from './components/index'
+import {AuthProvider} from './components/index'
 import { initAuthContextState } from './components/Authentication/Provider/AuthProvider'
-import ErrorBoundary, { ErrorFallBack, ResponseFallback } from './components/ErrorProvider/ErrorProvider'
+import ErrorBoundary, { ErrorFallBack } from './components/ErrorProvider/ErrorProvider'
 import './index.scss'
 import { CookiesProvider } from 'react-cookie'
 
