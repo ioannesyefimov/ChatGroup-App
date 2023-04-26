@@ -24,7 +24,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           if(!response.success){
             throwErr(response.err)
           }
-          setChannels(response.data.channel)
+          setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
         } catch (error) {
           setError(error)
         } finally{
@@ -66,17 +66,17 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
         setLoading(true)
         console.log(`NAME: ${name}`);
         let query = new URLSearchParams(name)
-        let channelName = query.get('channel')
-        console.log(`channelName:`, channelName);
+        let channel_id = query.get('channel')
+        console.log(`channel_id:`, channel_id);
         console.log(`user:`, user);
         if(!user?.email){
           return
         } 
-        if(!channelName){
+        if(!channel_id){
             setter(null)
           return
         }
-        socket.emit('get_channel', {channelName,userEmail:user?.email})
+        socket.emit('get_channel', {channel_id,userEmail:user?.email})
           } catch (error) {
         setError(error)
       } finally{

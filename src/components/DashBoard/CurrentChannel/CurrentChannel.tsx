@@ -28,6 +28,7 @@ const CurrentChannel = () => {
   useEffect(
     ()=>{
       let onGetChannel = (data:SocketResponse)=>{
+        if(!data.success) setServerResponse(data.err)
         console.log(`GETTING CHANNEL`, data)
         setCurrentChannel(data?.data?.channels ?? null)
         channelSocket.emit('join_channel',{room:data.data.channels._id})

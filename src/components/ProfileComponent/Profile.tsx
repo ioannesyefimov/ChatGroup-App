@@ -8,7 +8,7 @@ import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 const Profile = () => {
     const {user} = useAuth()
     const {channels,fetchChannels} = useFetchChannels()
-
+    
     useEffect(
         ()=>{
             fetchChannels()
@@ -17,8 +17,8 @@ const Profile = () => {
     let content = (
 
         <div className='profile-component' >
-        <User location='profile'  user={user!} key={user?._id}/>
-         <Channels channels={channels} type='leave' fallbackText='there is no channels yet' /> 
+            <User location='profile'  user={user!} key={user?._id}/>
+            <Channels channels={channels} type='leave' fallbackText='there is no channels yet' /> 
        </div>
     )
 

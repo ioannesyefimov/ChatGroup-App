@@ -20,4 +20,5 @@ const index = () => {
         return {file, handleUpload}
 }
 
+
 export default index

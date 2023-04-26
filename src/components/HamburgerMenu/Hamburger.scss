@@ -98,7 +98,7 @@
 }
 
 .hamburger-outer{
-    &[data-istoggled=loaded],&[data-istoggled=toggled]{
+   &[data-istoggled=toggled]{
         @include respond-to(small){
             position: absolute;
             // clip-path: inset(0 0 99% 0) ;

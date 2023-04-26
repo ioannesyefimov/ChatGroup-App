@@ -35,7 +35,7 @@ const useSearch = () => {
     const handleSearch = async({search,searchType,channels}:HandleSearchType) =>{
         try {
             setLoading(true)
-            if(!search)return
+            if(!search)return channels
             let result:ResultType= {users: [], channels:[],filtered:[]}
             console.log(`SEARCH:`, search);
             console.log(`type:`,searchType)
@@ -68,8 +68,14 @@ const useSearch = () => {
                             let name = channel.channelName.toLowerCase() 
                             return name.includes(search)
                         })
+                        if(filtered?.length){
+                            result.channels = filtered
+                            
+                        }else{
+                            result.channels = channels
+
+                        }
                         console.log(`FILTERED:`, filtered);
-                        result.channels = filtered
                     break
                 }
                 case SEARCH_TYPE.USERS: {
@@ -94,6 +100,7 @@ const useSearch = () => {
                         result.filtered = filtered
                     break
                 }
+                default: return searchedValue
               
                 }
             setSearchedValue(result)            

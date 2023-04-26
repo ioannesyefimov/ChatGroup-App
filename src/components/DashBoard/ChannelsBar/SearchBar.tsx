@@ -32,7 +32,7 @@ const SearchBar = ({setSearchedChannels,channels,searchType}:PropsType) => {
   )
   useEffect(
     ()=>{
-        setSearchedChannels(searchedValue?.channels! ?? null)
+        setSearchedChannels(searchedValue?.channels!)
     },[searchedValue]
   )
 

@@ -7,8 +7,6 @@ import { sleep } from '../utils'
 
 const ProtectedRoute = () => {
     const {user} = useAuth()
-    let wait = async()=>await sleep(2000)
-    wait()
     const {cookies} = useAuthCookies()
     if(!user?.email ) return <Navigate to="/auth/signin" replace/> 
 

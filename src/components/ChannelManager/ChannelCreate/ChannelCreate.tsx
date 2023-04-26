@@ -1,19 +1,17 @@
-import React, { useCallback, useRef, useState } from 'react'
-import {AuthForm,FormInput,Button,UploadInput} from '../'
-import { APIFetch, convertBase64, throwErr, validateInput } from '../utils'
-import { useAuth, useAuthCookies, useChat, useError, useUpload } from '../../hooks'
-import { ResponseType } from '../types'
+import React, { ChangeEvent, useCallback, useRef, useState } from 'react'
+import {AuthForm,FormInput,Button,UploadInput} from '../..'
+import { APIFetch, convertBase64, throwErr, validateInput } from '../../utils'
+import { useAuth, useAuthCookies, useChat, useError, useUpload } from '../../../hooks'
+import { ResponseType } from '../../types'
 import { useNavigate } from 'react-router-dom'
-import { trashIco } from '../../assets'
+import { trashIco } from '../../../assets'
 
 import './ChannelCreate.scss'
 
 const ChannelCreate = ()=>{
     const [channelName,setChannelName] = useState<string>('')
     const [channelDescription,setChannelDescription] = useState<string>('')
-
-
-
+    const [channelAvatar,setChannelAvatar] = useState<string>('')
     const {file,handleUpload}=useUpload()
     const {setError} = useError()
     const {serverUrl,setLoading} = useAuth()
@@ -51,6 +49,12 @@ const ChannelCreate = ()=>{
             }
         }
 
+        const handleImage = async(e:ChangeEvent<HTMLInputElement>)=>{
+            if(e.target.files){
+                let img = await handleUpload(e);
+                return setChannelAvatar(img as string) 
+            }
+        }
     
     const handleRemoveImg = useCallback(
         ()=>{
@@ -64,7 +68,7 @@ const ChannelCreate = ()=>{
                 
                 <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
             
-                <UploadInput removeImg={handleRemoveImg} value={file} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={(e)=>handleUpload(e)}/>
+                <UploadInput removeImg={handleRemoveImg} value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImage}/>
                 <Button text='Create' name='submit-btn' onClick={handleSubmit}/>
             </form>
         </div>

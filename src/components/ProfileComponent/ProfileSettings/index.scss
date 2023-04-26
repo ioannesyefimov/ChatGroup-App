@@ -1,55 +1,91 @@
 .profile-settings-component {
     display:flex;
     flex-direction: column;
- max-width: 600px;
- padding: 2rem clamp(1rem, -0.533rem + 7.665vw, 9rem);
- form {
-    display: inherit;
-    gap:.4rem;
-    flex-direction: column;
-    flex:1;
-
-    .inner-wrapper {
-
-        input{
-            padding: .65rem ;
-        }
-        $inputWidth: 300px;
-        $inputHeigth: 100%;
-        &.file-upload-component {
-            all:unset;
-            gap:.5rem;
-            margin-block: .5rem;
-            display: grid;
-            div.wrapper {
-                display: flex;
-                border-radius: inherit;
-                border: 1px solid gray;
-                height: 70px;
-                position: relative;
-                img {
-                    all: unset;
-                //    top:35%;
-                   position: absolute; 
-                   width: $inputWidth;
-                   height: $inputHeigth;
-                }
-               input {
-                   all: unset;
-                   visibility: hidden;
-
-                //    top:35%;
-                   width: $inputWidth;
-                   height: $inputHeigth;
-                   position: absolute;
-               }
-               button{
-                   position: absolute;
-                   width: 50px;
-                   height: 25px;
-               }
-            }
+    gap:1rem;
+    padding: 2rem clamp(1rem, -0.533rem + 7.665vw, 9rem);
+    .user {
+        &-img{
+            border-radius: 8px;
+            max-width: 0px;
         }
     }
- }
+    form {
+        display: inherit;
+        gap:.4rem;
+        flex-direction: column;
+        flex:1;
+        
+         max-width: 400px;
+         width: 100%;
+        .inner-wrapper {
+
+            input{
+                padding: .65rem ;
+            }
+            $inputWidth: 110px;
+            $inputHeigth: 110px;
+            &.file-upload-component {
+                all:unset;
+                gap:.5rem;
+                margin-block: .25rem;
+                display: grid;
+                div.wrapper {
+                    display: flex;
+                    justify-content: center;
+                    position: relative;
+                    border-radius: inherit;
+                    border: 1px solid gray;
+                    height: 120px;
+                    max-width: calc($inputWidth + 20%);
+                    
+                    .converted-img {
+                        all: unset;
+                        max-width: $inputWidth;
+                        max-height: $inputHeigth;
+                        inset: 0;
+                        margin: auto ;
+                        border-radius: 8px;
+                        outline: 1px dashed gray;
+                    position: absolute; 
+                    object-fit:cover;
+
+                    }
+                input {
+                    all: unset;
+                    visibility: hidden;
+
+                    //    top:35%;
+                    width: $inputWidth;
+                    height: $inputHeigth;
+                    position: absolute;
+                }
+                button{
+                    position: absolute;
+                    width: 50px;
+                    height: 25px;
+                    right: 0;
+                    bottom: 0;
+                    top:0;
+                    margin: auto ;
+                }
+                }
+            }
+
+        }
+    }
+    button.submit-btn{
+        display: flex ;
+        gap:1rem;
+        padding:0;
+        margin-left: auto;
+        padding: 0 .25rem;
+        border:1px solid gray;
+        align-items: center;
+        &:hover{
+            border: 1px solid red;
+        }
+        img {
+            max-width: 40px;
+        }
+    }
 }
