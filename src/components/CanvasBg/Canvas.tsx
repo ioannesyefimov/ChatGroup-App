@@ -1,30 +1,25 @@
+import { useEffect,useState } from "react"
+import './canvas.scss'
 type PropsType= {
-    bgUrl?:string
-    bgColor?:string,
-    bgSize?:'cover'|'contain' |'auto' ,
-    bgPosition?:string,
-    bgRepeat?:string
-    style?:{[index:string]:string}
+    src?:string
 }
-const Canvas = ({bgUrl,bgColor,bgSize,bgPosition,bgRepeat,style}:PropsType) => {
+const useProgressiveImage = (src:string) => {  
+  const [sourceLoaded, setSourceLoaded] = useState<string>('')
+
+  useEffect(() => {
+    const img = new Image()
+    img.src = src
+    img.onload = () => setSourceLoaded(src)
+  }, [src])
+
+  return sourceLoaded 
+}
+const Canvas = ({src}:PropsType) => {
   return (
     <div 
-    style={
-        {
-          position:'absolute',
-          width:'100dvw',
-        height:'100dvh',
-        zIndex:'-1',
-        backgroundColor:bgColor ?? 'none',
-        backgroundPosition: bgPosition??"center",
-        backgroundRepeat:bgRepeat ?? 'no-repeat',
-        backgroundImage: `url(${bgUrl})` ,
-        backgroundSize: bgSize ?? 'cover',
-        opacity:".85"
-        }
-    }
     className='canvas' id={'canvas'}>
-
+      <img 
+          src={useProgressiveImage(src)} alt="" />
     </div>
   )
 }

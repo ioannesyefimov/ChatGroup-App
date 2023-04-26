@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode } from 'react'
+import React, { ChangeEvent, ReactNode, useEffect } from 'react'
 import { ActionFunction } from 'react-router-dom'
 import './FormInput.scss'
 
@@ -19,7 +19,7 @@ declare module 'react' {
       files?: File
   }
 }
-const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelElement>) => {
+const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelElement | undefined>) => {
   const {name,labelName,onChange ,value,placeholder, type,photo,children} = props
 
 

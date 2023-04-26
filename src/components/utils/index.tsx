@@ -272,6 +272,22 @@ function countWords(str:string) {
 
   return arr.filter(word => word !== '').length;
 }
+
+export function DisplayError(error:{[index:string]:any}){
+  let IS_OBJECT = isObj(error)
+  let display 
+  if(IS_OBJECT){
+    display = Object.keys(error).map((err,i)=>{
+      return (
+        <span className="error" key={i}>{JSON.stringify(err)}: {error[err]}</span>
+        )
+    })
+  }else {
+    display = <span className="error">{JSON.stringify(error)}</span>
+  }
+
+  return (<>{display}</>)
+}
 export function sleep(ms:number) {
   return new Promise(resolve => {
     let i=0

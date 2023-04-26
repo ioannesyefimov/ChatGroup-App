@@ -19,9 +19,12 @@ const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, 
 
         <label ref={ref} htmlFor={id} className="file-upload-component inner-wrapper">
             {labelName ?? ''}
-            <img className="converted-img"  src={value==='' ? uploadIco : value}  />
-            <input  type="file" name={'upload'} id={id} onChange={onChange}  />
-            <Button img={trashIco} name='delete-btn' onClick={removeImg}/>
+            <div className="wrapper">
+
+                <img className="converted-img"  src={value===''?  uploadIco : value }  />
+                <input  type="file" name={'upload'} id={id} onChange={onChange}  />
+                <Button img={trashIco} name='delete-btn' onClick={removeImg}/>
+            </div>
 
         </label>
     )

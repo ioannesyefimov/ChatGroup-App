@@ -13,29 +13,27 @@ const useFetchChannels = () => {
     const channels = useChannels()
     const setChannels = useSetChannels()
     const navigate=useNavigate()
-       const fetchChannels = async()=>{
-        try {
-          if(!user?.email && !cookies.user.email ) {
-              navigate('/auth/signin')
-              return console.log(`USER IS UNDEFINED`)
-          } 
-          
+    const fetchChannels = async()=>{
         setLoading(true)
-    
-        let response = await APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
-        console.log(`CHANNELS RESPONSE:`, response)
-        setCookie('channels', response?.data?.channels ?? null, {maxAge: 450,path:'/'})
-        if(!response?.success){
-            console.log(`ERROR`)
-            throwErr(response?.err)
-        }
-        setChannels(response?.data.channels)
-       } catch (error) {
+        try {
+            if(!user?.email ) {
+                return console.log(`USER IS UNDEFINED`)
+            } 
+            let response = await APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
+            console.log(`CHANNELS RESPONSE:`, response)
+            let channels = JSON.stringify(response?.data?.channels)
+
+            setCookie('channels', channels ?? null, {maxAge: 450,path:'/'})
+            if(!response?.success){
+                console.log(`ERROR`)
+                throwErr(response?.err)
+            }
+            setChannels(response?.data.channels)
+        } catch (error) {
         console.error(error)
-        // setError(error)
-       } finally{
+        } finally{
             setLoading(false)
-       }
+        }
     }
     
 

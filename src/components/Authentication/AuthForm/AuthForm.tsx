@@ -133,7 +133,7 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
 
   return (
     <>
-    <Canvas bgUrl={authBg} />
+    <Canvas src={authBg} />
     {type === 'signin' ? signinContent : registerContent}
     </>
   )

@@ -7,10 +7,14 @@
         display: flex;
         align-items: center;
         gap:.5rem;
-        img {
+        &-img {
+            border-radius: 8px;
             width: 35px;
             height: 35px;
             object-fit: cover;
+        }
+        &-name{
+            color:#828282;
         }
     }
     bottom: 0;

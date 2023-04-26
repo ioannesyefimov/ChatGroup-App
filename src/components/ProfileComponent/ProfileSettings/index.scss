@@ -1,0 +1,55 @@
+.profile-settings-component {
+    display:flex;
+    flex-direction: column;
+ max-width: 600px;
+ padding: 2rem clamp(1rem, -0.533rem + 7.665vw, 9rem);
+ form {
+    display: inherit;
+    gap:.4rem;
+    flex-direction: column;
+    flex:1;
+
+    .inner-wrapper {
+
+        input{
+            padding: .65rem ;
+        }
+        $inputWidth: 300px;
+        $inputHeigth: 100%;
+        &.file-upload-component {
+            all:unset;
+            gap:.5rem;
+            margin-block: .5rem;
+            display: grid;
+            div.wrapper {
+                display: flex;
+                border-radius: inherit;
+                border: 1px solid gray;
+                height: 70px;
+                position: relative;
+                img {
+                    all: unset;
+                //    top:35%;
+                   position: absolute; 
+                   width: $inputWidth;
+                   height: $inputHeigth;
+                }
+               input {
+                   all: unset;
+                   visibility: hidden;
+
+                //    top:35%;
+                   width: $inputWidth;
+                   height: $inputHeigth;
+                   position: absolute;
+               }
+               button{
+                   position: absolute;
+                   width: 50px;
+                   height: 25px;
+               }
+            }
+        }
+    }
+ }
+}

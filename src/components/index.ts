@@ -21,6 +21,8 @@ import SubmitInput from "./SubmitInput/SubmitInput";
 import MemberInfo from "./UserSearch/UserSearch";
 import Profile from "./ProfileComponent/Profile";
 import UserComponent from "./UserComponent/UserComponent";
+import ProfileSettings from "./ProfileComponent/ProfileSettings/ProfileSettings";
+
 
 import ChatContainer from "./DashBoard/ChatContainer";
 import ChatProvider from "./ChatProvider/ChatProvider";
@@ -28,7 +30,12 @@ import ErrorProvider from "./ErrorProvider/ErrorProvider";
 import AuthProvider from "./Authentication/Provider/AuthProvider";
 export 
 {
-    ChatProvider,Profile, AuthProvider,ErrorProvider,  Authentication, 
+    ChatProvider,
+    Profile,ProfileSettings,
+    
+    
+    AuthProvider,ErrorProvider,  Authentication, 
+    
     Button,SubmitInput , UploadInput,MemberInfo,SearchComponent,ChannelSearch,Landing,
     ChannelManager,ChannelJoin,UserBar,UserComponent,ServerResponseFallback,ProtectedRoute,
     FormInput, NotFound,AuthForm,Dashboard,RedirectComponent,AuthSocialButtons,ChannelCreate,ChatContainer,

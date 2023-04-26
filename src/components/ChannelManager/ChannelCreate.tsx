@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import {AuthForm,FormInput,Button,UploadInput} from '../'
 import { APIFetch, convertBase64, throwErr, validateInput } from '../utils'
-import { useAuth, useAuthCookies, useChat, useError } from '../../hooks'
+import { useAuth, useAuthCookies, useChat, useError, useUpload } from '../../hooks'
 import { ResponseType } from '../types'
 import { useNavigate } from 'react-router-dom'
 import { trashIco } from '../../assets'
@@ -11,8 +11,10 @@ import './ChannelCreate.scss'
 const ChannelCreate = ()=>{
     const [channelName,setChannelName] = useState<string>('')
     const [channelDescription,setChannelDescription] = useState<string>('')
-    const [channelAvatar,setChannelAvatar] = useState<string>('');
 
+
+
+    const {file,handleUpload}=useUpload()
     const {setError} = useError()
     const {serverUrl,setLoading} = useAuth()
     const {cookies} = useAuthCookies()
@@ -35,7 +37,7 @@ const ChannelCreate = ()=>{
                     throwErr(isEmpty?.errors)
                 }
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
-                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar,channelDescription},method:'POST'})
+                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar:file,channelDescription},method:'POST'})
                 if(!response.success) throwErr(response?.message)
                 setChannels(prev=>({...prev, ...response?.data }))
                 navigate(`/chat?channel=${channelName}`)
@@ -48,22 +50,11 @@ const ChannelCreate = ()=>{
 
             }
         }
-    
-
 
     
-
-    const handleImageUpload =  useCallback(
-        async(e:React.ChangeEvent<HTMLInputElement>)=>{
-            let file = e.currentTarget.files![0]
-            if(!file) return console.log(`NOT FOUND FILES`)
-            let converted = await convertBase64(file)
-            if(!converted) return console.error(`ERROR:` , converted)
-            if(typeof converted === 'string')setChannelAvatar(converted)
-    },[])
     const handleRemoveImg = useCallback(
         ()=>{
-            setChannelAvatar('')
+            handleUpload()
         },[]
     )
     return (
@@ -73,7 +64,7 @@ const ChannelCreate = ()=>{
                 
                 <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
             
-                <UploadInput removeImg={handleRemoveImg} value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImageUpload}/>
+                <UploadInput removeImg={handleRemoveImg} value={file} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={(e)=>handleUpload(e)}/>
                 <Button text='Create' name='submit-btn' onClick={handleSubmit}/>
             </form>
         </div>

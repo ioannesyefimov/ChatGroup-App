@@ -4,7 +4,7 @@ type ButtonProps= {
     name: string
     img?: string
     type?: "button" | "submit" | "reset" 
-    onClick: (e:React.MouseEvent<HTMLButtonElement>) => void
+    onClick?: (e:React.MouseEvent<HTMLButtonElement>) => void
 }
 const Button = ({text,onClick,name,img,type='button'}:ButtonProps) => {
   let btnRef = React.createRef<HTMLButtonElement>()

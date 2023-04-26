@@ -3,10 +3,12 @@ import { Navigate,Outlet, useLocation } from 'react-router-dom'
 import { useAuth, useAuthCookies } from '../../hooks'
 import ChatProvider from '../ChatProvider/ChatProvider'
 import NavigationBar from '../NavigationBar/NavigationBar'
+import { sleep } from '../utils'
 
 const ProtectedRoute = () => {
     const {user} = useAuth()
-
+    let wait = async()=>await sleep(2000)
+    wait()
     const {cookies} = useAuthCookies()
     if(!user?.email ) return <Navigate to="/auth/signin" replace/> 
 

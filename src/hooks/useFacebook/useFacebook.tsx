@@ -4,6 +4,7 @@ import { useAddScript, useAuth, useAuthCookies, useError, useOnlineStatus } from
 import { Errors,APIFetch, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
 import { useNavigate } from 'react-router-dom';
+import { useCookiesData } from '../useAuthCookies/useAuthCookies';
 
 const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
@@ -11,6 +12,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
     const {setError,setServerResponse} = useError()
     const {clearState,setLoading,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
+    const cookies = useCookiesData()
     const navigate = useNavigate()
    
     useEffect(
@@ -20,7 +22,6 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                     let FB = (window as any).FB
                     if(FB){
                         console.log(`initializing facebook oauth`);
-                        console.log(`fb appid `, import.meta.env.VITE_APP_FACEBOOK_APP_ID);
                         
                         const params = {
                             appId: import.meta.env.VITE_APP_FACEBOOK_APP_ID,
@@ -32,6 +33,10 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                         FB?.init(params);
                          FB?.getLoginStatus((resp:ReactFacebookFailureResponse)  =>{
                             console.log(`FB:status==: ${resp.status}`)
+                            if(resp.status==='connected'){
+                                
+                                return cookies?.accessToken ? navigate(`/auth/redirect/?accessToken=${cookies?.accessToken}&loggedThrough=Facebook&type=user/auth`) : console.log(`token is ${cookies?.accessToken}`)
+                            }
                         })
                     }
                 } catch (error:{name?:any,message?:any}) {
@@ -44,26 +49,23 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
             return ()=>clearTimeout(timeout)
         }, []
     )
-
-    const url = `https://authentic-app-backend.onrender.com/api/`
-
-
     const handleFacebookLogin = async({credentials}:{credentials:any}) =>{
         try {
-            setServerResponse(null)
             setLoading(true)
-            console.log(`FB SIGNIN IN`)
-            const response = await APIFetch({url: `${serverUrl}auth/facebook`, method:'POST', body: {credentials}});
+            setServerResponse(null)
+            console.log(`FB LOGGIN IN`)
+            const response = await APIFetch({url: `${serverUrl}/auth/facebook`, method:'POST', body: {credentials}});
             console.log(response)
             if(!response.success){
                 clearState('')
                 throwErr({message: response?.message, loggedThrough:response?.loggedThrough})
-            } if(redirectUrl){
+            } 
+            if(redirectUrl){
                 console.log(`REDIRECT ULR : ${redirectUrl}`)
-                navigate(`/auth/redirect/?type=newAccessToken&accessToken=${response?.data.accessToken}&redirectUrl=${redirectUrl}`)
+                navigate(`/auth/redirect?type=newAccessToken&accessToken=${response?.data.accessToken}&redirectUrl=${redirectUrl}`)
                 return 
             }
-                
+                navigate(`/auth/redirect?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Facebook`)
         } catch (error) {
                setError( error)
         } finally {
@@ -80,10 +82,9 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                 await handleFacebookLogin({credentials: response})
             }
         } catch (error) {
-            return setError({message:error})
+             setError(error)
         }
     }
-    
     const handleFacebook = async(type:string) => {
 
         try {
@@ -104,14 +105,11 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                         FB.api('/me', (response:any)=>{
                             console.log(`successful login for: ${response?.name}`)
                             console.log(`RESPONSE:` ,response)
-    
-                            // params.credentials = response
-    
                         });
                     }
                 });
     
-                
+               
                     
                 FB.login((resp:any)=>{
                     console.log(`FB RESP`, resp);
@@ -133,7 +131,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                     } else {
                         console.log('User cancelled login or did not fully authorize.');
                        }
-                }, {scope: 'email,name,photos{picture,images'});
+                }, {scope: 'public_profile,email'});
                 console.log(params)
     
                 

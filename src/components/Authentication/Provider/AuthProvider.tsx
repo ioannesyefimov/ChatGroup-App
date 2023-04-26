@@ -23,7 +23,7 @@ export const initAuthContextState: UseAuthContextType ={
 export const AuthContext = React.createContext<UseAuthContextType>(initAuthContextState)
 
 export const useAuthContext = (initAuthContextState:InitialStateType)=>{
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [user, setUser] = useState(initAuthContextState.user)
   const serverUrl =  initAuthContextState.serverUrl
 

@@ -2,7 +2,7 @@ import React, {ReactNode, SetStateAction, useState } from 'react'
 import { ResponseType, UserType } from '../types'
 import { useError } from '../../hooks'
 import './Error.scss'
-import { Errors, isObj } from '../utils'
+import { DisplayError, Errors, isObj } from '../utils'
 import Button from '../Button/Button'
 import { useNavigate } from 'react-router-dom'
 import User from '../UserComponent/User'
@@ -13,12 +13,13 @@ import AuthSocialButtons from '../AuthButtons/AuthSocialButtons'
 export const ErrorFallBack = () => {
     const {error} = useError()
     console.error(error);
-    
+   
     let  err = error.message === 'Failed to fetch' ? `server may be down, please try again later(●'◡'●)` : error?.message
     return(
         <div className='error-fallback' >
         <h1 className='error-heading'>Error has happened!</h1>
-            <p className='error-name'>{err  ?? error.name ??  'SOMETHING WENT WRONG'}</p>
+            {/* <p className='error-name'>{error?.name ??  'SOMETHING WENT WRONG'}</p> */}
+            <DisplayError error={error}/>
             <button onClick={()=>window.location.reload()}>Reload</button>
         </div>
     )

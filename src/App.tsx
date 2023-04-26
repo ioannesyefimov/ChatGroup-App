@@ -1,9 +1,9 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile} from './components'
+import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile, ProfileSettings} from './components'
 import { useAuthCookies } from './hooks'
-import { useSetUser, useUser } from './hooks/useAuthContext/useAuthContext'
+import { useSetLoading, useSetUser, useUser } from './hooks/useAuthContext/useAuthContext'
 import { useEffect } from 'react'
 import { log } from 'console'
 
@@ -47,6 +47,10 @@ let router = createBrowserRouter([
           {
             element:<Profile/>,
             path:'/profile'
+          },
+          {
+            element: <ProfileSettings/>,
+            path:'/profile/settings'
           },
           {
     
@@ -98,6 +102,7 @@ let router = createBrowserRouter([
 function App() {
   const {cookies} = useAuthCookies()
   const setUser = useSetUser()
+  const setLoading = useSetLoading()
   useEffect(
     ()=>{
       console.log(`APP RENDER`);
@@ -106,6 +111,7 @@ function App() {
       if(isLogged){
         setUser(isLogged)
       }
+      setLoading(false)
     },[cookies?.user]
   )
   

@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useContext } from 'react'
 import { Cookies, useCookies } from 'react-cookie'
 import { ChannelType, UserType } from '../../components/types'
 export type CookiesType = {
@@ -8,6 +8,10 @@ export type CookiesType = {
   refreshToken:string
   channels:  ChannelType[]
 }
+
+export const useCookiesData = ()=>useAuthCookies().cookies
+export const useSetCookies = ()=>useAuthCookies().setCookie
+export const useRemoveCookies = ()=>useAuthCookies().removeCookie
 
 const useAuthCookies = () => {
 

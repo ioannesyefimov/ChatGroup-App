@@ -9,19 +9,22 @@ import './RedirectComponent.scss'
 
 
 const RedirectComponent = () => {
-    const URL = `http://localhost:5050/api`
     const [data,setData]=useState<{user:UserType | null,accessToken:string|null}>({user:null,accessToken:null})
     const {setLoading,loading,serverUrl}=useAuth()
     const {handleGitHubLogin}=useGithub('')
-    const {setCookie,cookies} = useAuthCookies()
-    const {setError,setServerResponse} = useError() 
+    const {setCookie} = useAuthCookies()
+    const {setServerResponse} = useError() 
     let location = useLocation()
+
+
     type HandleLoginProps = {
         accessToken: string
         type: string
         loggedThrough: string
         signal?: AbortSignal
     }
+
+
     let navigate = useNavigate()
 let handleLogin = 
         async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
@@ -41,12 +44,9 @@ let handleLogin =
         }
     
       let handleRedirect = 
-        async(signal:AbortSignal)=>{
+        async(signal:AbortSignal,token?:string)=>{
             try {
                 setLoading(true)
-                if(!location.search) {
-                    return 
-                }
                 let query = new URLSearchParams(location.search)
                 let type = query.get('type')
                 let loggedThrough = query.get('loggedThrough')
@@ -83,11 +83,10 @@ let handleLogin =
     }
     useEffect(
         ()=>{
+            if(!location.search)return 
             let controller = new AbortController()
             let {signal} = controller
             handleRedirect(signal)
-            // signal?.addEventListener('abort',()=>console.log(`Aborted`))
-            // return ()=>controller?.abort(); 
         },[location?.search])
 
     useEffect(
@@ -96,7 +95,7 @@ let handleLogin =
                 setCookie('user',data.user,{path:'/',maxAge:2000})
             }
             if(data.accessToken){
-                setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2000})
+                setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})
                 }
         },[data]
     )
