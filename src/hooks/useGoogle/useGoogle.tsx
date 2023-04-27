@@ -1,5 +1,5 @@
 import React, {useEffect, useLayoutEffect} from 'react'
-import { useAddScript, useAuth, useAuthCookies, useError, useOnlineStatus } from '../index';
+import { useAddScript, useAuth, useAuthCookies, useResponseContext} from '../index';
 import useFetch from '../useFetch';
 import { APIFetch, throwErr, timeout } from '../../components/utils';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
-    const {setError,setServerResponse} = useError()
+    const {setServerResponse} = useResponseContext()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
@@ -35,7 +35,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             navigate(`/auth/redirect/?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Google`)
             
         } catch (error) {
-            setError(error)
+            setServerResponse(error)
         }
 
 }
@@ -78,10 +78,10 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             // console.log(data)
             if(!response?.success && response?.message){
                 // console.log(response)
-                setError({message:response.message, loggedThrough: response?.loggedThrough})
+                throwErr({message:response.message, loggedThrough: response?.loggedThrough})
             }
             let dbResponse = response.data
-            // if(!dbResponse?.accessToken)return setError({message:``})
+            // if(!dbResponse?.accessToken)return setServerResponse({message:``})
             let deleteUser = await handleDelete({accessToken: dbResponse?.accessToken, user, deletedThrough:'Google'})
             // console.log(deleteUser)
             if(!deleteUser?.success){
@@ -92,7 +92,7 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             setLoading(false)
             
         } catch (error) {
-            return  setError({message:error})
+            return  setServerResponse({message:error})
         } finally{
             setLoading(false)
         }

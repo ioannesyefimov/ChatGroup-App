@@ -1,13 +1,25 @@
 @use '../utils/utils.scss' as * ;
 
 .navbar-component {
-    padding: 0 1rem;
-    height: 50px;
     display: flex;
     align-items: center;
+    padding: 0 1rem;
+    height: 50px;
+
     gap:1rem;
     z-index: 1;
-    // top:5px;
+
+    &::after{
+        position: absolute;
+        content: '';
+        width: 100%;
+        left:0;
+        top:55px;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.457);
+        box-shadow: 0 0 1px 1px rgba(128, 128, 128, 0.422);
+    }
+
     .navbar-inner{
         display: flex;
         margin-left: auto;
@@ -20,7 +32,8 @@
             align-items: center;
             .nav-btn {
                 // outline: 1px solid gold;
-                border: 1px solid black;
+                border: 1px solid wheat;
+                border-radius: 8px;
                 transition: .4s all ease-in-out;
                 padding:.2rem .5rem ;
                 font-size: clamp(0.65rem, 0.439rem + 0.901vw, 1.15rem);
@@ -43,7 +56,7 @@
     .logo-btn {
         position: relative;
         // left: -5%;
-        top:15%;
+        top:5%;
         bottom: 0;
         padding: 0;
         // flex:10%;

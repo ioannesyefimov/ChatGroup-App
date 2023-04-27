@@ -1,6 +1,9 @@
 .prompt-menu-component {
-
+    display: flex;
+    margin:auto;
+    position: static;
     form {
+        display: grid;
         .inner-wrapper {
             .form-wrapper {
 
@@ -19,6 +22,7 @@
         text-align: center;
     }
     .channels {
+        display: grid;
 
         .channel{
             padding: .35rem 1rem;

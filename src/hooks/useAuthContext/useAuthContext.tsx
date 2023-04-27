@@ -5,7 +5,7 @@ import useAuthCookies from "../useAuthCookies/useAuthCookies"
 import useChat from "../useChatContext/useChatContext"
 
 export const useUser = ()=>useContext(AuthContext).user
-export const useLoading = ()=>useContext(AuthContext).loading
+export const useLoading = ()=> useContext(AuthContext).loading
 export const useSetLoading = ()=>useContext(AuthContext).setLoading
 export const useServerUrl = ()=>useContext(AuthContext).serverUrl
 export const useSetUser = ()=>useContext(AuthContext).setUser

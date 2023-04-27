@@ -1,15 +1,15 @@
-import React, { Dispatch, MutableRefObject, SetStateAction, useCallback } from 'react'
-import { APIFetch, throwErr } from '../../components/utils';
-import { useAuth } from '..';
-import useChat from '../useChatContext/useChatContext';
-import useError from '../useErrorContext/useError';
+import { Dispatch, MutableRefObject, SetStateAction } from 'react'
+import { APIFetch, Errors, throwErr } from '../../components/utils';
+import { useAuth, useResponseContext,useChat} from '..';
 import { ChannelType, ResponseType, UserType } from '../../components/types';
 import { Socket } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
+import { useServerUrl, useSetLoading } from '../useAuthContext/useAuthContext';
 
 const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined) => {
-    const {setError,setServerResponse}=useError()
-    const {setLoading,serverUrl}=useAuth()
+    const {setServerResponse}=useResponseContext()
+    const setLoading = useSetLoading()
+    const serverUrl = useServerUrl()
   const navigate = useNavigate()
     const {setChannels} =useChat() 
     const handleLeaveChannel = async(id:string,user:UserType)=>{
@@ -26,7 +26,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           }
           setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
         } catch (error) {
-          setError(error)
+          setServerResponse(error)
         } finally{
           setLoading(false)
         }
@@ -40,11 +40,11 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
               if(!response.success) throwErr(response?.err)
               setChannels(prev=>({...prev, ...response?.data?.channel }))
-              navigate(`/chat/channel=${response?.data?.channel?.channelName.replaceAll(' ','-')}`)
+              navigate(`/chat/?channel=${response?.data?.channel?._id}`)
               console.log(`RESPONSE : `, response)
           } catch (error) {
               console.log(`ERROR:`,error)
-              setError(error)
+              setServerResponse(error)
           }finally{
               setLoading(false)
           }
@@ -55,7 +55,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
       setter: Dispatch<SetStateAction<ChannelType| null>>
       name:string
       socket:Socket<any,any>
-      scrollToRef: MutableRefObject<HTMLDivElement |undefined>  
+      scrollToRef?: MutableRefObject<HTMLDivElement | undefined>  
       user:UserType
       signal?:AbortSignal
     } 
@@ -73,12 +73,16 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           return
         } 
         if(!channel_id){
+          for(let i of name){
+            if(i.includes('='))
+             throwErr({name:Errors.CHANNEL_NOT_FOUND})            
+           }
             setter(null)
           return
         }
         socket.emit('get_channel', {channel_id,userEmail:user?.email})
           } catch (error) {
-        setError(error)
+        setServerResponse(error)
       } finally{
         setLoading(false)
         scrollToRef?.current?.scrollIntoView({behaivor:'smooth'})

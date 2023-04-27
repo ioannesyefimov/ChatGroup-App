@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import './UserSearch.scss'
 import { UserType } from '../types'
 import { APIFetch, Errors, throwErr } from '../utils'
-import { useAuth, useError, useSearch } from '../../hooks'
+import { useAuth, useResponseContext, useSearch } from '../../hooks'
 import User from '../UserComponent/User'
 import { Link } from 'react-router-dom'
 import { searchIco } from '../../assets'
@@ -13,7 +13,7 @@ const UserSearch = () => {
     const [showedUser,setShowedUser] = useState<UserType|UserType[]>([])
     const {serverUrl,setLoading} = useAuth()
     const {handleSearch, searchedValue,setSearchedValue} = useSearch()
-    const {setError} = useError()
+    const {setServerResponse} = useResponseContext()
 
     const findUser = async(query:URLSearchParams)=>{
        try {
@@ -27,7 +27,7 @@ const UserSearch = () => {
             setShowedUser(searchedValue.users)
         }
        } catch (error) {
-        setError(error)
+        setServerResponse(error)
        } finally{
         setLoading(false)
        } 
@@ -56,7 +56,7 @@ const UserSearch = () => {
             console.log(`SEARCHED:`, searchedValue);
             
             if(searchedValue?.filtered?.length){
-                setShowedUser(searchedValue.filtered)
+                setShowedUser(searchedValue.filtered as UserType[])
             } else
             if(searchedValue.users){
                 setShowedUser(searchedValue.users)
@@ -69,7 +69,9 @@ const UserSearch = () => {
        <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={(e)=>setSearch(e.target.value)} value={search} />
         {
             (showedUser as Array<UserType>).map((user:UserType)=>{
-                return <Link to={`/user?userEmail=${user.email}`} replace ><User key={user._id!} user={user}/></Link> 
+                return (
+                    <Link to={`/user?id=${user._id}`} replace ><User location='' key={user._id!} user={user}/></Link> 
+                )
             })
         }      
         </div>

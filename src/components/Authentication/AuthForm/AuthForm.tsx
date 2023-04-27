@@ -1,14 +1,13 @@
-import React, { ChangeEvent, ReactPropTypes, useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import FormInput from '../../FormInput/FormInput'
 import {lockerIco, mailIco, profileIco,authBg}   from '../../../assets/index' 
-import './AuthForm.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { APIFetch, throwErr, validateInput } from '../../utils'
-import { useAuth, useError } from '../../../hooks'
-import useAuthCookies from '../../../hooks/useAuthCookies/useAuthCookies'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 import Canvas from '../../CanvasBg/Canvas'
 import { useServerUrl, useSetLoading } from '../../../hooks/useAuthContext/useAuthContext'
+import './AuthForm.scss'
+import { useResponseContext } from '../../../hooks'
 type AuthProps = {
   type: string
   redirectType: string
@@ -30,7 +29,7 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
   }
   const serverUrl = useServerUrl()
   const setLoading = useSetLoading()
-  const {setServerResponse} = useError()
+  const {setServerResponse} = useResponseContext()
 
   const navigate = useNavigate()
   const EmailRef =React.createRef<HTMLLabelElement>()

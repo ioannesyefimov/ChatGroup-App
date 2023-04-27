@@ -10,17 +10,17 @@ import SearchBar from '../../DashBoard/ChannelsBar/SearchBar'
 import Channels from '../../DashBoard/Channels/Channels'
 import Button from '../../Button/Button'
 import { joinIco } from '../../../assets'
+import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
 
 const ChannelJoin = ()=>{
     const [searchedChannels,setSearchedChannels] = useState<ChannelType[] | null>(null)
-    const {cookies} = useAuthCookies()
-    const {channels,} = useChat()
+    const {channels} = useChat()
    
     return (
         <div className='prompt-menu-component  box-shadow--gray'>
             <form>
-                <SearchBar channels={channels} searchType='CHANNELS' setSearchedChannels={setSearchedChannels}/>
-                <Channels  type="join" fallbackText={`Nothing  was found...`}  channels={searchedChannels ?? channels}/>
+                <SearchBar  channels={channels} searchType='CHANNELS' setSearchedChannels={setSearchedChannels}/>
+                <Channels  type="join" fallbackText={`Nothing  was found...`}  channels={searchedChannels}/>
             </form>
         </div>
     )

@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { useAuth, useChat, useError, useGithub } from '../../hooks'
+import {  useEffect, useState } from 'react'
+import { useAuth, useGithub, useResponseContext } from '../../hooks'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, sleep, throwErr } from '../utils'
@@ -13,7 +13,7 @@ const RedirectComponent = () => {
     const {setLoading,loading,serverUrl}=useAuth()
     const {handleGitHubLogin}=useGithub('')
     const {setCookie} = useAuthCookies()
-    const {setServerResponse} = useError() 
+    const {setServerResponse} = useResponseContext() 
     let location = useLocation()
 
 
@@ -100,14 +100,11 @@ let handleLogin =
         },[data]
     )
         
-    if(loading) return <LoadingFallback/>
-       
-            return (
-            <div className='redirect-component'>
-                
-                <Link to='/chat' replace>Home</Link>
-            </div>
-            )
+    return (
+    <div className='redirect-component'>
+        <Link to='/chat' replace>Home</Link>
+    </div>
+    )
 
 }
 

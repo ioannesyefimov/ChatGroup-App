@@ -17,12 +17,12 @@ const NavigationBar = () => {
     </div>
   ) : (
     <div className="flex">
-       <Link to='/auth/register' replace >Register</Link>
-       <Link to='/auth/signin' replace >Signin</Link>
+       <Link className='nav-btn link' to='/auth/register' replace >Register</Link>
+       <Link className='nav-btn link' to='/auth/signin' replace >Signin</Link>
     </div>
   )
   const navigate = useNavigate()
-    return (
+  const content =(
     <div className='navbar-component' >
         <button className='logo-btn link' onClick={()=>navigate('/chat')}>
           <img  src={chatifyIco} alt="logo" />
@@ -33,12 +33,13 @@ const NavigationBar = () => {
            {navBar}
          </Hamburger>
         ) : (
-           navBar
+           (navBar)
         )}
      
       </div>
     </div>
-  )
+  ) 
+    return content 
 }
 
 export default NavigationBar

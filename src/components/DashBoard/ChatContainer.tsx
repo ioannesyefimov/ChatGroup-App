@@ -9,7 +9,7 @@ import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 export type ChannelsProps = {
   setChannels?: React.Dispatch<React.SetStateAction<ChannelType[]>>
   channels : ChannelType[]
-  fetchChannels?: () => Promise<void>
+  fetchChannels?: (signal?:AbortSignal) => Promise<void>
 }
 
 const ChatContainer = () => {
@@ -17,7 +17,11 @@ const ChatContainer = () => {
   
   useEffect(
     ()=>{
-      fetchChannels()
+      let controller = new AbortController()
+      let {signal}=controller
+      let handle = ()=>fetchChannels(signal)
+      let timeout = setTimeout(handle,2000)
+      return ()=>clearTimeout(timeout)
     },[]
     )
 
@@ -25,9 +29,8 @@ const ChatContainer = () => {
       
       <div className='chat-container-outer '>  
         <div className='chat-container-inner '>  
-            <ChannelsBar fetchChannels={fetchChannels} channels={channels} />
-            {/* <CurrentChannel location={location.pathname} /> */}
-              <CurrentChannel />
+          <ChannelsBar fetchChannels={fetchChannels} channels={channels} />
+          <CurrentChannel />
           <Outlet/>
         </div>
       </div>

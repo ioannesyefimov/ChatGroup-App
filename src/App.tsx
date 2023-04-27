@@ -1,11 +1,13 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile, ProfileSettings} from './components'
+import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile, ProfileSettings, ServerResponseProvider} from './components'
 import { useAuthCookies } from './hooks'
-import { useSetLoading, useSetUser, useUser } from './hooks/useAuthContext/useAuthContext'
+import { useLoading, useSetLoading, useSetUser, useUser } from './hooks/useAuthContext/useAuthContext'
 import { useEffect } from 'react'
 import { log } from 'console'
+import { LoadingFallback } from './components/LoadingFallback/LoadingFallback'
+import NavigationBar from './components/NavigationBar/NavigationBar'
 
 
 
@@ -66,7 +68,7 @@ let router = createBrowserRouter([
                 element: <ChannelCreate/>
               },
               {
-                path:'join',
+                path:'join/:search?',
                 element: <ChannelJoin/>
               }
             ]
@@ -114,10 +116,9 @@ function App() {
       setLoading(false)
     },[cookies?.user]
   )
-  
   return (
     <div className="App">
-        <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </div>
   )
 }

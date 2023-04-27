@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useRef, useState } from 'react'
 import {AuthForm,FormInput,Button,UploadInput} from '../..'
 import { APIFetch, convertBase64, throwErr, validateInput } from '../../utils'
-import { useAuth, useAuthCookies, useChat, useError, useUpload } from '../../../hooks'
+import { useAuth, useAuthCookies, useChat, useResponseContext, useUpload } from '../../../hooks'
 import { ResponseType } from '../../types'
 import { useNavigate } from 'react-router-dom'
 import { trashIco } from '../../../assets'
@@ -13,7 +13,7 @@ const ChannelCreate = ()=>{
     const [channelDescription,setChannelDescription] = useState<string>('')
     const [channelAvatar,setChannelAvatar] = useState<string>('')
     const {file,handleUpload}=useUpload()
-    const {setError} = useError()
+    const {setServerResponse} = useResponseContext()
     const {serverUrl,setLoading} = useAuth()
     const {cookies} = useAuthCookies()
     const {setChannels} = useChat()
@@ -42,7 +42,7 @@ const ChannelCreate = ()=>{
                 console.log(`RESPONSE : `, response)
             } catch (error) {
                 console.log(`ERROR:`,error)
-                setError(error)
+                setServerResponse(error)
             }finally{
                 setLoading(false)
 

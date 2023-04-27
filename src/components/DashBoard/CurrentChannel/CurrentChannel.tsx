@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useAuth, useError, useHandleChannel } from '../../../hooks'
+import { useAuth, useHandleChannel, useResponseContext } from '../../../hooks'
 import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
 import Messages from '../../Messages/Messages'
@@ -21,17 +21,17 @@ const CurrentChannel = () => {
   const channelSocket = io('https://localhost:5050/currentChannel',certOptions);
   const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
   const {user,setLoading} = useAuth()
-  const {setError,setServerResponse} = useError()
+  const {setServerResponse} = useResponseContext()
   const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
-  const scrollToRef = useRef<HTMLDivElement | undefined>()
+  const scrollToRef = useRef!<HTMLDivElement>()
   const location = useLocation()
   useEffect(
     ()=>{
       let onGetChannel = (data:SocketResponse)=>{
         if(!data.success) setServerResponse(data.err)
         console.log(`GETTING CHANNEL`, data)
-        setCurrentChannel(data?.data?.channels ?? null)
-        channelSocket.emit('join_channel',{room:data.data.channels._id})
+        setCurrentChannel(data?.data?.channel)
+        channelSocket.emit('join_channel',{room:data.data.channel._id})
 
         if(!data.success && data.message){
           setServerResponse(data?.err)
@@ -79,29 +79,24 @@ const CurrentChannel = () => {
   )
   useEffect(
     ()=>{    
-      // channelSocket.connect()
       setLoading(true)
       let controller = new AbortController()
       let {signal} = controller
       let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
-      let timeout = setTimeout(handle,2000)
+      let timeout = setTimeout(handle,3000)
      return()=>{
         clearTimeout(timeout)
         controller?.abort()
-        
       }
   },[location.search]
   )
   const handleSubmitMessage=async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
     try {
-        console.log(`SUBMITTING MESSAGE`)
+      console.log(`SUBMITTING MESSAGE`)
       setLoading(true)
-      // if(!value) return console.log(`MESSAGE ISN'T TYPED `)
-      // if(!propsValue) return
-      // if(!user.email) return console.log(`USER IS`,user)
       channelSocket.emit('send_message',{message:value,channel_id: propsValue?._id,user,room:propsValue?._id})
     } catch (error) {
-      setError(error)
+      setServerResponse(error)
       console.error(`error:`, error)
     } finally{
       setLoading(false)
@@ -117,12 +112,10 @@ const CurrentChannel = () => {
      console.log(`USER:`, user);
      console.log(`socket:`, channelSocket);
      console.log(`channel:`, currentChannel);
-     
      if(!_id) return console.error(`missing id`);
-     
      channelSocket.emit('delete_message',{channel_id:currentChannel?._id,message_id:_id,userEmail:user.email,})
   } catch (error) {
-    setError(error)
+    setServerResponse(error)
   } finally{
     setLoading(false)
   }

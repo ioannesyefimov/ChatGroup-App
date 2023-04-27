@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { ChannelType, UserType } from '../components/types'
-import { APIFetch, Errors, sleep, throwErr } from '../components/utils'
-import useError from './useErrorContext/useError'
-import { useAuth } from '.'
+import { ChannelType, UserType } from '../../components/types'
+import { APIFetch, Errors, sleep, throwErr } from '../../components/utils'
+import { useAuth, useResponseContext } from '..'
 const useSearch = () => {
-    const {setLoading} = useAuth()
+    const {setLoading,user} = useAuth()
     type SearchedValueType = {
         
         users?:UserType[],channels?:ChannelType[],filtered:ChannelType[] | UserType[] | []
@@ -17,13 +16,13 @@ const useSearch = () => {
             filtered:[],
         }
     )
-    const {setError} = useError()
+    const {setServerResponse} =useResponseContext()
  
     type ResultType = typeof searchedValue
     type HandleSearchType ={
         search:any
         searchType:string
-        channels?:ChannelType[]
+        channels?:ChannelType[] 
     }
     const SEARCH_TYPE: {[index:string]:string} = {
         CHANNELS: 'CHANNELS',
@@ -35,28 +34,30 @@ const useSearch = () => {
     const handleSearch = async({search,searchType,channels}:HandleSearchType) =>{
         try {
             setLoading(true)
-            if(!search)return channels
             let result:ResultType= {users: [], channels:[],filtered:[]}
             console.log(`SEARCH:`, search);
             console.log(`type:`,searchType)
-            
+            search = search ? search.toLowerCase() : ''
             switch(searchType){
                 case SEARCH_TYPE.CHANNELS:{
                     let response = await APIFetch({url:`https://localhost:5050/api/channels`});
                     if(!response.success) return throwErr(response.message)
                     console.log(`RESPONSE:`, response);
                         let filtered = response?.data?.channels?.filter((channel:ChannelType)=>{
+                            if(channel.members.find(member=>member?.member?._id?.includes(user?._id ?? ''))) {
+                                channel.isJoined = true
+                            }
                             console.log(`CHANNEL :`, channel);
-                            search = search.toLowerCase()
                             let name = channel?.channelName?.toLowerCase() 
-                            return name?.includes(search)
+                            return name?.includes(search) || channel._id?.includes(search) 
                         })
                         console.log(`FILTERED:`, filtered);
                         if(filtered.length){
                             result.channels = filtered 
-                        } else {
-                            result.channels = response?.data?.channels 
-
+                        } else if(!filtered.length && !search) {
+                            result.channels = undefined
+                        } else if(!filtered.length ) {
+                            result.channels = response.data.channels
                         }
                     break
                     
@@ -64,16 +65,17 @@ const useSearch = () => {
                 case SEARCH_TYPE.CHANNEL:{
                         let filtered = channels?.filter((channel:ChannelType)=>{
                             console.log(`CHANNEL :`, channel);
-                            search = search.toLowerCase()
                             let name = channel.channelName.toLowerCase() 
                             return name.includes(search)
                         })
                         if(filtered?.length){
                             result.channels = filtered
                             
-                        }else{
+                        }else if(!filtered?.length && search===''){
                             result.channels = channels
 
+                        }else {
+                            result.channels = undefined
                         }
                         console.log(`FILTERED:`, filtered);
                     break
@@ -89,7 +91,6 @@ const useSearch = () => {
                     if(!searchedValue.users?.length) return console.error(`SEARCHED USERS IS `,searchedValue.users) 
                     let filtered = searchedValue?.users?.filter((user:UserType)=>{
                         console.log(`USER:`, user)
-                        search = search.toLowerCase()
                         let username=user.userName.toLocaleLowerCase()
                         let id = user._id?.toLocaleLowerCase()
                         let email = user.email.toLocaleLowerCase()
@@ -105,7 +106,7 @@ const useSearch = () => {
                 }
             setSearchedValue(result)            
         } catch (error) {
-            setError(error)
+            setServerResponse(error)
         } finally{
             setLoading(false)
 

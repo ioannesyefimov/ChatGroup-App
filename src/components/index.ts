@@ -24,13 +24,14 @@ import UserComponent from "./UserComponent/UserComponent";
 import ProfileSettings from "./ProfileComponent/ProfileSettings/ProfileSettings";
 
 
+import ServerResponseProvider from "./ServerResponseFallback/ResponseContext";
 import ChatContainer from "./DashBoard/ChatContainer";
 import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
 import AuthProvider from "./Authentication/Provider/AuthProvider";
 export 
 {
-    ChatProvider,
+    ChatProvider,ServerResponseProvider,
     Profile,ProfileSettings,
     
     

@@ -37,7 +37,8 @@ export type ChannelType = {
     channel?:ChannelType
  channelName:string
     messages: MessageType[] 
-    members: Member[]| Member
+    members: Member[]
+    isJoined?:boolean
     _id?:string 
     channelAvatar:string 
     channelDescription?: string
@@ -61,6 +62,7 @@ export type LogType  = {
 }
 
 export type UserType = {
+    member?:UserType
     userName:string
     email:string
     picture?:string

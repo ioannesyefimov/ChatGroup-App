@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import ReactFacebookLogin, { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
-import { useAddScript, useAuth, useAuthCookies, useError, useOnlineStatus } from '../index';
+import { useAddScript, useAuth, useResponseContext } from '../index';
 import { Errors,APIFetch, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { useCookiesData } from '../useAuthCookies/useAuthCookies';
 const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
 
-    const {setError,setServerResponse} = useError()
+    const {setServerResponse} = useResponseContext()
     const {clearState,setLoading,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
     const cookies = useCookiesData()
@@ -39,7 +39,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                             }
                         })
                     }
-                } catch (error:{name?:any,message?:any}) {
+                } catch (error:any) {
                     console.error(error?.name, ':', error?.message)
                     
                 }
@@ -67,7 +67,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
             }
                 navigate(`/auth/redirect?type=auth/user&accessToken=${response?.data?.accessToken}&loggedThrough=Facebook`)
         } catch (error) {
-               setError( error)
+               setServerResponse( error)
         } finally {
             setLoading(false)
         }
@@ -82,7 +82,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                 await handleFacebookLogin({credentials: response})
             }
         } catch (error) {
-             setError(error)
+             setServerResponse(error)
         }
     }
     const handleFacebook = async(type:string) => {
@@ -151,7 +151,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
     const handleFacebookDelete = async(credentials:any)=>{
         try {
             console.log(`credentials: `, credentials);
-            if(!credentials) return setError({message:Errors.MISSING_ARGUMENTS})
+            if(!credentials) throwErr({message:Errors.MISSING_ARGUMENTS})
             setLoading(true)
             let params = new URLSearchParams(credentials)
             const response = await APIFetch({url: `${serverUrl}auth/facebook?credentials=${params}`, method:'DELETE', body: {credentials}});
@@ -159,17 +159,17 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
             console.log(response)
             if(!response.success){
                 clearState('')
-                return setError({message: response?.message, loggedThrough:response?.loggedThrough})
+                throwErr({message: response?.message, loggedThrough:response?.loggedThrough})
             }
 
          
             let  deleteUser =await handleDelete({accessToken: response?.data?.accessToken, user: credentials, deletedThrough: 'Facebook'});
-            if(!deleteUser?.success) return setError({message: deleteUser.message});
+            if(!deleteUser?.success) throwErr({message: deleteUser.message});
 
             clearState('')
               
         } catch (error) {
-            return setError({message: error})
+            return setServerResponse({message: error})
         } finally{
             setLoading(false)
         }

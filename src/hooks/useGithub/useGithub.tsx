@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react'
 import { Search, useNavigate } from 'react-router-dom';
-import { useAuth, useAuthCookies, useError } from '../index'
+import { useAuth, useAuthCookies, useResponseContext } from '../index'
 import { HandleFetchProps,LogType } from '../../components/types'
 import { APIFetch, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
 
 const useGithub = (TYPE?:string) => {
-    const {setError,setServerResponse} = useError()
+    const {setServerResponse} = useResponseContext()
     const {setCookie} = useAuthCookies()
     const {clearState,setLoading,user,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
@@ -57,18 +57,18 @@ const useGithub = (TYPE?:string) => {
 
               if(!response?.success ){
                 // console.log(response.message)
-                return setError({message: response.message, loggedThrough: response.loggedThrough})
+                throwErr({message: response.message, loggedThrough: response.loggedThrough})
              }
 
              let  deleteUser =await handleDelete({accessToken: response?.data?.accessToken, user,deletedThrough:'Github'});
-             if(!deleteUser?.success) return setError({message: deleteUser.message});
+             if(!deleteUser?.success) throwErr({message: deleteUser.message});
              
 
              clearState('/auth/signin')
             
            
         } catch (error) {
-            return setError({message: error})
+             setServerResponse({message: error})
 
         } finally{
             setLoading(false)

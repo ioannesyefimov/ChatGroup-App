@@ -16,16 +16,14 @@ const SearchBar = ({setSearchedChannels,channels,searchType}:PropsType) => {
     ()=>{
       let urlSearch = location.search
       let handle
-      if(urlSearch.includes('?=search')){
-        urlSearch = urlSearch.replace('?search=','')
-        handle = ()=>handleSearch({search:urlSearch,searchType:SEARCH_TYPE[searchType],channels})
+      let params = new URLSearchParams(urlSearch)
+      let searchParam = params?.get('search')
+      if(searchParam){
+        handle = ()=>handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],channels})
       } else {
         handle = ()=>handleSearch({search,searchType:SEARCH_TYPE[searchType],channels})
         }
-      let timeout = setTimeout(handle,1500)
-      // if(!search){
-        // setSearchedChannels(null)
-      // }
+      let timeout = setTimeout(handle,1000)
       return ()=>clearTimeout(timeout)
 
     },[search,location.search]

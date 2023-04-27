@@ -23,8 +23,7 @@ const UserComponent = () => {
       let userName = query.get('userName')
       let id = query.get('id')
       handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USERS'})
-      // return ()=>{setSearchedValue({});setShowedUser(null)}
-
+      return ()=>{setSearchedValue({});setShowedUser(null)}
     },[]
   )
   useEffect(()=>{
@@ -50,7 +49,7 @@ const UserComponent = () => {
   let content = (
     <>
       <div className='user-component' >
-       <User user={showedUser!} key={showedUser?._id}/>
+       <User location="profile" user={showedUser!} key={showedUser?._id}/>
         {userChannels}
       </div>
     </>
@@ -59,7 +58,6 @@ const UserComponent = () => {
 
   return(
     <>
-    <NavigationBar/>
     { 
      showedUser ? (
       content

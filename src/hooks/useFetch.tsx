@@ -1,24 +1,24 @@
-import { useAuth, useAuthCookies, useError } from './index'
+import { useAuth, useAuthCookies, useResponseContext } from './index'
 import {HandleFetchProps } from '../components/types';
-import { APIFetch } from '../components/utils/index';
+import { APIFetch, throwErr } from '../components/utils/index';
 import { convertBase64} from '../components/utils/index';
 import { useCallback } from 'react';
+import { useServerUrl } from './useAuthContext/useAuthContext';
 
 
 
 
 
 const useFetch = () => {
-    const {removeCookie,setCookie} = useAuthCookies()
-    const {setResponse,setLoading, clearState} = useAuth()
-    const {setError}= useError()
-    const url = `http://localhost:5050/api`
-    let newURL = location.href.split("?")[0];
+    const {setCookie} = useAuthCookies()
+    const serverUrl= useServerUrl() 
+    const {setLoading, clearState} = useAuth()
+    const {setServerResponse}= useResponseContext()
    const getUserData= useCallback(async(accessToken:string, loggedThrough:string | null) =>{
      try {
       setLoading(true)
       const response = await APIFetch({
-        url: `${url}auth/user`,
+        url: `${serverUrl}auth/user`,
         method: 'POST', 
         body: {
         accessToken: accessToken,
@@ -27,7 +27,7 @@ const useFetch = () => {
 
         if(!response?.success ){
           clearState('')
-           setError({message:response.message, loggedThrough:response?.loggedThrough})
+           throwErr({message:response.message, loggedThrough:response?.loggedThrough})
            return
         }
         // console.log(response)
@@ -55,7 +55,7 @@ const useFetch = () => {
         }
 
     } catch (error) {
-      setError({message:error})
+      setServerResponse({message:error})
     } finally {
       setLoading(false)
 
@@ -69,7 +69,7 @@ const useFetch = () => {
     
 
         // 👇 Uploading the file using the fetch API to the server
-     const upload = await fetch(`${url}/upload/picture`, {
+     const upload = await fetch(`${serverUrl}/upload/picture`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json' 
@@ -98,7 +98,7 @@ const useFetch = () => {
     try {
       // console.log(`handleDelete IS WORKING`)
       if(email && password){
-        let dbDelete = await APIFetch({url: `${url}change/delete`, method:'delete', body: {userEmail: user?.email,updatedParams:{password}, accessToken}})
+        let dbDelete = await APIFetch({url: `${serverUrl}change/delete`, method:'delete', body: {userEmail: user?.email,updatedParams:{password}, accessToken}})
 
         if(!dbDelete?.success) return {success:false, message:dbDelete?.message}
         return dbDelete
@@ -106,7 +106,7 @@ const useFetch = () => {
       if(accessToken !=='undefined' || accessToken !== undefined && !password ){
         // console.log(`DELETING THROUGH ACCESS-TOKEN`)
         
-        let dbDelete = await APIFetch({url: `${url}change/delete`, method:'delete', body: {userEmail: user?.email, accessToken, deletedThrough}})
+        let dbDelete = await APIFetch({url: `${serverUrl}change/delete`, method:'delete', body: {userEmail: user?.email, accessToken, deletedThrough}})
 
         // console.log(dbDelete)
         if(!dbDelete?.success) 
@@ -174,19 +174,19 @@ const useFetch = () => {
     // send request to change user's information
 
     // console.log(`is going to send response`)
-    let response = await APIFetch({url: `${url}change`, method:'post', body: {updatedParams: changesArr, userEmail: user?.email, accessToken}});
+    let response = await APIFetch({url: `${serverUrl}change`, method:'post', body: {updatedParams: changesArr, userEmail: user?.email, accessToken}});
     // console.log(response);
     if(!response?.success) {
 
-      return setError({message: response?.message})
+      return throwErr({message: response?.message})
     };
     if(!response?.data?.accessToken){
 
-      return setError({message:response?.message})  
+      return throwErr({message:response?.message})  
     }
     setCookie('accessToken', response?.data?.accessToken, {path:'/', maxAge: 2000})
 
-    setError({message: response?.data?.message, changes: response?.data?.changes});
+    throwErr({message: response?.data?.message, changes: response?.data?.changes});
     if(response?.data?.loggedThrough){
       return  await getUserData(response?.data?.accessToken, user?.loggedThrough!);
     }
@@ -195,7 +195,7 @@ const useFetch = () => {
 
 
   } catch (error) {
-    return setError({message:error})      
+     setServerResponse(error)      
   } finally{
     setLoading(false)
   }

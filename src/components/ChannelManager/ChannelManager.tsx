@@ -7,10 +7,10 @@ const ChannelManager = () => {
     let content = (
         <div className='channel-manager-component'>
             {location.pathname === '/chat/manage' ? (
-            <>
+            <div className='wrapper'>
                 <Link to={`join`}  replace>Join existing</Link>
                 <Link to={`create`}  replace>Create new</Link>
-            </>
+            </div>
             ): (
                     <Outlet/>
             )}

@@ -40,7 +40,7 @@ const navigate = useNavigate()
   let sentBy = user?._id === messageUser?._id ? 'received' : 'sent'  
 return (
     <div  className={`message ${sentBy}`}>
-         <button onClick={()=>navigate(`/user?email=${messageUser?.email}`)} className='show-member-button'>
+         <button onClick={()=>navigate(`/user?id=${messageUser?._id}`)} className='show-member-button'>
                 <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
           </button>
       

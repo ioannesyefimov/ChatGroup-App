@@ -1,23 +1,28 @@
 import React from "react";
 
 import { Outlet, useNavigate } from "react-router-dom";
-import useError from "../../hooks/useErrorContext/useError";
 import AuthSocialButtons from "../AuthButtons/AuthSocialButtons";
 import Button from "../Button/Button";
 import { Errors, isObj } from "../utils";
-import { useAuth } from "../../hooks";
+import { useAuth, useResponseContext } from "../../hooks";
+import NavigationBar from "../NavigationBar/NavigationBar";
 type ResponseFallbackType ={
     children?:React.ReactNode| React.ReactNode[]
 
 }
+
  const ServerResponseFallback = ({children}:ResponseFallbackType)=>{
-    const {serverResponse,setServerResponse}= useError();
+    const {serverResponse,setServerResponse}= useResponseContext();
     const navigate = useNavigate()
     const {clearState} = useAuth()
-    if(!serverResponse){
-        return <Outlet/>
-    }
-    let handleOnClick = serverResponse?.name === Errors.NOT_A_MEMBER ? ()=>{setServerResponse(null);window.location.replace('/chat')} : 
+    let content = (
+        <>
+        <NavigationBar/>
+        <Outlet/>
+        </>
+    )
+    if(!serverResponse)return content
+    let handleOnClick = serverResponse?.name === Errors.NOT_A_MEMBER ? ()=>{setServerResponse(null);navigate(`/chat/manage/join?search=${serverResponse?.arguments?.channel_id}`)} : 
     serverResponse.message===Errors.JWT_MALFORMED ? (()=>{
         clearState('/auth/signin', navigate)
     }) : 
@@ -25,6 +30,10 @@ type ResponseFallbackType ={
         setServerResponse!(null);
         navigate('/auth/signin')
     }
+
+    let btnText = serverResponse?.name === Errors.NOT_A_MEMBER ? 'Join' : serverResponse.message===Errors.JWT_MALFORMED ? (
+        'signin'
+    ) : 'reload'
 
     let responseArguments = serverResponse?.arguments ? isObj(serverResponse?.arguments) ? (
         Object.keys(serverResponse?.arguments)?.map((argument,i)=>{
@@ -48,15 +57,13 @@ type ResponseFallbackType ={
         <div className='fallback-component'>
             <span className='response-type'>{errorName}</span>
             {serverResponse?.name === Errors.SIGNED_UP_DIFFERENTLY && signedUpDifferently}            
-            <Button onClick={handleOnClick} text='Reset'name='continue-btn' />
+            <Button onClick={handleOnClick} text={btnText}name='continue-btn' />
         </div>
     ) 
-    return (
-        <>
+    return <>
         {Object.keys(serverResponse).length ? displayedMsg : null}
-        <Outlet/>
-        </>
-    )
+        {content}
+    </>
 
 }
 export default ServerResponseFallback
