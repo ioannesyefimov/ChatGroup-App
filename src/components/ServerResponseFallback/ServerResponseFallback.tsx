@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AuthSocialButtons from "../AuthButtons/AuthSocialButtons";
 import Button from "../Button/Button";
 import { Errors, isObj } from "../utils";
@@ -14,10 +14,13 @@ type ResponseFallbackType ={
  const ServerResponseFallback = ({children}:ResponseFallbackType)=>{
     const {serverResponse,setServerResponse}= useResponseContext();
     const navigate = useNavigate()
+    const location = useLocation()
+    
     const {clearState} = useAuth()
     let content = (
         <>
-        <NavigationBar/>
+        {location.pathname !== '/' ?  <NavigationBar/> : null}
+       
         <Outlet/>
         </>
     )

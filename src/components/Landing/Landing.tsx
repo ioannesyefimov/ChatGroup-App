@@ -9,7 +9,7 @@ const Landing: React.FC = () => {
 
   const content = (
     <>
-    <Canvas bgUrl={landingBg} bgSize='cover' bgPosition='center'/>
+    <Canvas src={landingBg} />
     <div className='landing-component box-shadow--gray'>
       <div className="wrapper">
       <h3>Join our community and start communicating with them or your friends right now</h3>

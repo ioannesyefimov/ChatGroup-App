@@ -23,7 +23,7 @@ const CurrentChannel = () => {
   const {user,setLoading} = useAuth()
   const {setServerResponse} = useResponseContext()
   const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
-  const scrollToRef = useRef!<HTMLDivElement>()
+  const scrollToRef = useRef<HTMLDivElement>()
   const location = useLocation()
   useEffect(
     ()=>{
@@ -36,6 +36,8 @@ const CurrentChannel = () => {
         if(!data.success && data.message){
           setServerResponse(data?.err)
         }
+        setLoading(false)
+
       }
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
@@ -43,15 +45,18 @@ const CurrentChannel = () => {
         if(data.data.messages){
           setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         }
+        setLoading(false)
       }
       let onDeleteMessage = (data:SocketResponse)=>{
         if(data.success){
           console.log(`SUCCESS DELETE`, data);
           
-          setCurrentChannel(data.data.channel)
+          setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         } else {
           setServerResponse(data?.err)
         }
+        setLoading(false)
+
       }
       let onConnecting = ()=>{
         console.log(`CONNECTED BY ID ${channelSocket.id}`)
@@ -99,7 +104,7 @@ const CurrentChannel = () => {
       setServerResponse(error)
       console.error(`error:`, error)
     } finally{
-      setLoading(false)
+      // setLoading(false)
       setValue('')
     }
  }

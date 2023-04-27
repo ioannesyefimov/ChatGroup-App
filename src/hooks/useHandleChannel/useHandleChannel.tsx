@@ -27,9 +27,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
         } catch (error) {
           setServerResponse(error)
-        } finally{
-          setLoading(false)
-        }
+        } 
       }
     const handleJoinChannel = async (id:string,user:UserType)=>{
           try {
@@ -84,7 +82,6 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           } catch (error) {
         setServerResponse(error)
       } finally{
-        setLoading(false)
         scrollToRef?.current?.scrollIntoView({behaivor:'smooth'})
       }
     }

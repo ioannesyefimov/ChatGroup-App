@@ -1,10 +1,10 @@
 @use '../utils/utils.scss' as *;
 .landing-component{
-    @include respond-to(small){
-        margin: 0rem;
+    @include respond-to(medium){
+        margin: auto ;
         
     }
-    margin: 0 0 0 6rem;
+    margin: 0 0 0 clamp(1rem, -0.761rem + 7.512vw, 6rem);
     background: rgba(10, 10, 26, 0.669);
     align-self: flex-start;
     display: flex;
