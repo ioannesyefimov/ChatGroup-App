@@ -7,8 +7,7 @@ import mkcert from 'vite-plugin-mkcert'
 export default ({mode}) => {
   process.env = {...process.env, ...loadEnv(mode, process.cwd() )};
   return defineConfig({
-    plugins: [react(), mkcert()],
- 
-  })
+    plugins: [react(),mkcert() ],
+})
   
 }

@@ -37,7 +37,6 @@ const CurrentChannel = () => {
           setServerResponse(data?.err)
         }
         setLoading(false)
-
       }
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
@@ -45,18 +44,15 @@ const CurrentChannel = () => {
         if(data.data.messages){
           setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         }
-        setLoading(false)
       }
       let onDeleteMessage = (data:SocketResponse)=>{
         if(data.success){
           console.log(`SUCCESS DELETE`, data);
           
-          setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
+          setCurrentChannel(data.data.channel)
         } else {
           setServerResponse(data?.err)
         }
-        setLoading(false)
-
       }
       let onConnecting = ()=>{
         console.log(`CONNECTED BY ID ${channelSocket.id}`)
@@ -104,7 +100,7 @@ const CurrentChannel = () => {
       setServerResponse(error)
       console.error(`error:`, error)
     } finally{
-      // setLoading(false)
+      setLoading(false)
       setValue('')
     }
  }

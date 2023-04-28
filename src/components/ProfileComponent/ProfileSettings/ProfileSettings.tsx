@@ -33,7 +33,7 @@ const ProfileSettings = () => {
 
   }
 
-  const handleAvatar = async(e:React.ChangeEvent)=>{
+  const handleAvatar = async(e:React.ChangeEvent<HTMLInputElement>)=>{
     let img= await handleUpload(e);
     return dispatch({type:ACTIONS.SET_PHOTO, payload:img as string})
   }

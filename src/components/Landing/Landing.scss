@@ -1,6 +1,6 @@
 @use '../utils/utils.scss' as *;
 .landing-component{
-    @include respond-to(medium){
+    @include respond-to(small){
         margin: auto ;
         
     }

@@ -28,11 +28,11 @@ const ChatContainer = () => {
     let content = (
       
       <div className='chat-container-outer '>  
-        <div className='chat-container-inner '>  
-          <ChannelsBar fetchChannels={fetchChannels} channels={channels} />
+        {/* <div className='chat-container-inner '>   */}
+          {/* <ChannelsBar fetchChannels={fetchChannels} channels={channels} /> */}
           <CurrentChannel />
           <Outlet/>
-        </div>
+        {/* </div> */}
       </div>
     )
  

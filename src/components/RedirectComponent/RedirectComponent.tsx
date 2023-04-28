@@ -29,11 +29,15 @@ const RedirectComponent = () => {
 let handleLogin = 
         async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
            try {
+            console.log(`LOGGIN IN`);
+            
             setLoading(true)
             let response = await APIFetch({url:`${serverUrl}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
             if(!response?.success){
                 throwErr(response?.err)
             }
+            console.log(`RESP:"`, response);
+            
             setData({user:response.data.user,accessToken:response.data.accessToken})
         } catch (error) {
             setServerResponse(error)
@@ -77,8 +81,6 @@ let handleLogin =
                 }
             } catch (error:any) {
                 setServerResponse(error)
-            }finally {
-                setLoading(false)
             }
     }
     useEffect(
@@ -91,8 +93,10 @@ let handleLogin =
 
     useEffect(
         ()=>{
+            
             if(data.user){
                 setCookie('user',data.user,{path:'/',maxAge:2000})
+                navigate('/chat')
             }
             if(data.accessToken){
                 setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})

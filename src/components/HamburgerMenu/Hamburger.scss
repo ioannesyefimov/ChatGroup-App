@@ -97,7 +97,10 @@
     
 }
 
+
 .hamburger-outer{
+    position: relative;
+
    &[data-istoggled=toggled]{
         @include respond-to(small){
             position: absolute;
@@ -137,6 +140,9 @@
         animation-duration: 1s;
         animation-fill-mode: forwards;
         width: 100%;
+        .left-wrapper {
+            width: 100%;
+        }
     }
 
     &[data-istoggled=untoggled]{

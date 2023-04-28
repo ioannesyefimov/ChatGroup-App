@@ -61,7 +61,6 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
     const handleCurrentChannel =
       async({name,setter,socket,scrollToRef,user,signal}:HandleCurrentChannelProps)=>{
         try {
-        setLoading(true)
         console.log(`NAME: ${name}`);
         let query = new URLSearchParams(name)
         let channel_id = query.get('channel')
@@ -76,7 +75,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
              throwErr({name:Errors.CHANNEL_NOT_FOUND})            
            }
             setter(null)
-          return
+          return setLoading(false)
         }
         socket.emit('get_channel', {channel_id,userEmail:user?.email})
           } catch (error) {

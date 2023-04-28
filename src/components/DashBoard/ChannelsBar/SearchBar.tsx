@@ -6,10 +6,11 @@ import { useSearch } from '../../../hooks'
 import { useLocation } from 'react-router-dom'
 type PropsType ={
   channels:ChannelType[]
+  user?:UserType
   searchType:string
   setSearchedChannels: React.Dispatch<React.SetStateAction<ChannelType[] | null>>
 }
-const SearchBar = ({setSearchedChannels,channels,searchType}:PropsType) => {
+const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => {
   const {search,SEARCH_TYPE,searchedValue,handleSearch ,handleSearchChange} = useSearch()
   const location = useLocation()
   useEffect(

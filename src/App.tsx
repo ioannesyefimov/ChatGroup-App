@@ -110,6 +110,8 @@ function App() {
       console.log(`APP RENDER`);
       
       let isLogged = cookies?.user
+      console.log(`IS LOGGED`, isLogged);
+      
       if(isLogged){
         setUser(isLogged)
       }

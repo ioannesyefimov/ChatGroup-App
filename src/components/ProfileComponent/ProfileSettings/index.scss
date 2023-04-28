@@ -1,6 +1,7 @@
 @use '../../utils/utils.scss' as *;
 .profile-settings-component {
     display:flex;
+    flex:1;
     flex-direction: column;
     gap:1rem;
     padding: 2rem 1rem 2rem clamp(1rem, -0.533rem + 7.665vw, 9rem)  ;
@@ -23,15 +24,15 @@
         flex-direction: column;
         flex:1;
         
-         max-width: 400px;
-         width: 100%;
+        max-width: 400px;
+        width: 100%;
         .inner-wrapper {
 
             input{
                 padding: .65rem ;
             }
-            $inputWidth: 110px;
-            $inputHeigth: 110px;
+            $inputWidth: 100px;
+            $inputHeigth: 100px;
             &.file-upload-component {
                 all:unset;
                 gap:.5rem;
@@ -44,7 +45,6 @@
                     border-radius: inherit;
                     border: 1px solid gray;
                     height: 120px;
-                    max-width: calc($inputWidth + 20%);
                     
                     .converted-img {
                         all: unset;
@@ -69,9 +69,8 @@
                 }
                 button{
                     position: absolute;
-                    width: 50px;
-                    height: 25px;
-                    right: 0;
+                    width: 33px;
+                    right: 3%;
                     bottom: 0;
                     top:0;
                     margin: auto ;

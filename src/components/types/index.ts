@@ -34,8 +34,9 @@ export type SocketResponse = {
 export type Member = UserType
 
 export type ChannelType = {
+    [index:number]: ChannelType
     channel?:ChannelType
- channelName:string
+    channelName:string
     messages: MessageType[] 
     members: Member[]
     isJoined?:boolean
