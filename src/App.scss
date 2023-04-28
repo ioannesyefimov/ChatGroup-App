@@ -5,7 +5,8 @@ body {
   display: grid;
   min-width:320px;
   width: 100%;
-  min-height: 100dvh;
+  height: 100dvh !important;
+
 }
 
 .App:has(.landing-component,.auth-form-component){
@@ -21,6 +22,7 @@ body {
 
 .App {
   display: flex;
+  max-height: 100dvh !important;
   flex-direction: column;
   & > .app-wrapper {
     flex: 1;

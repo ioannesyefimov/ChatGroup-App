@@ -12,13 +12,14 @@ type AuthProps = {
   type: string
   redirectType: string
   redirectUrl?:string
+  getToken?:boolean
 }
 const initState = {
   email:"",  
   password:"",  
   userName:"",  
 }
-const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
+const AuthForm = ({type,redirectType,redirectUrl,getToken=false}:AuthProps) => {
   const [form,setForm] = useState(initState)
   // const [email,setEmail] = useState<string>('')
   // const [password,setPassword] = useState<string>('')
@@ -40,10 +41,11 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
     e.preventDefault();
 
     try {
+      setLoading(true)
       if(!type){
         return console.log(`TYPE IS MISSING`)
       }
-      setLoading(true)
+      let search = new URLSearchParams(location.search)
       let {email,userName,password} = form
       let params 
       if(type==='register'){
@@ -71,7 +73,7 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
           throwErr({name:`SOMETHING WENT WRONG`, arguments: 'accessToken is undefined'})
         }
         if(redirectUrl){
-          return navigate(`/auth/redirect/?type=${redirectType}&accessToken=${response?.data?.accessToken}&redirectUrl=${redirectUrl}`)
+          return navigate(`/auth/redirect/?type=${search.get('redirectType') ?? redirectType}&accessToken=${response?.data?.accessToken}&redirectUrl=${search.get('redirectUrl') ?? redirectUrl}`)
         }
 
 
@@ -132,7 +134,8 @@ const AuthForm = ({type,redirectType,redirectUrl}:AuthProps) => {
 
   return (
     <>
-    <Canvas src={authBg} />
+    {!getToken && <Canvas src={authBg} /> }
+    
     {type === 'signin' ? signinContent : registerContent}
     </>
   )

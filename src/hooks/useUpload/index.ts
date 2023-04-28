@@ -5,6 +5,9 @@ import { convertBase64 } from "../../components/utils"
 const index = () => {
     const [file,setFile] =useState('')
     const handleUpload = async(e?:React.ChangeEvent<HTMLInputElement> ) =>{
+        if(!e){
+            return setFile('')
+        } 
         let file = e?.currentTarget.files![0]
         console.log(`FILES:`, file);
         console.log(`e:`, e);

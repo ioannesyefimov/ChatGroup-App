@@ -7,9 +7,12 @@ import { UserType } from '../types'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 import './RedirectComponent.scss'
 
-
+type StateType = {
+    user:UserType | null,accessToken:string|null
+    redirect: string | null
+}
 const RedirectComponent = () => {
-    const [data,setData]=useState<{user:UserType | null,accessToken:string|null}>({user:null,accessToken:null})
+    const [data,setData]=useState<StateType>({user:null,accessToken:null,redirect:null})
     const {setLoading,loading,serverUrl}=useAuth()
     const {handleGitHubLogin}=useGithub('')
     const {setCookie} = useAuthCookies()
@@ -22,12 +25,13 @@ const RedirectComponent = () => {
         type: string
         loggedThrough: string
         signal?: AbortSignal
+        redirectUrl:string | null
     }
 
 
     let navigate = useNavigate()
 let handleLogin = 
-        async({accessToken,type,loggedThrough,signal}:HandleLoginProps)=>{
+        async({accessToken,type,loggedThrough,signal,redirectUrl}:HandleLoginProps)=>{
            try {
             console.log(`LOGGIN IN`);
             
@@ -38,7 +42,7 @@ let handleLogin =
             }
             console.log(`RESP:"`, response);
             
-            setData({user:response.data.user,accessToken:response.data.accessToken})
+            setData({user:response.data.user,accessToken:response.data.accessToken,redirect:redirectUrl ?? null})
         } catch (error) {
             setServerResponse(error)
             
@@ -56,6 +60,7 @@ let handleLogin =
                 let loggedThrough = query.get('loggedThrough')
                 let accessToken = query.get('accessToken')
                 let code = query.get("code")
+                let redirectUrl = query.get("redirectUrl")
                 if(signal.aborted) return
                 await sleep(3000);
                 console.log(`STARTED `);
@@ -77,7 +82,7 @@ let handleLogin =
                     return 
                 }
                 if(type && loggedThrough && accessToken){
-                    handleLogin({accessToken,type,loggedThrough,signal});
+                    handleLogin({accessToken,type,loggedThrough,signal,redirectUrl});
                 }
             } catch (error:any) {
                 setServerResponse(error)
@@ -100,7 +105,10 @@ let handleLogin =
             }
             if(data.accessToken){
                 setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})
-                }
+            }
+            if(data.redirect){
+                navigate(data.redirect)
+            }
         },[data]
     )
         

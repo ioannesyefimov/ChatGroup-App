@@ -7,7 +7,7 @@ export enum ACTIONS{
     SET_EMAIL='SET_EMAIL',
     SET_PASSWORD='SET_PASSWORD',
     SET_BIO='SET_BIO',
-    SET_PHOTO='SET_PHOTO',
+    SET_PICTURE='SET_PICTURE',
     
 }
 
@@ -17,14 +17,14 @@ export const initState = {
     email:'',
     password:'',
     bio:'',
-    photo:'',
+    picture:'',
 }
 type StateType= {
     userName:string
     email:string
     password:string
     bio:string
-    photo:string
+    picture:string
 }
 
 
@@ -59,10 +59,10 @@ const counterReducer:Reducer<StateType,ReducerAction> = (state:StateType,action:
             ...state,
             email:payload
         };
-        case ACTIONS.SET_PHOTO: {
+        case ACTIONS.SET_PICTURE: {
             return {
                 ...state,
-                photo:payload
+                picture:payload
             };
         }
         default:

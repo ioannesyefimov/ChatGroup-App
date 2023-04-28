@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { log } from 'console'
 import { LoadingFallback } from './components/LoadingFallback/LoadingFallback'
 import NavigationBar from './components/NavigationBar/NavigationBar'
+import ErrorBoundary from './components/ErrorProvider/ErrorProvider'
 
 
 
@@ -86,11 +87,11 @@ let router = createBrowserRouter([
           },
           {
             element: <AuthForm redirectType='auth/user' type="register" />,
-            path:'register'
+            path:'register/:search?'
           },
           {
             element: <AuthForm redirectType='auth/user' type="signin" />,
-            path:'signin'
+            path:'signin/:search?'
     
           }
         ],
@@ -98,26 +99,13 @@ let router = createBrowserRouter([
 
     ]
   },
-  
-  
+  {
+    errorElement: <ErrorBoundary/>
+  }  
+ 
 ])
 function App() {
-  const {cookies} = useAuthCookies()
-  const setUser = useSetUser()
-  const setLoading = useSetLoading()
-  useEffect(
-    ()=>{
-      console.log(`APP RENDER`);
-      
-      let isLogged = cookies?.user
-      console.log(`IS LOGGED`, isLogged);
-      
-      if(isLogged){
-        setUser(isLogged)
-      }
-      setLoading(false)
-    },[cookies?.user]
-  )
+  
   return (
     <div className="App">
       <RouterProvider router={router} />

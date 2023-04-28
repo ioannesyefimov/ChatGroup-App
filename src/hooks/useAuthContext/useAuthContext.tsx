@@ -23,9 +23,9 @@ export default () =>{
         removeCookie('refreshToken', {path:'/'})
         if(!replace){
           console.log(`not replacing`)
-        }else if(navigate){
+        }else if(navigate !== undefined){
           navigate(replace)
-        } else if(replace && !navigate) {
+        } else if(replace && navigate===undefined)  {
             window.location.replace(replace)
         }
         window.localStorage.clear()

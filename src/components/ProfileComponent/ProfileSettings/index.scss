@@ -4,13 +4,16 @@
     flex:1;
     flex-direction: column;
     gap:1rem;
-    padding: 2rem 1rem 2rem clamp(1rem, -0.533rem + 7.665vw, 9rem)  ;
+    padding: 1rem 1rem 1rem clamp(1rem, -0.533rem + 7.665vw, 9rem)  ;
     .user {
-        @include respond-to(medium){
+        @include respond-to(huge){
             position: absolute;
+            margin: auto !important;
             right:  2%;
+            display: grid;
         }
-        margin-left: auto;
+        display: none;
+        margin: auto;
         &-img{
             border-radius: 8px;
             max-width: 50px;
@@ -19,60 +22,82 @@
         }
     }
     form {
-        display: inherit;
-        gap:.4rem;
-        flex-direction: column;
+        display:grid;
+        gap:1rem;
+
         flex:1;
         
-        max-width: 400px;
+        max-width: 350px;
         width: 100%;
         .inner-wrapper {
-
-            input{
-                padding: .65rem ;
+            @include respond-to(huge){
+                position: relative;
             }
-            $inputWidth: 100px;
-            $inputHeigth: 100px;
+            input{
+                padding: .45rem ;
+            }
+            $inputWidth: 160px;
+            $inputHeigth: 160px;
             &.file-upload-component {
+                @include respond-to(huge){
+                    position: absolute;
+                    right: 16rem;
+                    align-content: center;
+                    justify-content: center;
+                    top:0;
+                    bottom: 0;
+                    
+                    width: 200px;
+                    margin:  0 0 0  auto;
+                }   
                 all:unset;
                 gap:.5rem;
                 margin-block: .25rem;
                 display: grid;
                 div.wrapper {
+                    @include respond-to(medium){
+                    }   
                     display: flex;
                     justify-content: center;
                     position: relative;
                     border-radius: inherit;
-                    border: 1px solid gray;
-                    height: 120px;
-                    
+                    height: 80px;
+                    padding:.5rem ;
+                    // border:1px solid gray;
+                    width: calc($inputWidth + 45px);
+                    height: $inputHeigth;
                     .converted-img {
                         all: unset;
-                        max-width: $inputWidth;
-                        max-height: $inputHeigth;
                         inset: 0;
-                        margin: auto ;
+                        width: 55%;
+                        width: calc($inputWidth - 20px);
+                        margin: auto 0;
+                        height: calc($inputHeigth - 20px);
+                        margin: auto 0;
                         border-radius: 8px;
                         outline: 1px dashed gray;
-                    position: absolute; 
-                    object-fit:cover;
+                        position: absolute; 
+                        object-fit:cover;
 
                     }
                 input {
                     all: unset;
                     visibility: hidden;
-
-                    //    top:35%;
-                    width: $inputWidth;
-                    height: $inputHeigth;
-                    position: absolute;
+                    inset: 0;
+                    width: 55%;
+                    width: calc($inputWidth - 20px);
+                    margin: auto 0;
+                    height: calc($inputHeigth - 20px);
+                    margin: auto 0;
+                    border-radius: 8px;
+                    position: absolute; 
                 }
                 button{
                     position: absolute;
-                    width: 33px;
-                    right: 3%;
-                    bottom: 0;
+                    width: 25px;
+                    bottom: 0%;
                     top:0;
+                    right: 5%;
                     margin: auto ;
                 }
                 }
@@ -81,15 +106,14 @@
         }
     }
     button.submit-btn{
-        display: flex ;
-        gap:1rem;
-        padding:0;
-        margin-left: auto;
-        padding: 0 .25rem;
+        margin:  auto;
+        padding:.55rem 2rem;
+        margin-top: .5rem;
         border:1px solid gray;
         align-items: center;
         &:hover{
             border: 1px solid red;
+            transform: scale(1.15);
         }
         img {
             max-width: 40px;

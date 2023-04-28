@@ -1,18 +1,21 @@
-import {useAuthCookies } from '..'
+import {useAuth, useAuthCookies } from '..'
 import { APIFetch, Errors, throwErr } from '../../components/utils'
 import { useNavigate } from 'react-router-dom'
 import { useServerUrl, useSetLoading, useUser } from '../useAuthContext/useAuthContext'
 import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
+import { useCallback } from 'react'
 
 const useFetchChannels = () => {
-    const user = useUser()
+    const {user} = useAuth()
     const serverUrl = useServerUrl()
     const setLoading = useSetLoading()
     const {cookies,setCookie} = useAuthCookies()
     const channels = useChannels()
     const setChannels = useSetChannels()
     const navigate=useNavigate()
-    const fetchChannels = async(signal?:AbortSignal)=>{
+    const fetchChannels = 
+    useCallback(
+    async(signal?:AbortSignal)=>{
         setLoading(true)
         try {
             if(!user?.email ) {
@@ -33,7 +36,7 @@ const useFetchChannels = () => {
         } finally{
             setLoading(false)
         }
-    }
+    },[user.email])
     
 
  
@@ -42,4 +45,4 @@ const useFetchChannels = () => {
 
 }
 
-export default useFetchChannels
+export default  useFetchChannels
