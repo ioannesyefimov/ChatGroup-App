@@ -10,7 +10,7 @@ const UserBar = ({user}:{user:UserType}) => {
 
   const content = (
     <div className='user-bar-component'>
-      <User user={user}/>
+      <User location="bar" user={user}/>
       
       <DropDown />
     </div>

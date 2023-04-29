@@ -4,18 +4,17 @@ import { useNavigate } from 'react-router-dom'
 import { useServerUrl, useSetLoading, useUser } from '../useAuthContext/useAuthContext'
 import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
 import { useCallback, useEffect } from 'react'
+import { UserType } from '../../components/types'
 
-const useFetchChannels = () => {
-    const {user} = useAuth()
+const useFetchChannels = (user:UserType) => {
     const serverUrl = useServerUrl()
     const setLoading = useSetLoading()
     const {cookies,setCookie} = useAuthCookies()
     const channels = useChannels()
     const setChannels = useSetChannels()
-    const navigate=useNavigate()
+    // const user=useUser()
     const fetchChannels = 
-    useCallback(
-    async(signal?:AbortSignal)=>{
+    async(user:UserType,signal?:AbortSignal)=>{
         setLoading(true)
         try {
             if(!user?.email ) {
@@ -36,17 +35,17 @@ const useFetchChannels = () => {
         } finally{
             setLoading(false)
         }
-    },[user.email])
+    }
     
     useEffect(
         ()=>{
             setLoading(true)
           let controller = new AbortController()
           let {signal}=controller
-          let handle = ()=>fetchChannels(signal)
+          let handle = ()=>fetchChannels(user,signal)
           let timeout = setTimeout(handle,3000)
           return ()=>clearTimeout(timeout)
-        },[]
+        },[user?.email]
         )
     
  

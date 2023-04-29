@@ -11,14 +11,29 @@ async function wait(time:number){
   return  await sleep(time)
 };
 const ProtectedRoute = () => {
-  const user = useUser();
+  const {user,setUser,setLoading} = useAuth();
   const {cookies} = useAuthCookies()
   if(!user?.email && !cookies?.user?.email) return <Navigate to="/auth/signin" replace/> 
    
+  useEffect(
+    ()=>{
+      console.log(`APP RENDER`);
+      if(!user?.email){
+        let isLogged = cookies?.user
+        if(isLogged){
+          setUser(isLogged)
+        }
+        console.log(`IS LOGGED`, isLogged);
+
+      }
+      
+      setLoading(false)
+    },[cookies?.user]
+  )
   return  (
     <ChatProvider>
      <div className='app-wrapper'>
-      <ChannelsBar />
+      <ChannelsBar user={user} />
       <Outlet/>
     </div>
    </ChatProvider>

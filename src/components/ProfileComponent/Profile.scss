@@ -6,8 +6,14 @@
     max-width: 1020px;
     margin: 0 auto;
 
+    .link {
+        margin: auto;
+    }
     .user {
         margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap:.4rem;
         &-img{
             border-radius: 10px;
             width: 100px;

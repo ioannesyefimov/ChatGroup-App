@@ -2,6 +2,10 @@ import React from 'react'
 import { userIco } from '../../assets'
 import { UserType } from '../types'
 import { Link } from 'react-router-dom'
+type PropsType = {
+  user:UserType
+  location?: 'profile' | 'bar' | ''
+}
 
 const User = ({user,location}:{user?:UserType,location:string}) => {
     return (

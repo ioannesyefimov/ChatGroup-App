@@ -7,18 +7,17 @@ import './ChannelsBar.scss'
 import Hamburger from '../../HamburgerMenu/Hamburger'
 import { useAuth, useChat, useWindowSize } from '../../../hooks'
 import { useNavigate } from 'react-router-dom'
-import { ChannelType } from '../../types'
+import { ChannelType, UserType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
 import { ChannelsProps } from '../ChatContainer'
 import SearchBar from './SearchBar'
 import { Button } from '../..'
 import useFetchChannels from '../../../hooks/useFetchChannels/useFetchChannels'
 
-const ChannelsBar = () => {
+const ChannelsBar = ({user}:{user:UserType}) => {
   const [searchedChannels,setSearchedChannels] = useState<ChannelType[]|null>(null)
   const navigate = useNavigate()
-  const {channels,fetchChannels}=useFetchChannels()
-  const {user} = useAuth()
+  const {channels,fetchChannels}=useFetchChannels(user)
 
   let content = (
      <Hamburger  type='channels'>
@@ -29,8 +28,8 @@ const ChannelsBar = () => {
             <Button onClick={()=>navigate('/chat/manage')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels user={user} type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels === undefined ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} />
-            <Button name='refetch'  onClick={()=>fetchChannels!()} img={refreshIco} type='button'/>
+            <Channels type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels === undefined ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} />
+            <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>
       </div>
       <UserBar user={user} />

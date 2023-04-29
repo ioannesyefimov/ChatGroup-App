@@ -90,8 +90,14 @@ input.error{
   position: absolute;
   inset: 0;
   
-  display: flex;
-  height:40%;
+  .inner-wrapper{
+    display: flex;
+    
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+  }
+  height:50%;
   width: 50%;
   max-width:400px;
   max-height: 450px;
@@ -101,13 +107,11 @@ input.error{
   gap:1rem;
 
 
-  flex-direction: column;
-  justify-content: space-around;
-  text-align: center;
   background: #120F13 !important;
   border-radius: 10px;
-  .error-type{
+  .response-type, .response-type{
     font-size: 1rem;
+    color:red;
   }
 
   button {
@@ -116,7 +120,7 @@ input.error{
     position: absolute;
     bottom: 9px;
     right: 9px;  
-    border: 1px solid black;
+    border: 1px solid whitesmoke;
   }
 
 }

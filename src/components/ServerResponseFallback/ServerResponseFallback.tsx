@@ -36,15 +36,23 @@ type ResponseFallbackType ={
 
     let btnText = serverResponse?.name === Errors.NOT_A_MEMBER ? 'Join' : serverResponse.message===Errors.JWT_MALFORMED ? (
         'signin'
-    ) : serverResponse.name === Errors.MISSING_ARGUMENTS  ? 'continue' :'reload'
+    ) : serverResponse.name === Errors.MISSING_ARGUMENTS  ? 'continue' : isObj(serverResponse?.errors) ? 'fill again' :'reload'
 
-    let responseArguments = serverResponse?.arguments ? isObj(serverResponse?.arguments) ? (
+    let responseArguments = serverResponse?.arguments ?? isObj(serverResponse?.arguments) ? (
         Object.keys(serverResponse?.arguments)?.map((argument,i)=>{
             return (
-                <span className='error-argument' key={i}>{argument}: {serverResponse.arguments[argument]}</span>
+                <span className='response-type' key={i}>{argument}: {serverResponse.arguments[argument]}</span>
             )
         })
-        ) : (null) : null
+        )  : (
+            serverResponse?.errors ? (
+                Object.keys(serverResponse?.errors)?.map((error,i)=>{
+                    return (
+                        <span className='response-type' key={i}>{error}: {serverResponse.errors[error]}</span>
+                    )
+                })
+            ) : null
+        )
     
 
     let signedUpDifferently = (
@@ -58,8 +66,11 @@ type ResponseFallbackType ={
    
     let displayedMsg = (
         <div className='fallback-component'>
-            <span className='response-type'>{errorName}</span>
-            {serverResponse?.name === Errors.SIGNED_UP_DIFFERENTLY && signedUpDifferently}            
+            <div className="inner-wrapper">
+                <span className='response-type'>{errorName}</span>
+                {serverResponse?.name === Errors.SIGNED_UP_DIFFERENTLY && signedUpDifferently}         
+                {responseArguments ?? null}   
+            </div>
             <Button onClick={handleOnClick} text={btnText}name='continue-btn' />
         </div>
     ) 

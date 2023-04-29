@@ -66,7 +66,7 @@ const AuthForm = ({type,redirectType,redirectUrl,getToken=false}:AuthProps) => {
         let response = await APIFetch({url:`${serverUrl}/${type}`, method:'POST', body: {...params?.fields,loggedThrough:`INTERNAL`,signal}});
         console.log(`RESPONSE: `, response)
         if(!response?.success) {
-          throwErr(response?.message)
+          throwErr(response?.err)
         }
         
         if(!response?.data.accessToken) {

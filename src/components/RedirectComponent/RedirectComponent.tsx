@@ -101,7 +101,7 @@ let handleLogin =
             
             if(data.user){
                 setCookie('user',data.user,{path:'/',maxAge:2000})
-                navigate('/chat')
+                navigate('/chat/?channel=644d66bc897b055676e80314')
             }
             if(data.accessToken){
                 setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})

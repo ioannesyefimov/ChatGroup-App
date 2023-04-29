@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect } from 'react'
 import CurrentChannel from './CurrentChannel/CurrentChannel'
 import ChannelsBar from './ChannelsBar/ChannelsBar'
 import "./ChatContainer.scss"
-import { useSearch } from '../../hooks'
+import { useAuth, useSearch } from '../../hooks'
 import { ChannelType, UserType } from '../types'
 import { Outlet} from 'react-router-dom'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
@@ -13,7 +13,6 @@ export type ChannelsProps = {
 }
 
 const ChatContainer = () => {
-  const {channels,fetchChannels} = useFetchChannels()
     let content = (
       
       <div className='chat-container-outer '>  

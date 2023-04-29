@@ -27,21 +27,8 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   const [loading, setLoading] = useState<boolean>(false)
   const [user, setUser] = useState(initAuthContextState.user)
   const serverUrl =  initAuthContextState.serverUrl
-  const {cookies}=useAuthCookies()
 
-  useEffect(
-    ()=>{
-      console.log(`APP RENDER`);
-      
-      let isLogged = cookies?.user
-      console.log(`IS LOGGED`, isLogged);
-      
-      if(isLogged){
-        setUser(isLogged)
-      }
-      setLoading(false)
-    },[cookies?.user]
-  )
+
    
 
   return {user,loading,serverUrl,setUser,setLoading}

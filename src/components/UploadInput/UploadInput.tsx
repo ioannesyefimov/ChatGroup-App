@@ -13,7 +13,7 @@ type PropsType ={
     value?:  string
 }
 
-const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, value}: PropsType,ref?: React.Ref<HTMLLabelElement>) => {
+const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, value}: PropsType,ref?: React.Ref<HTMLLabelElement | undefined>) => {
 
     return(
 
