@@ -1,5 +1,5 @@
-import { useError } from "../../hooks"
-
+import { useEffect, useRef } from "react"
+import { disabledIco } from "../../assets"
 
 export type SocialBtnProps = {
     authType:string
@@ -19,7 +19,7 @@ const SocialBtn =  ({authType,id,execFunc,icon,socialType}:SocialBtnProps) => {
   let socialBtn = (
     <div className="social-btn-outer"  >
       <img src={icon} alt={`${socialType} icon`} />
-      <button onClick={(e)=> {e.preventDefault(); execFunc(authType)}} type="button"  className="social-btn" id={id}></button>
+      <button  onClick={(e)=> {e.preventDefault(); ;execFunc(authType)}} type="button"  className="social-btn" id={id}></button>
     </div>
   )
     return socialType === 'Google' ? googleBtn : socialBtn

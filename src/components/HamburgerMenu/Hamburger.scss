@@ -100,6 +100,7 @@
 
 .hamburger-outer{
     position: relative;
+    // max-height: cacl(100dvh - 5%);
 
    &[data-istoggled=toggled]{
         @include respond-to(small){
@@ -110,7 +111,7 @@
             z-index: 100;
         }
         @include respond-to(smallHeight){
-            position: absolute;
+            position: fixed;
             // clip-path: inset(0 0 99% 0) ;
             inset: 0;
             width: 100%;

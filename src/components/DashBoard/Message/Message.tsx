@@ -37,10 +37,15 @@ const displayDate = (date:{day:string,time:string}) => {
 
 const Message = React.forwardRef(({handleDelete,user,createdAt,message,messageUser,_id}:PropsType,ref:ForwardedRef<HTMLDivElement>) => {
 const navigate = useNavigate()
-  let sentBy = user?._id === messageUser?._id ? 'received' : 'sent'  
+  let sentBy = user?._id === messageUser?._id ? 'sent' : 'received'  
+  
+  let visitProfileFunc = sentBy ==='received' ? (
+    ()=>navigate(`/user?id=${messageUser?._id}`) 
+  ) : ()=>navigate('/profile')
+
 return (
     <div  className={`message ${sentBy}`}>
-         <button onClick={()=>navigate(`/user?id=${messageUser?._id}`)} className='show-member-button'>
+         <button onClick={visitProfileFunc} className='show-member-button'>
                 <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
           </button>
       
@@ -49,7 +54,7 @@ return (
          <span className="message-date">{displayDate(createdAt)}</span>
        </div>
        <p className="message-text">{message}</p>
-       {user?._id == messageUser?._id ? (
+       {sentBy==='sent'? (
          <Button img={trashIco} name='message-delete' type="button" onClick={()=>handleDelete(_id!)} />
 
        ): (

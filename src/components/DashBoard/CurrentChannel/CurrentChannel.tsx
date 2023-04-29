@@ -83,7 +83,7 @@ const CurrentChannel = () => {
       setLoading(true)
       let controller = new AbortController()
       let {signal} = controller
-      let handle = ()=>handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
+      let handle = async()=>await handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
       let timeout = setTimeout(handle,3000)
      return()=>{
         clearTimeout(timeout)

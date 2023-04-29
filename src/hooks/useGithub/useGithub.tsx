@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { Search, useNavigate } from 'react-router-dom';
 import { useAuth, useAuthCookies, useResponseContext } from '../index'
 import { HandleFetchProps,LogType } from '../../components/types'
-import { APIFetch, throwErr } from '../../components/utils';
+import { APIFetch, sleep, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
 
 const useGithub = (TYPE?:string) => {
@@ -11,6 +11,22 @@ const useGithub = (TYPE?:string) => {
     const {clearState,setLoading,user,serverUrl} = useAuth()
     const {handleDelete} = useFetch()
     const navigate = useNavigate()
+
+    useEffect(
+        ()=>{
+            const init = async()=>{
+                await sleep(1000)
+                let btn = document.getElementById('githubBtn') as HTMLButtonElement
+                btn.disabled=true
+                if(btn){
+                    btn.removeAttribute('disabled')
+                    console.log(`BTN:`, btn);
+                    
+                }
+            }
+            init()
+        },[]
+    )
     const handleGitHub = (type:string) => {
         setServerResponse(null)
         window.location.assign(`https://github.com/login/oauth/authorize?client_id=${import.meta.env.VITE_APP_GITHUB_APP_ID}`)

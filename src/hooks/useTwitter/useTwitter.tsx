@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {useAuth, useAuthCookies, useResponseContext} from '../index'
 import { APIFetch, getUrlWithQueryParams, throwErr } from '../../components/utils'
+import useFetch from '../useFetch'
 
 const useTwitter = (loginType:string) => {
     const {setServerResponse} = useResponseContext()
@@ -18,6 +19,12 @@ const useTwitter = (loginType:string) => {
         console.log('TWITTER DELETING')
     }
 
+    useEffect(
+        ()=>{
+            let btn = document.getElementById('twitterBtn') as HTMLButtonElement
+            btn.disabled = true
+        },[]
+    )
   
 
     const handleTwitterLogin = async({credentials,type}:any) =>{

@@ -17,7 +17,7 @@
     flex-direction: column;
     border-radius: 20px;
     gap:.5rem;
-    padding:1.2rem clamp(3rem, 1.944rem + 4.507vw, 6rem) ;
+    padding:1rem clamp(3rem, 1.944rem + 4.507vw, 6rem) ;
     h2{
         font-size: 1.4rem;
     }
@@ -42,18 +42,19 @@
         gap:.3rem;
 
         label{
-           font-size: 1rem;
+           font-size: .9rem;
         }
         input {
             &:focus{
                 background-color: gainsboro;
             }
+            padding: .5rem 0 0.5rem 2.5rem;
         }
         .submit-btn{
-           padding: .4rem 2rem;
+           padding: .2rem 2rem;
            border: solid 1px gray;
            align-self: center;
-           margin:0.5rem 0;
+           margin:.2rem;
            color: white;
            &:hover{
                border-color:wheat !important;

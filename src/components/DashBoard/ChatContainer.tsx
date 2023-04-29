@@ -14,17 +14,6 @@ export type ChannelsProps = {
 
 const ChatContainer = () => {
   const {channels,fetchChannels} = useFetchChannels()
-  
-  useEffect(
-    ()=>{
-      let controller = new AbortController()
-      let {signal}=controller
-      let handle = ()=>fetchChannels(signal)
-      let timeout = setTimeout(handle,2000)
-      return ()=>clearTimeout(timeout)
-    },[]
-    )
-
     let content = (
       
       <div className='chat-container-outer '>  

@@ -4,11 +4,31 @@ import { NavigateFunction } from "react-router-dom"
 import useAuthCookies from "../useAuthCookies/useAuthCookies"
 import useChat from "../useChatContext/useChatContext"
 
-export const useUser = ()=>useContext(AuthContext).user
+export const useUser = ()=>{
+  const {cookies}=useAuthCookies()
+  const {user,setUser,setLoading}=useContext(AuthContext)
+  useEffect(
+    ()=>{
+      console.log(`APP RENDER`);
+      
+      let isLogged = cookies?.user
+      console.log(`IS LOGGED`, isLogged);
+      
+      if(isLogged){
+        setUser(isLogged)
+      }
+      setLoading(false)
+    },[cookies?.user]
+  )
+
+   return user
+}
 export const useLoading = ()=> useContext(AuthContext).loading
 export const useSetLoading = ()=>useContext(AuthContext).setLoading
 export const useServerUrl = ()=>useContext(AuthContext).serverUrl
 export const useSetUser = ()=>useContext(AuthContext).setUser
+
+
 
 export default () =>{
     const {user,loading,serverUrl,setUser,setLoading} = useContext(AuthContext)

@@ -16,6 +16,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+html{
+  max-height: 100dvh ;
+  min-height: 100dvh;
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -28,7 +32,7 @@ a:hover {
 body {
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
+  // min-height: 100vh;
 }
 
 h1 {
@@ -49,30 +53,3 @@ button {
   border:none;
   // transition: border-color 0.25s;
 }
-// button:hover {
-//   border-color: #646cff;
-// }
-// button:focus,
-// button:focus-visible {
-//   outline: 4px auto -webkit-focus-ring-color;
-// }
-
-// @media (prefers-color-scheme: light) {
-//   :root {
-//     color: #213547;
-//     background-color: #ffffff;
-//   }
-//   a:hover {
-//     color: #747bff;
-//   }
-//   button {
-//     background-color: #f9f9f9;
-//   }
-
-//   .dashboard-component{
-
-//     .left-wrapper{
-//       // background-color: #f9f9f9 !important;
-//     }
-//   }
-// }

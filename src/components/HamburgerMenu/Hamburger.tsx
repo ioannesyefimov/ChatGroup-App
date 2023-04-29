@@ -33,6 +33,16 @@ const Hamburger = ({children,type}:PropsType) => {
             setIsToggled('toggled')
         } 
     }
+    useEffect(
+        ()=>{
+            if(location.pathname === '/chat' && isToggled!=='toggled'){
+                setIsToggled('toggled')
+            }else {
+                setIsToggled('untoggled')
+
+            }
+        },[location.pathname]
+    )
     let content = (
         <div className={`hamburger navbar `} data-istoggled={isToggled}  >
             <button onClick={toggle} className='hamburger-btn'>

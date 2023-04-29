@@ -20,6 +20,8 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
             const initFacebook = async()=>{
                 try {
                     let FB = (window as any).FB
+                    let btn = document.getElementById('facebookBtn') as HTMLButtonElement
+                    btn.disabled = true
                     if(FB){
                         console.log(`initializing facebook oauth`);
                         
@@ -38,6 +40,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                                 return cookies?.accessToken ? navigate(`/auth/redirect/?accessToken=${cookies?.accessToken}&loggedThrough=Facebook&type=user/auth`) : console.log(`token is ${cookies?.accessToken}`)
                             }
                         })
+                        btn.removeAttribute('disabled')
                     }
                 } catch (error:any) {
                     console.error(error?.name, ':', error?.message)

@@ -105,7 +105,6 @@ let router = createBrowserRouter([
  
 ])
 function App() {
-  
   return (
     <div className="App">
       <RouterProvider router={router} />

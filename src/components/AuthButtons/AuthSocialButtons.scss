@@ -16,11 +16,17 @@
  
 
     .social-btn-outer{
+      
         &:hover{
             cursor: pointer;
         }
         #googleBtn{
             div {
+                & > *{
+                    max-width: 100% !important;
+                    margin: 0 !important;
+
+                }
                 opacity: 0 !important;
             }
         }
@@ -30,7 +36,7 @@
         flex: 1;
         padding: 0;
         position:relative;
-        z-index: 55;
+        z-index: 0;
         border-radius: 50%;
         width: 33px;
         height: 33px;
@@ -38,22 +44,52 @@
         img{
             position: absolute !important;
             z-index: -1;
-            inset: 0;
-            margin: auto;
+            // inset: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+
+            // margin: auto;
         }
         
         
         .social-btn {
+            position: relative;
+            
+            z-index: 1;
+            &:disabled {
+                border: 1px solid red;
+                background-image: url('../../assets/disabledIco.svg');
+                background-position: center;
+                background-size: cover;
+                opacity: 0.25;
+
+                &:hover{
+                    &::after{
+                        position: absolute;
+                        content:'Not avaible';
+                        left: -100%;
+                        right: 0;
+                        margin: auto;
+                        background-color: white;
+                        color:red;
+                        width: calc(100% + 5rem);
+                        text-align: center;
+                        z-index: 54252;
+                        height: 100%;
+                    }
+                    
+                }
+            }
             border-radius: 50%;
             flex:1;
             margin: auto;
-            position: relative;
             left: 0;
-            top:0;
-            height: 100%;
+            // top:0;
             width: 100%;
+            height: 100%;
             // position: absolute;
-            padding: 0;
+            // padding: /0;
             // border: none;    
         //   
         }

@@ -3,7 +3,7 @@ import { APIFetch, Errors, throwErr } from '../../components/utils'
 import { useNavigate } from 'react-router-dom'
 import { useServerUrl, useSetLoading, useUser } from '../useAuthContext/useAuthContext'
 import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 const useFetchChannels = () => {
     const {user} = useAuth()
@@ -38,7 +38,17 @@ const useFetchChannels = () => {
         }
     },[user.email])
     
-
+    useEffect(
+        ()=>{
+            setLoading(true)
+          let controller = new AbortController()
+          let {signal}=controller
+          let handle = ()=>fetchChannels(signal)
+          let timeout = setTimeout(handle,3000)
+          return ()=>clearTimeout(timeout)
+        },[]
+        )
+    
  
   
     return {channels,fetchChannels}
