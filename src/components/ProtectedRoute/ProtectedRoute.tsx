@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Navigate,Outlet, useLocation } from 'react-router-dom'
-import { useAuth, useAuthCookies } from '../../hooks'
+import { useAuth, useAuthCookies, useChat } from '../../hooks'
 import ChatProvider from '../ChatProvider/ChatProvider'
 import NavigationBar from '../NavigationBar/NavigationBar'
 import { sleep } from '../utils'
 import ChannelsBar from '../DashBoard/ChannelsBar/ChannelsBar'
 import { useCookiesData } from '../../hooks/useAuthCookies/useAuthCookies'
 import { useSetUser, useSetLoading, useUser } from '../../hooks/useAuthContext/useAuthContext'
+import { log } from 'console'
 async function wait(time:number){
   return  await sleep(time)
 };
@@ -20,9 +21,13 @@ const ProtectedRoute = () => {
       console.log(`APP RENDER`);
       if(!user?.email){
         let isLogged = cookies?.user
+        console.log(`islogged`,isLogged);
+        
+        
         if(isLogged){
           setUser(isLogged)
         }
+        
         console.log(`IS LOGGED`, isLogged);
 
       }

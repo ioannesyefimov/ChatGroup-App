@@ -22,10 +22,14 @@
         }
         #googleBtn{
             div {
-                & > *{
-                    max-width: 100% !important;
-                    margin: 0 !important;
+                position: absolute !important;
+                inset: 0 !important;
 
+                max-width: 100% !important;
+                & > *{
+                    width: 100%;
+                    // inset: 0 !important;
+                    // position: absolute !important;
                 }
                 opacity: 0 !important;
             }

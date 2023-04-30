@@ -40,11 +40,13 @@ const useFetchChannels = (user:UserType) => {
     useEffect(
         ()=>{
             setLoading(true)
-          let controller = new AbortController()
-          let {signal}=controller
-          let handle = ()=>fetchChannels(user,signal)
-          let timeout = setTimeout(handle,3000)
-          return ()=>clearTimeout(timeout)
+            let isChannels = cookies?.channels
+            if(isChannels){
+                console.log(`CHANNELS`, isChannels);
+                
+                setChannels(user?.channels)
+            }
+            setLoading(false)
         },[user?.email]
         )
     

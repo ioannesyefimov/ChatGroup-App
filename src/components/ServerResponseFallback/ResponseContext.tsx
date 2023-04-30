@@ -12,7 +12,7 @@ const initialState:ResponseState = {
     setServerResponse: ()=>{},
 }
 
-export const useResponseContext = (initErrorContextState: ResponseState) => {
+export const useResponseContext = (initErrorContextState?: ResponseState) => {
     const [serverResponse,setServerResponse] = useState<any>()
     return {serverResponse,setServerResponse}
 }

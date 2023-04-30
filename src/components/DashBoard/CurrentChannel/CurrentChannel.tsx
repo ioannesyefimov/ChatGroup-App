@@ -16,9 +16,9 @@ export type HandleClickType = {
 
 const {io,certOptions} = SocketStore()
 
+const channelSocket = io('https://localhost:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
 
 const CurrentChannel = () => {
-  const channelSocket = io('https://localhost:5050/currentChannel',certOptions);
   const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
   const {user,setLoading} = useAuth()
   const {setServerResponse} = useResponseContext()
@@ -27,6 +27,7 @@ const CurrentChannel = () => {
   const location = useLocation()
   useEffect(
     ()=>{
+      channelSocket.connect()
       let onGetChannel = (data:SocketResponse)=>{
         if(!data.success) setServerResponse(data.err)
         console.log(`GETTING CHANNEL`, data)

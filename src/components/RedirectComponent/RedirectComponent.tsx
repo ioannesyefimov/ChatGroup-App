@@ -3,16 +3,19 @@ import { useAuth, useGithub, useResponseContext } from '../../hooks'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, sleep, throwErr } from '../utils'
-import { UserType } from '../types'
+import { ChannelType, UserType } from '../types'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 import './RedirectComponent.scss'
 
 type StateType = {
     user:UserType | null,accessToken:string|null
     redirect: string | null
+    channels?:ChannelType[] | null
 }
+
+let initDataState = {user:null,accessToken:null,redirect:null,channels:null}
 const RedirectComponent = () => {
-    const [data,setData]=useState<StateType>({user:null,accessToken:null,redirect:null})
+    const [data,setData]=useState<StateType>(initDataState)
     const {setLoading,loading,serverUrl}=useAuth()
     const {handleGitHubLogin}=useGithub('')
     const {setCookie} = useAuthCookies()
@@ -42,7 +45,7 @@ let handleLogin =
             }
             console.log(`RESP:"`, response);
             
-            setData({user:response.data.user,accessToken:response.data.accessToken,redirect:redirectUrl ?? null})
+            setData({user:response.data.user,accessToken:response.data.accessToken,redirect:redirectUrl ?? null,channels:response?.data?.user?.channels})
         } catch (error) {
             setServerResponse(error)
             
@@ -100,11 +103,16 @@ let handleLogin =
         ()=>{
             
             if(data.user){
-                setCookie('user',data.user,{path:'/',maxAge:2000})
+                let user= JSON.stringify(data.user)
+                setCookie('user',user,{path:'/',maxAge:2000})
                 navigate('/chat/?channel=644d66bc897b055676e80314')
             }
             if(data.accessToken){
                 setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})
+            }
+            if(data.channels){
+                let channels = JSON.stringify(data.channels)
+                setCookie('channels',channels,{path:'/',maxAge:2000})
             }
             if(data.redirect){
                 navigate(data.redirect)

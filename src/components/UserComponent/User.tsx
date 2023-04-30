@@ -8,15 +8,16 @@ type PropsType = {
 }
 
 const User = ({user,location}:{user?:UserType,location:string}) => {
+  let username = location =='profile' || location==='bar' ? (
+    <Link to='/profile' className='user-name'>{user?.userName}</Link>
+  ) : (
+    <Link className='user-name' to={`/user?userName=${user?.userName}`}>{user?.userName}</Link>
+
+  )
     return (
       <div className='user' >
           <img src={user?.picture ? user.picture : userIco} alt="avatar" className='user-img' />
-          {location =='profile' ? (
-            <span className='user-name'>{user?.userName}</span>
-          ) : (
-            <Link className='user-name' to={`/user?userName=${user?.userName}`}>{user?.userName}</Link>
-
-          )}
+          {username}
         
       </div>
     )

@@ -3,6 +3,7 @@ import { GithubIco, GoogleIco, TwitterIco, facebookIco } from "../../assets";
 import { useAddScript, useFacebook, useGithub, useGoogle, useTwitter } from "../../hooks";
 import SocialBtn from "./AuthSocialBtn";
 import './AuthSocialButtons.scss'
+import React from "react";
 
 
 
@@ -49,4 +50,4 @@ const AuthSocialButtons = ({authType, redirectUrl='',socialBtn=''}:{authType :st
     return content
   }
   
-  export default AuthSocialButtons
+  export default React.memo(AuthSocialButtons)

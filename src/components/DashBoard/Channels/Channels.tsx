@@ -19,7 +19,7 @@ const Channels = ({type,fallbackText,channels}:PropsType) => {
       <div className='channels'>
         <div className="channels-wrapper">
           {channels.map((channel:ChannelType,index)=>{
-           let isJoined = channel?.members.some((member:UserType)=>member?.member?._id===user?._id);
+           let isJoined = channel?.members?.some((member:UserType)=>member?.member?._id===user?._id);
            return (<Channel isJoined={isJoined} type={type} id={channel?._id!} key={channel?._id!}  name={channel?.channelName} avatar={channel?.channelAvatar}/>)
           }
           )
