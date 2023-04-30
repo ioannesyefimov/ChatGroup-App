@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { profileIco, mailIco, lockerIco } from '../../../assets'
+import { useResponseContext } from '../../../hooks'
 import { useSetLoading, useServerUrl } from '../../../hooks/useAuthContext/useAuthContext'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 import FormInput from '../../FormInput/FormInput'
 import { initState } from '../../ProfileComponent/ProfileSettings/settingsReducer'
-import { useResponseContext } from '../../ServerResponseFallback/ResponseContext'
 import { validateInput, APIFetch, throwErr } from '../../utils'
 type PropsType = {
   redirectUrl?:string
@@ -36,6 +36,9 @@ export default function RegisterForm({redirectUrl,redirectType,type}:PropsType) 
           setLoading(true)
          
             let search = new URLSearchParams(location.search)
+            if(search.get('redirectUrl')){
+              redirectUrl =search.get('redirectUrl') ?? redirectUrl
+            }
             let {email,userName,password} = form
             let params = {fields: {email,userName,password},refs:{email:EmailRef,password:PasswordRef,userName:UserNameRef}}
             let isValidInput = await validateInput({fields: params.fields, refs: params.refs});
@@ -48,7 +51,7 @@ export default function RegisterForm({redirectUrl,redirectType,type}:PropsType) 
             if(!response?.success) {
               throwErr(response?.err)
             }
-            
+          
             if(!response?.data.accessToken) {
               throwErr({name:`SOMETHING WENT WRONG`, arguments: 'accessToken is undefined'})
             }
@@ -63,6 +66,7 @@ export default function RegisterForm({redirectUrl,redirectType,type}:PropsType) 
             
     
         } catch (error:any) {
+          console.error(error);
           setServerResponse(error)
         } finally{
           setLoading(false)

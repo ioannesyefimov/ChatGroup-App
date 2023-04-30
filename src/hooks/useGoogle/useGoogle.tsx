@@ -42,8 +42,8 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
     useEffect(
         () => {
             let googleBnt = document.getElementById('googleBtn') as HTMLButtonElement
-            if(googleBnt){
-
+            if(!googleBnt) return
+            
                 googleBnt.disabled = true
                 let initializeGoogle = ()=>{
                     let google = (window as any).google
@@ -61,7 +61,6 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
                         })
                         googleBnt.disabled = false
                     }
-                }
                 let timeout = setTimeout(initializeGoogle,3000)
     
                 return ()=>clearTimeout(timeout)

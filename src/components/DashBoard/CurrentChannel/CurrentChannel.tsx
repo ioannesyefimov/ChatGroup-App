@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { useAuth, useHandleChannel, useResponseContext } from '../../../hooks'
+import { useAuth, useCurrentContext, useHandleChannel, useResponseContext } from '../../../hooks'
 import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
 import Messages from '../../Messages/Messages'
@@ -19,7 +19,8 @@ const {io,certOptions} = SocketStore()
 const channelSocket = io('https://localhost:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
 
 const CurrentChannel = () => {
-  const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
+  // const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
+  const [currentChannel,setCurrentChannel]=useCurrentContext()
   const {user,setLoading} = useAuth()
   const {setServerResponse} = useResponseContext()
   const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
@@ -77,7 +78,7 @@ const CurrentChannel = () => {
         };
     }
      
-    },[location.search]
+    },[location.search,user.email]
   )
   useEffect(
     ()=>{    
@@ -90,7 +91,7 @@ const CurrentChannel = () => {
         clearTimeout(timeout)
         controller?.abort()
       }
-  },[location.search]
+  },[location.search,user.email]
   )
   const handleSubmitMessage=async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
     try {

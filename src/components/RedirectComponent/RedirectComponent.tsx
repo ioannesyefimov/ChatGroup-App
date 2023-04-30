@@ -21,7 +21,7 @@ const RedirectComponent = () => {
     const {setCookie} = useAuthCookies()
     const {setServerResponse} = useResponseContext() 
     let location = useLocation()
-
+    const WELCOME_CHANNEL_ID = '644e9d88ffba9b7feb5d77f3'
 
     type HandleLoginProps = {
         accessToken: string
@@ -101,6 +101,7 @@ let handleLogin =
 
     useEffect(
         ()=>{
+
             
             if(data.user){
                 let user= JSON.stringify(data.user)

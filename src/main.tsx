@@ -11,11 +11,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary >
         <CookiesProvider>
-        <ServerResponseProvider>
-            <AuthProvider >
-              <App />
-            </AuthProvider>
-        </ServerResponseProvider>
+        <AuthProvider >
+          <ServerResponseProvider>
+            <App />
+         </ServerResponseProvider>
+        </AuthProvider>
         </CookiesProvider>
     </ErrorBoundary>
   </React.StrictMode>,

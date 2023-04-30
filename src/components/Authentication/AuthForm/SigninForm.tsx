@@ -4,15 +4,16 @@ import { useServerUrl, useSetLoading } from '../../../hooks/useAuthContext/useAu
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 import FormInput from '../../FormInput/FormInput'
 import { initState } from '../../ProfileComponent/ProfileSettings/settingsReducer'
-import { useResponseContext } from '../../ServerResponseFallback/ResponseContext'
+import { useResponseContext } from '../../../hooks'
 import { validateInput, APIFetch, throwErr } from '../../utils'
 import { useNavigate } from 'react-router-dom'
 type PropsType = {
     redirectUrl?:string
     redirectType?:string
     type?:string
+    getToken?:boolean
 }
-export default function SigninForm({redirectUrl,redirectType,type}:PropsType) {
+export default function SigninForm({redirectUrl,redirectType,type,getToken}:PropsType) {
     const [form,setForm] = useState(initState)
 
 
@@ -35,7 +36,7 @@ export default function SigninForm({redirectUrl,redirectType,type}:PropsType) {
         try {
         setLoading(true)
         
-        let search = new URLSearchParams(location.search)
+        // let search = new URLSearchParams(location.search)
         let {email,password} = form
         let params = {fields: {email,password},refs:{email:EmailRef,password:PasswordRef}}
         let isValidInput = await validateInput({fields: params.fields, refs: params.refs});
@@ -52,8 +53,8 @@ export default function SigninForm({redirectUrl,redirectType,type}:PropsType) {
         if(!response?.data.accessToken) {
         throwErr({name:`SOMETHING WENT WRONG`, arguments: 'accessToken is undefined'})
         }
-        if(redirectUrl){
-        return navigate(`/auth/redirect/?type=${search.get('redirectType') ?? redirectType}&accessToken=${response?.data?.accessToken}&redirectUrl=${search.get('redirectUrl') ?? redirectUrl}`)
+        if(redirectUrl && getToken){
+        return navigate(`/auth/redirect/?type=${redirectType}&accessToken=${response?.data?.accessToken}&redirectUrl=${redirectUrl}&getToken=${getToken}`)
         }
 
 

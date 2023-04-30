@@ -1,3 +1,4 @@
+import useCurrentContext from "./useCurrentChannelContext/useCurrentChannel";
 import useAuthCookies from "./useAuthCookies/useAuthCookies";
 import useAuth  from "./useAuthContext/useAuthContext";
 import useChat from "./useChatContext/useChatContext";
@@ -14,7 +15,7 @@ import useTwitter from "./useTwitter/useTwitter";
 import useImageUpload from "./useImageUpload/useImageUpload";
 import useHandleChannel from "./useHandleChannel/useHandleChannel";
 export {
-    useUpload,useResponseContext,
+    useUpload,useResponseContext,useCurrentContext,
     useAuth,useAuthCookies,useChat,useSearch,
     useFacebook,useGithub,useGoogle,useTwitter,useHandleChannel,
     useAddScript,useWindowSize,useImageUpload

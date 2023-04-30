@@ -23,13 +23,6 @@ const initState = {
 }
 const AuthForm = ({type,redirectType,redirectUrl,getToken=false}:AuthProps) => {
  
-
-  const navigate = useNavigate()
-  const EmailRef =React.createRef<HTMLLabelElement>()
-  const PasswordRef =React.createRef<HTMLLabelElement>()
-  const UserNameRef =React.createRef<HTMLLabelElement>()
-
- 
  let registerContent = (
   <div className='auth-form-component box-shadow--gray'>
       <h2>Register</h2>
@@ -41,7 +34,7 @@ const AuthForm = ({type,redirectType,redirectUrl,getToken=false}:AuthProps) => {
  let signinContent = (
     <div className='auth-form-component box-shadow--gray'>
       <h2>Login</h2>
-      <SigninForm type={type}  redirectType={redirectType} redirectUrl={redirectUrl}/>
+      <SigninForm type={type} getToken={getToken}  redirectType={redirectType} redirectUrl={redirectUrl}/>
       {!getToken && <span className='hint'>Don't have an account yet? <Link to='/auth/register'>Register</Link></span> }
        
     </div>

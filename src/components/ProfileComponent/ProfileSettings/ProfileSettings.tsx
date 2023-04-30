@@ -4,7 +4,7 @@ import User from '../../UserComponent/User'
 import FormInput from '../../FormInput/FormInput'
 import settingsReducer,{initState,ACTIONS} from './settingsReducer'
 import Button from '../../Button/Button'
-import { APIFetch, Errors, throwErr, validateInput } from '../../utils'
+import { APIFetch, Errors, isObj, isTrue, throwErr, validateInput } from '../../utils'
 import UploadInput from '../../UploadInput/UploadInput'
 import { useAuth, useResponseContext, useUpload } from '../../../hooks'
 import { sendIco,trashIco } from '../../../assets'
@@ -12,38 +12,39 @@ import './index.scss'
 import useAuthCookies, { useCookiesData, useSetCookies } from '../../../hooks/useAuthCookies/useAuthCookies'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthForm from '../../Authentication/AuthForm/AuthForm'
+import PromptLogin from '../../PromptLogin/PromptLogin'
 
 
 
 const ProfileSettings = () => {
 
-  const  [state,dispatch] = useReducer(settingsReducer,initState);
+  const [state,dispatch] = useReducer(settingsReducer,initState);
   const {setServerResponse} = useResponseContext()
   const {file,handleUpload}=useUpload()
-  const setLoading = useSetLoading()
   const {cookies} = useAuthCookies()
-  const serverUrl = useServerUrl()
   const {user,clearState} = useAuth()
   const navigate =useNavigate()
+  const setLoading = useSetLoading()
+  const serverUrl = useServerUrl()
 
   const userNameRef= useRef<HTMLLabelElement>()
   const passwordRef= useRef<HTMLLabelElement>()
   const emailRef= useRef<HTMLLabelElement>()
   const bioRef= useRef<HTMLLabelElement>()
   const avatarRef= useRef<HTMLLabelElement>()
-  
-  if(!cookies?.accessToken) {
-    clearState('/auth/signin?redirect=/profile/settings&type=newAccessToken&redirectType=auth/user',navigate)
+  if(!isTrue(cookies?.accessToken).is) {
+    // clearState('/auth/signin?redirect=/profile/settings&type=newAccessToken&redirectType=auth/user',navigate)
+    return <PromptLogin redirect='/profile/settings' redirectType='auth/user'/>
   }
-
+  
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault(); 
-
     console.log(`submitting`);
     console.log(`state:`, state);
     
     try {
       setLoading(true)
+ 
       let {bio,email,password,userName,picture}=state
       if(!bio && !email && !password && !userName && !picture)throwErr({name:Errors.MISSING_ARGUMENTS});
 

@@ -21,6 +21,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
                 try {
                     let FB = (window as any).FB
                     let btn = document.getElementById('facebookBtn') as HTMLButtonElement
+                    if(!btn)return
                     btn.disabled = true
                     if(FB){
                         console.log(`initializing facebook oauth`);
@@ -50,7 +51,7 @@ const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
             let timeout = setTimeout(initFacebook,1500)
 
             return ()=>clearTimeout(timeout)
-        }, []
+        }, [window]
     )
     const handleFacebookLogin = async({credentials}:{credentials:any}) =>{
         try {

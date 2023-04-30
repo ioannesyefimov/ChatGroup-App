@@ -12,18 +12,17 @@ const initialState:ResponseState = {
     setServerResponse: ()=>{},
 }
 
-export const useResponseContext = (initErrorContextState?: ResponseState) => {
-    const [serverResponse,setServerResponse] = useState<any>()
+const useResponseContext = (initErrorContextState?: ResponseState) => {
+    const [serverResponse,setServerResponse] = useState<any>(null)
     return {serverResponse,setServerResponse}
 }
 export type UseErrorContextType = ReturnType<typeof useResponseContext>
 export const ResponseContext = React.createContext<UseErrorContextType>(initialState)
 
 const ServerResponseProvider = ({children}: ChildrenType) => {
-    const value = useResponseContext(initialState)
 
     return (
-        <ResponseContext.Provider value={value}>
+        <ResponseContext.Provider value={useResponseContext(initialState)}>
             {children}
         </ResponseContext.Provider>
 )

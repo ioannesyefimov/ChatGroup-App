@@ -6,6 +6,7 @@ import { useAuth, useSearch } from '../../hooks'
 import { ChannelType, UserType } from '../types'
 import { Outlet} from 'react-router-dom'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
+import CurrentChannelProvider from '../ChatProvider/CurrentChannelProvider'
 export type ChannelsProps = {
   setChannels?: React.Dispatch<React.SetStateAction<ChannelType[]>>
   channels : ChannelType[]
@@ -14,14 +15,13 @@ export type ChannelsProps = {
 
 const ChatContainer = () => {
     let content = (
-      
-      <div className='chat-container-outer '>  
-        {/* <div className='chat-container-inner '>   */}
-          {/* <ChannelsBar fetchChannels={fetchChannels} channels={channels} /> */}
-          <CurrentChannel />
-          <Outlet/>
-        {/* </div> */}
-      </div>
+      <CurrentChannelProvider>
+        <div className='chat-container-outer '>  
+            <CurrentChannel />
+            <Outlet/>
+        </div>
+
+      </CurrentChannelProvider>
     )
  
     
