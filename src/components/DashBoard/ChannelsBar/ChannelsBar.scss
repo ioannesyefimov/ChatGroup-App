@@ -11,7 +11,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        padding: 1rem 2.2rem;
+        padding: 1.6rem 2rem 1rem;
         button.back{
             position: absolute;
             top:-7%;
@@ -32,7 +32,7 @@
             }
         
         &[data-showedbar=true]{
-            padding: 1.5rem 1.6rem .5rem;
+            padding: 2rem 1.6rem .5rem;
             .left-wrapper-inner {
 
                 .channel {
@@ -45,6 +45,7 @@
                         max-width: 30ch;
                     }
                     &-members {
+                        overflow-y: scroll;
                         display: grid;
                         gap:1rem;
                         .user {
@@ -53,7 +54,12 @@
                             gap:1rem;
                             &-img{
                                 max-width: 35px;
+                                border-radius: 6px;
                             }
+                            &-name{
+                                color:#828282;
+                            }
+                        
                         }
                     }
                 }
@@ -71,8 +77,8 @@
                 align-self: flex-end;
                 width: 18px;
                 position: absolute;
-                bottom: 12%;
-                right: 5%;
+                bottom: 18%;
+                right: 2%;
             }
         }
 

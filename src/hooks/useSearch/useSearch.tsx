@@ -35,8 +35,8 @@ const useSearch = () => {
         try {
             setLoading(true)
             let result:ResultType= {users: [], channels:[],filtered:[]}
-            console.log(`SEARCH:`, search);
-            console.log(`type:`,searchType)
+            // console.log(`SEARCH:`, search);
+            // console.log(`type:`,searchType)
             search = search ? search.toLowerCase() : ''
             switch(searchType){
                 case SEARCH_TYPE.CHANNELS:{
@@ -51,7 +51,7 @@ const useSearch = () => {
                             let name = channel?.channelName?.toLowerCase() 
                             return name?.includes(search) || channel._id?.includes(search) 
                         })
-                        console.log(`FILTERED:`, filtered);
+                        // console.log(`FILTERED:`, filtered);
                         if(filtered.length){
                             result.channels = filtered 
                         } else if(!filtered.length && !search) {
@@ -64,7 +64,6 @@ const useSearch = () => {
                 }
                 case SEARCH_TYPE.CHANNEL:{
                         let filtered = channels?.filter((channel:ChannelType)=>{
-                            console.log(`CHANNEL :`, channel);
                             let name = channel.channelName.toLowerCase() 
                             return name.includes(search)
                         })
@@ -77,7 +76,7 @@ const useSearch = () => {
                         }else {
                             result.channels = undefined
                         }
-                        console.log(`FILTERED:`, filtered);
+                        // console.log(`FILTERED:`, filtered);
                     break
                 }
                 case SEARCH_TYPE.USERS: {

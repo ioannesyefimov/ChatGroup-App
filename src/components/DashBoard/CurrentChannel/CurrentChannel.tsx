@@ -5,6 +5,7 @@ import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
 import Messages from '../../Messages/Messages'
 import SocketStore from '../../SocketStore'
+import { io } from 'socket.io-client'
 import './CurrentChannel.scss'
 export type HandleClickType = {
   e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, 
@@ -14,7 +15,7 @@ export type HandleClickType = {
   setPropsValue: Dispatch<SetStateAction<any>>
 }
 
-const {io,certOptions} = SocketStore()
+const {certOptions} = SocketStore()
 
 const channelSocket = io('https://192.168.1.102:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
 
@@ -76,6 +77,7 @@ const CurrentChannel = () => {
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
         };
+        setCurrentChannel(null)
     }
      
     },[location.search,user.email]
@@ -138,7 +140,7 @@ const CurrentChannel = () => {
       <div className="main-wrapper">
       {currentChannel?.channelName ? channelContent : 
         (
-          <h2 className='channel-title'>Choose your channel</h2>
+          <h2 className='channel-title dashboard'>Choose your channel</h2>
           ) 
         }
         </div>

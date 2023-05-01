@@ -44,7 +44,7 @@ useEffect(
               <div className='channel-members'>
                 {
                   currentChannel?.members?.map((member: UserType)=>{
-                    return (<User  user={member.member} location=""/>)
+                    return (<User key={member.member?._id} user={member.member} location=""/>)
                   })
                 }
               </div>

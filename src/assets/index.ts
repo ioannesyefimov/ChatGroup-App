@@ -1,3 +1,5 @@
+import onlineStatusIco from './onlineStatusIco.svg'
+import offlineStatusIco from './offlineStatusIco.svg'
 import closeIco from './closeIco.svg'
 import disabledIco from './disabledIco.svg'
 import userIco from './userIco.svg'
@@ -34,7 +36,7 @@ export interface Icons {
   icon: File
 }
 export  {
-  questionIco,authBg, searchIco,refreshIco,  loadingGif,uploadIco,
+  offlineStatusIco,onlineStatusIco,questionIco,authBg, searchIco,refreshIco,  loadingGif,uploadIco,
     triangleIco, logoutIco, backIco,cameraIco,correctUploadIco,
       groupIco, hamburgerIco,trashIco,
         facebookIco, GithubIco, GoogleIco,

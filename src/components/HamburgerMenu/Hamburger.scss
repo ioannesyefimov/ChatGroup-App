@@ -30,8 +30,8 @@
     background: none;
     padding: .25rem;
     z-index: 1555;
-    width: 33px !important;
-    height: 33px;
+    width: 28px !important;
+    height: 28px;
 
     &:hover{
         background-color: darkgrey;
@@ -102,7 +102,10 @@
     position: relative;
     // max-height: cacl(100dvh - 5%);
    
-    
+    .hamburger-btn {
+        left: 88% !important;
+        top:3.5rem;
+    }
    &[data-istoggled=toggled]{
         @include respond-to(small){
             position: fixed;
@@ -119,12 +122,15 @@
             z-index: 100;
         }
         .hamburger-btn {
-            left: 85% !important;
+            left: 88% !important;
+            top:1%;
         }
         // @extend .disappearToLeft;
         position: relative !important;
         // opacity: 1;
-        width: 25% !important;
+        width: 30% !important;
+        min-width:300px;
+
     }    
     transition: all .5s ease-in-out;
     display: flex;

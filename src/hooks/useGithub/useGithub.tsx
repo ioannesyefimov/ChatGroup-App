@@ -14,17 +14,18 @@ const useGithub = (TYPE?:string) => {
 
     useEffect(
         ()=>{
-            const init = async()=>{
-                await sleep(1000)
-                let btn = document.getElementById('githubBtn') as HTMLButtonElement
-                btn.disabled=true
-                if(btn){
-                    btn.removeAttribute('disabled')
-                    console.log(`BTN:`, btn);
-                    
+            sleep(1000).then(
+                ()=>{
+                    let btn = document.getElementById('githubBtn') as HTMLButtonElement
+                        if(!btn) return
+                        btn.disabled=true
+                        if(btn){
+                            btn.removeAttribute('disabled')
+                            console.log(`BTN:`, btn);
+                            
+                        }
                 }
-            }
-            init()
+            )
         },[]
     )
     const handleGitHub = (type:string) => {

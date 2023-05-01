@@ -6,6 +6,7 @@ import { APIFetch, Errors, sleep, throwErr } from '../utils'
 import { ChannelType, UserType } from '../types'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 import './RedirectComponent.scss'
+import SocketStore from '../SocketStore'
 
 type StateType = {
     user:UserType | null,accessToken:string|null
