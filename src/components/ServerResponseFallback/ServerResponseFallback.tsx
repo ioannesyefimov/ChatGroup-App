@@ -19,7 +19,7 @@ type ResponseFallbackType ={
     const {clearState} = useAuth()
     let content = (
         <>
-        {location.pathname !== '/' ?  <NavigationBar/> : null}
+        {location.pathname.includes("/auth") ?  <NavigationBar/> : null}
        
         <Outlet/>
         </>

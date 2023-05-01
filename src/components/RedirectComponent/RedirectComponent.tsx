@@ -44,8 +44,8 @@ let handleLogin =
                 throwErr(response?.err)
             }
             console.log(`RESP:"`, response);
-            
-            setData({user:response.data.user,accessToken:response.data.accessToken,redirect:redirectUrl ?? null,channels:response?.data?.user?.channels})
+            let data=response.data
+            setData({user:data.user,accessToken:data.accessToken,redirect:redirectUrl ?? data?.redirectUrl ?? `/chat?channel=${WELCOME_CHANNEL_ID}`,channels:data?.user?.channels})
         } catch (error) {
             setServerResponse(error)
             
@@ -97,7 +97,7 @@ let handleLogin =
             let controller = new AbortController()
             let {signal} = controller
             handleRedirect(signal)
-        },[location?.search])
+        },[location.search])
 
     useEffect(
         ()=>{
@@ -106,7 +106,6 @@ let handleLogin =
             if(data.user){
                 let user= JSON.stringify(data.user)
                 setCookie('user',user,{path:'/',maxAge:2000})
-                navigate('/chat/?channel=644d66bc897b055676e80314')
             }
             if(data.accessToken){
                 setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})

@@ -1,3 +1,4 @@
+import closeIco from './closeIco.svg'
 import disabledIco from './disabledIco.svg'
 import userIco from './userIco.svg'
 import profileIco from './profileIco.svg'
@@ -38,5 +39,5 @@ export  {
       groupIco, hamburgerIco,trashIco,
         facebookIco, GithubIco, GoogleIco,
         TwitterIco, mailIco, lockerIco,profileIco,notFoundIco,
-        chatifyIco,sendIco,userIco,joinIco,settingIco,landingBg,disabledIco
+        chatifyIco,sendIco,userIco,joinIco,settingIco,landingBg,disabledIco,closeIco
 } 

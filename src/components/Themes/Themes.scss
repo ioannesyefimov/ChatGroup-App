@@ -9,8 +9,13 @@ body[theme="ligth"]{
         background:#09070a !important;
     }
     .hamburger-outer{
-        background:#120F13 !important;
+        background: #120F13;
 
+        
+        .user-bar-component {
+
+            background:#0B090C !important;
+        }
         .left-wrapper{
                 .inner-wrapper{
                    

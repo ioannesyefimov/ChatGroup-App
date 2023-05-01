@@ -28,14 +28,15 @@ const NavigationBar = () => {
           <img  src={chatifyIco} alt="logo" />
         </button>
       <div className="navbar-inner" id='navBarInner'>
-        {windowSize?.width < 500 ? (
+        {/* {windowSize?.width < 500 ? (
            <Hamburger type='navbar'>
            {navBar}
          </Hamburger>
         ) : (
            (navBar)
         )}
-     
+      */}
+      {navBar}
       </div>
     </div>
   ) 

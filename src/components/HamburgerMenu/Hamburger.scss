@@ -101,32 +101,38 @@
 .hamburger-outer{
     position: relative;
     // max-height: cacl(100dvh - 5%);
-
+   
+    
    &[data-istoggled=toggled]{
         @include respond-to(small){
             position: fixed;
             // clip-path: inset(0 0 99% 0) ;
             inset: 0;
-            width: 100%;
+            width: 85%;
             z-index: 100;
         }
         @include respond-to(smallHeight){
             position: fixed;
             // clip-path: inset(0 0 99% 0) ;
             inset: 0;
-            width: 100%;
+            width: 85%;
             z-index: 100;
         }
+        .hamburger-btn {
+            left: 85% !important;
+        }
         // @extend .disappearToLeft;
-        position: relative;
+        position: relative !important;
         // opacity: 1;
+        width: 25% !important;
     }    
     transition: all .5s ease-in-out;
     display: flex;
-    
+   
     
 .hamburger.channels {
     transition: .3s all ease-in-out;
+  
     &[data-istoggled=loaded]{
         position: absolute;
         transform: translateX(-120%);
@@ -135,6 +141,7 @@
         @include respond-to(medium){
             position:relative;
         }
+       
         // @extend .appearFromLeft;
         animation-name: appearFromLeft;
         animation-duration: 1s;
@@ -159,7 +166,6 @@
         display: flex;
         width: 100%;
         height: 100%;
-
      }
 
  }

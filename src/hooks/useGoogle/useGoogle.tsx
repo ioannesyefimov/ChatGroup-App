@@ -42,29 +42,30 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
     useEffect(
         () => {
             let googleBnt = document.getElementById('googleBtn') as HTMLButtonElement
-            if(!googleBnt) return
+             if(googleBnt){
+
+                 googleBnt.disabled = true
+                 let initializeGoogle = ()=>{
+                     let google = (window as any).google
+                     if(google){
+                         console.log(`ggogle`, google)
+                         console.log(`initializing google ouath`)
+                         window.localStorage.setItem('LOGIN_TYPE', loginType)
+                         google.accounts.id.initialize({
+                             client_id: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID,
+                             callback: handleGoogle
+                         })
+                         google.accounts.id.renderButton(googleBnt, {
+                             shape: "circle",
+                             type: "icon",
+                         })
+                         googleBnt.disabled = false
+                     }
+                 }            
+                 let timeout = setTimeout(initializeGoogle,3000)
+                 return ()=>clearTimeout(timeout)
+             }
             
-                googleBnt.disabled = true
-                let initializeGoogle = ()=>{
-                    let google = (window as any).google
-                    if(google){
-                        console.log(`ggogle`, google)
-                        console.log(`initializing google ouath`)
-                        window.localStorage.setItem('LOGIN_TYPE', loginType)
-                        google.accounts.id.initialize({
-                            client_id: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID,
-                            callback: handleGoogle
-                        })
-                        google.accounts.id.renderButton(googleBnt, {
-                            shape: "circle",
-                            type: "icon",
-                        })
-                        googleBnt.disabled = false
-                    }
-                let timeout = setTimeout(initializeGoogle,3000)
-    
-                return ()=>clearTimeout(timeout)
-            }            
     }, [handleGoogle,window]
     )
  

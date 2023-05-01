@@ -3,7 +3,7 @@ import { ChannelType, UserType } from '../../components/types'
 import { APIFetch, Errors, sleep, throwErr } from '../../components/utils'
 import { useAuth, useResponseContext } from '..'
 const useSearch = () => {
-    const {setLoading,user} = useAuth()
+    const {setLoading,user,serverUrl} = useAuth()
     type SearchedValueType = {
         
         users?:UserType[],channels?:ChannelType[],filtered:ChannelType[] | UserType[] | []
@@ -40,7 +40,7 @@ const useSearch = () => {
             search = search ? search.toLowerCase() : ''
             switch(searchType){
                 case SEARCH_TYPE.CHANNELS:{
-                    let response = await APIFetch({url:`https://localhost:5050/api/channels`});
+                    let response = await APIFetch({url:`${serverUrl}/channels`});
                     if(!response.success) return throwErr(response.message)
                     console.log(`RESPONSE:`, response);
                         let filtered = response?.data?.channels?.filter((channel:ChannelType)=>{
@@ -81,7 +81,7 @@ const useSearch = () => {
                     break
                 }
                 case SEARCH_TYPE.USERS: {
-                    let response = await APIFetch({url:`https://localhost:5050/api/auth/user/users`});
+                    let response = await APIFetch({url:`${serverUrl}/auth/user/users`});
                     if(!response.success) throwErr(response.message)
                     console.log(`users search response:`, response);
                     result.users =  Array.isArray(response.data.users) ? response.data.users : [response.data.users]

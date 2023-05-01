@@ -16,11 +16,11 @@ export type HandleClickType = {
 
 const {io,certOptions} = SocketStore()
 
-const channelSocket = io('https://localhost:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
+const channelSocket = io('https://192.168.1.102:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
 
 const CurrentChannel = () => {
   // const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
-  const [currentChannel,setCurrentChannel]=useCurrentContext()
+  const {currentChannel,setCurrentChannel}=useCurrentContext()
   const {user,setLoading} = useAuth()
   const {setServerResponse} = useResponseContext()
   const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)

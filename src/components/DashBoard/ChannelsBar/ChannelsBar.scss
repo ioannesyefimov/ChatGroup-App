@@ -1,5 +1,7 @@
 @use '../../utils/utils.scss' as *;
 .app-wrapper{
+    max-height: 100dvh;
+
     .hamburger-btn {
         top:2%;
         left: 2%;
@@ -9,7 +11,56 @@
         display: flex;
         flex-direction: column;
         position: relative;
-        padding: .9rem 2.2rem;
+        padding: 1rem 2.2rem;
+        button.back{
+            position: absolute;
+            top:-7%;
+            padding:0;
+            left: 0%;
+            gap:0;
+            // font-size: .9rem;
+            align-items: center;
+            border: none;
+            display: inherit;
+                img{
+                    
+                    order: -1;
+                    width: 30px;
+                    margin-right: auto;
+                    filter: invert(50%) brightness(100%);
+                }
+            }
+        
+        &[data-showedbar=true]{
+            padding: 1.5rem 1.6rem .5rem;
+            .left-wrapper-inner {
+
+                .channel {
+                    display: grid;
+                    &-name{
+                        font-size: 1.2rem;
+                    }
+                    &-description {
+                        font-size: .95rem;
+                        max-width: 30ch;
+                    }
+                    &-members {
+                        display: grid;
+                        gap:1rem;
+                        .user {
+                            display: flex;
+                            align-items: center;
+                            gap:1rem;
+                            &-img{
+                                max-width: 35px;
+                            }
+                        }
+                    }
+                }
+
+            }
+            
+        }
 
         &-inner {
             display: flex;

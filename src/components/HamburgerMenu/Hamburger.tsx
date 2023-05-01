@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import { hamburgerIco } from '../../assets'
+import { closeIco, hamburgerIco } from '../../assets'
 import './Hamburger.scss'
 import { ChildrenType } from '../types'
 import { useWindowSize } from '../../hooks'
@@ -23,6 +23,7 @@ const Hamburger = ({children,type}:PropsType) => {
 
     let location = useLocation()
 
+    let img = isToggled === 'untoggled' || isToggled==='loaded' ? hamburgerIco : closeIco
   
     let toggle = ()=>{
         if(isToggled === 'loaded'){
@@ -66,7 +67,9 @@ const Hamburger = ({children,type}:PropsType) => {
     ) 
     let channels = (
         <div className='hamburger-outer'data-istoggled={isToggled}>
-            <button onClick={toggle} className='hamburger-btn'><img src={hamburgerIco} alt="hamburgerIco" /></button>
+            <button onClick={toggle} className='hamburger-btn'>
+            <img src={img} alt="hamburgerIco" />
+                </button>
             <div className={`hamburger channels`} data-istoggled={isToggled} >
                 
             <div   className={`hamburger-children  ${isShowed}`}>

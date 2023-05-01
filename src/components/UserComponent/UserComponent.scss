@@ -53,12 +53,15 @@
             .link-tag {
                 color:rgb(255, 255, 255);
             }
-            img {
+            &-logo {
                 border-radius: 6px;
                 object-fit: cover;
                 order: 1;
                 width: 100%;
                 height: 60px;
+                display: grid;
+                place-content: center;
+                border:1px dashed gray ;
             }
         }
     }

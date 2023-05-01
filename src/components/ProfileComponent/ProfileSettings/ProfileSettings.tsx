@@ -22,7 +22,7 @@ const ProfileSettings = () => {
   const {setServerResponse} = useResponseContext()
   const {file,handleUpload}=useUpload()
   const {cookies} = useAuthCookies()
-  const {user,clearState} = useAuth()
+  const {user} = useAuth()
   const navigate =useNavigate()
   const setLoading = useSetLoading()
   const serverUrl = useServerUrl()
@@ -32,10 +32,9 @@ const ProfileSettings = () => {
   const emailRef= useRef<HTMLLabelElement>()
   const bioRef= useRef<HTMLLabelElement>()
   const avatarRef= useRef<HTMLLabelElement>()
-  if(!isTrue(cookies?.accessToken).is) {
-    // clearState('/auth/signin?redirect=/profile/settings&type=newAccessToken&redirectType=auth/user',navigate)
-    return <PromptLogin redirect='/profile/settings' redirectType='auth/user'/>
-  }
+  // if(!isTrue(cookies?.accessToken).is) {
+  //   return <PromptLogin redirect='/profile/settings' redirectType=''/>
+  // }
   
   const handleSubmit = async(e:React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault(); 
@@ -59,7 +58,6 @@ const ProfileSettings = () => {
 
      if(response?.succeess) throwErr(response?.err)
      if(response?.data?.accessToken){
-      // clearState(,navigate)
       navigate(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile`)
      }
     } catch (error) {

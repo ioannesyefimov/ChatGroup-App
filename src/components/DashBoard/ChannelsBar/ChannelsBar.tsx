@@ -17,46 +17,53 @@ import User from '../../UserComponent/User'
 const ChannelsBar = ({user}:{user:UserType}) => {
   const [searchedChannels,setSearchedChannels] = useState<ChannelType[]|null>(null)
   const [showedBar , setShowedBar]=useState(false)
-  const [currentChannel,setCurrentChannel]=useCurrentContext()
+  const {currentChannel,setCurrentChannel}=useCurrentContext()
   const navigate = useNavigate()
   const {channels,fetchChannels}=useFetchChannels(user)
   const  location = useLocation()
   
 useEffect(
   ()=>{
-    if(currentChannel?._id){
+    console.log(`CURRENT`, currentChannel);
+    if(currentChannel){
       setShowedBar(true)
     }else {
       setShowedBar(false)
     }
-  },[currentChannel]
+  },[currentChannel,location.search]
 )
-
-  let inChannelContent = (
+  
+  let content = showedBar ? (
     <Hamburger type='channels'>
-       <div className={`left-wrapper  `}  >
+       <div className={`left-wrapper`} data-showedbar={showedBar}  >
           <div className="left-wrapper-inner"  id="leftWrapperInner">
-            <div className="flex flex--between">
-              <Button onClick={()=>setShowedBar(false)}  text='All channels' name='link' img={backIco} />
+            <Button onClick={()=>setShowedBar(false)}  text='All channels' name='back' img={backIco} />
+            <div className='channel'>
+              <h2 className='channel-name'>{currentChannel?.channelName}</h2>
+              <span className='channel-description'>{currentChannel?.channelDescription ?? 'Channel without description ᓚᘏᗢ'}</span>
+              <div className='channel-members'>
+                {
+                  currentChannel?.members?.map((member: UserType)=>{
+                    return (<User  user={member.member} location=""/>)
+                  })
+                }
+              </div>
+
             </div>
-            <div className='members-wrapper'>
-              {
-                currentChannel?.members?.map((member as UserType)=>{
-                  return <User  user={member} location=""/>
-                })
-              }
-            </div>
-            <Channels type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels === undefined ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} />
+            {/* <Channels type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={!searchedChannels   ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} /> */}
           </div>
       </div>
       <UserBar user={user} />
     </Hamburger>
-  )
-  
-  let content = (
+  ): (
      <Hamburger  type='channels'>
       <div className={`left-wrapper  `}  >
-          <div className="left-wrapper-inner"  id="leftWrapperInner">
+          <div className="left-wrapper-inner" data-showedbar={showedBar}  id="leftWrapperInner">
+          {currentChannel?._id && (
+            <Button onClick={()=>setShowedBar(true)}  text='Back to channel' name='link back' img={backIco} />
+          )}
+          
+
             <div className="flex flex--between">
             <span>Channels</span>
             <Button onClick={()=>navigate('/chat/manage')} name='link' img={settingIco} />
