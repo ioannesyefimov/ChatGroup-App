@@ -10,7 +10,7 @@ import { sleep } from '../utils'
 
 const {io,certOptions}=SocketStore()
 
-const userSocket = io('https://192.168.1.102:5050/user',{pfx:certOptions.pfx,passphrase:certOptions.passphrase});
+const userSocket = io('https://192.168.1.102:5050/user',{autoConnect:false,pfx:certOptions.pfx,passphrase:certOptions.passphrase});
 
 const ProtectedRoute = () => {
   const {user,setUser,setLoading} = useAuth();
@@ -28,6 +28,7 @@ const ProtectedRoute = () => {
         
         if(isLogged){
           setUser(isLogged);
+          
         }
       }
       setLoading(false)
@@ -40,6 +41,8 @@ const ProtectedRoute = () => {
   useEffect(
     ()=>{
       if(user?.email){
+        userSocket.connect()
+
         userSocket.emit('user_online',{userId:user?._id})
 
       }

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import FormInput from '../../FormInput/FormInput'
-import { backIco, refreshIco, searchIco, settingIco } from '../../../assets'
+import { backIco, refreshIco, logoutIco, settingIco } from '../../../assets'
 import Channels from '../Channels/Channels'
-import useSearchChannels from '../../../hooks/useSearch/useSearch'
 import './ChannelsBar.scss'
 import Hamburger from '../../HamburgerMenu/Hamburger'
-import { useAuth, useChat, useCurrentContext, useWindowSize } from '../../../hooks'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import {  useCurrentContext } from '../../../hooks'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { ChannelType, UserType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
 import SearchBar from './SearchBar'
 import { Button } from '../..'
 import useFetchChannels from '../../../hooks/useFetchChannels/useFetchChannels'
-import User from '../../UserComponent/User'
+import Members from './Members/Members'
 
 const ChannelsBar = ({user}:{user:UserType}) => {
   const [searchedChannels,setSearchedChannels] = useState<ChannelType[]|null>(null)
@@ -39,19 +37,17 @@ useEffect(
           <div className="left-wrapper-inner"  id="leftWrapperInner">
             <Button onClick={()=>setShowedBar(false)}  text='All channels' name='back' img={backIco} />
             <div className='channel'>
-              <h2 className='channel-name'>{currentChannel?.channelName}</h2>
+              <h4 className='channel-name'>{currentChannel?.channelName}</h4>
               <span className='channel-description'>{currentChannel?.channelDescription ?? 'Channel without description ᓚᘏᗢ'}</span>
               <div className='channel-members'>
-                {
-                  currentChannel?.members?.map((member: UserType)=>{
-                    return (<User key={member.member?._id} user={member.member} location=""/>)
-                  })
-                }
+                <h4>MEMBERS</h4>
+                <Members members={currentChannel?.members}/>
               </div>
-
             </div>
-            {/* <Channels type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={!searchedChannels   ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} /> */}
+
           </div>
+            <Button onClick={()=>navigate('/chat')}  text='Leave' name='leave' img={logoutIco} />
+
       </div>
       <UserBar user={user} />
     </Hamburger>

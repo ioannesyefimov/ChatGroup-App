@@ -3,34 +3,33 @@ import { backIco, triangleIco, userIco } from '../../assets'
 import { ChannelType, UserType } from '../types'
 import './UserComponent.scss'
 import { useSearch } from '../../hooks'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import Channel from '../DashBoard/Channel/Channel'
 import User from './User'
 import NavigationBar from '../NavigationBar/NavigationBar'
 const UserComponent = () => {
-  const location = useLocation()
   const [showedUser,setShowedUser] = useState<UserType|null>()
   const {handleSearch,searchedValue,setSearchedValue} = useSearch()
-
+  let {userId} = useParams()
   useEffect(
     ()=>{
-      let search = location.search
-      if(!search) return console.log(`Search is empty`);
-      let query = new URLSearchParams(search)
-      console.log(`SEARCHD:`, searchedValue);
-      
-      let email = query.get('email')
-      let userName = query.get('userName')
-      let id = query.get('id')
-      handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USERS'})
+      console.log(`id`,userId);
+      if(!userId) return console.log(`params is empty`);
+      handleSearch({search:userId,searchType:'USERS'})
       return ()=>{setSearchedValue({});setShowedUser(null)}
     },[]
   )
   useEffect(()=>{
+    console.log(`SEARCHEDVALUE `, searchedValue);
+    
     if(searchedValue?.users){
-        setShowedUser(searchedValue.users[0])
+      handleSearch({search:userId,searchType:'USER'})
+    }
+    if(searchedValue?.filteredUsers){
+      setShowedUser(searchedValue.filteredUsers[0])
     }
   },[searchedValue])
+
   type UserChannelsType = {default?:any,channel:ChannelType,_id:string}
   let userChannels =(
     <div className="user-channels">
@@ -54,19 +53,20 @@ const UserComponent = () => {
       </div>
     </>
   )
-
-
   return(
     <>
+    <NavigationBar/>
     { 
-     showedUser ? (
-      content
-    ) : (
-      <div className="user-component">
-        <h2>Not Found...</h2>
-        <span>Check spelling if you are sure there is such user...</span>
-        <Link to="/search">Search again</Link>
-      </div>
+     showedUser ? 
+     
+     (
+        content
+      ) : (
+        <div className="user-component">
+          <h2>Not Found...</h2>
+          <span>Check spelling if you are sure there is such user...</span>
+          <Link to="/search">Search again</Link>
+        </div>
     )}
     </>
   )

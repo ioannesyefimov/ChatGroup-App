@@ -6,14 +6,19 @@ const useSearch = () => {
     const {setLoading,user,serverUrl} = useAuth()
     type SearchedValueType = {
         
-        users?:UserType[],channels?:ChannelType[],filtered:ChannelType[] | UserType[] | []
+        users?:UserType[]
+        ,channels?:ChannelType[],
+        filtered?:ChannelType[] | UserType[] ,
+        filteredUsers?:UserType[]
+        filteredChannels?:ChannelType[]
     }
     const [search, setSearch] = useState<any>('')
     const [searchedValue,setSearchedValue] = useState<SearchedValueType>(
         {
             users:[],
             channels:[],
-            filtered:[],
+            filteredChannels:[],
+            filteredUsers:[],
         }
     )
     const {setServerResponse} =useResponseContext()
@@ -53,11 +58,11 @@ const useSearch = () => {
                         })
                         // console.log(`FILTERED:`, filtered);
                         if(filtered.length){
-                            result.channels = filtered 
+                            result.filteredChannels = filtered 
                         } else if(!filtered.length && !search) {
-                            result.channels = undefined
+                            result.filteredChannels = undefined
                         } else if(!filtered.length ) {
-                            result.channels = response.data.channels
+                            result.filteredUsers = response.data.channels
                         }
                     break
                     
@@ -89,7 +94,6 @@ const useSearch = () => {
                 case SEARCH_TYPE.USER: {
                     if(!searchedValue.users?.length) return console.error(`SEARCHED USERS IS `,searchedValue.users) 
                     let filtered = searchedValue?.users?.filter((user:UserType)=>{
-                        console.log(`USER:`, user)
                         let username=user.userName.toLocaleLowerCase()
                         let id = user._id?.toLocaleLowerCase()
                         let email = user.email.toLocaleLowerCase()
@@ -97,7 +101,7 @@ const useSearch = () => {
                             return user
                         }
                     })
-                        result.filtered = filtered
+                        result.filteredUsers = filtered
                     break
                 }
                 default: return searchedValue

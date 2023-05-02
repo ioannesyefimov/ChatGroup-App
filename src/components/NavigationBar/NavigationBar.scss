@@ -9,16 +9,16 @@
     gap:1rem;
     z-index: 1;
 
-    &::after{
-        position: absolute;
-        content: '';
-        width: 100%;
-        left:0;
-        top:55px;
-        height: 1px;
-        background-color: rgba(0, 0, 0, 0.457);
-        box-shadow: 0 0 1px 1px rgba(128, 128, 128, 0.422);
-    }
+    // &::after{
+    //     position: absolute;
+    //     content: '';
+    //     width: 100%;
+    //     left:0;
+    //     top:55px;
+    //     height: 1px;
+    //     background-color: rgba(0, 0, 0, 0.457);
+    //     box-shadow: 0 0 1px 1px rgba(128, 128, 128, 0.422);
+    // }
 
     .navbar-inner{
         display: flex;

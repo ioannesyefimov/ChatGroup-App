@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { AddScriptType,addScript } from '../../scripts/scripts'
+import { sleep } from '../../components/utils'
 
 const useAddScript = ({...params}:PropsType) => {
     const [error,setError]=useState(false)
@@ -26,9 +27,7 @@ const useAddScript = ({...params}:PropsType) => {
         useEffect(
           ()=>{
             if(error){
-              let handle = ()=>appendScript(params)              
-              let timeout = setTimeout(handle,15000)
-              return ()=>clearTimeout(timeout)
+              sleep(15000).then(()=>appendScript(params))
             }
           },[error]
         )

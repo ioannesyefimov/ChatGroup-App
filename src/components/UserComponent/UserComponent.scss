@@ -1,8 +1,9 @@
 .user-component{
     display: grid;
-
+    margin-top: 3rem;
     position: relative;
     .user {
+        color:gold;
         align-items: center;
         display: flex ;
         flex-direction: column;
@@ -18,25 +19,15 @@
             color:#828282;
         }
 
-        &::before{
-            position: absolute;
-            content: '';
-            width: 100%;
-            height: 2px;
-            background-color: black;
-        }
-        &::before{
-            left: 0;
-            top:47%
-        }
     }
     .user-channels{
+        border: 1px solid gray;
+        border-radius: 10px;
         padding:1rem 2rem;
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(6rem,1fr));
-        // margin: auto;
-
-        // max-width: 700px;
+        margin: auto;
+        max-width: 700px;
         gap:1.35rem;
         margin-top: 2rem;
         h4 {

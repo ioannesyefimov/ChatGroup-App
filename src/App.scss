@@ -1,3 +1,28 @@
+.scrollbar{
+  &::-webkit-scrollbar {
+    width: 3px;
+}
+
+/* Track */
+&::-webkit-scrollbar-track {
+    background: gainsboro;
+    border-radius: 5px;
+}
+
+/* Handle */
+scrollbar-width: thin;
+scrollbar-color: gray black ;
+&::-webkit-scrollbar-thumb {
+    background: black;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+&::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+}
+
 #root {
   display: grid;
   height: 100dvh;

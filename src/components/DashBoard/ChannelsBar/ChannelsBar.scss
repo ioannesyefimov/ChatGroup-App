@@ -1,5 +1,7 @@
 @use '../../utils/utils.scss' as *;
+@use './../../../App.scss' as *;
 .app-wrapper{
+
     max-height: 100dvh;
 
     .hamburger-btn {
@@ -7,17 +9,32 @@
         left: 2%;
     }
 
+    .hamburger-outer {
+
+        .hamburger.channel-navigation{
+            display: flex;
+            flex:1;
+            
+            .hamburger-children{
+                flex:1;
+                flex-direction: column;
+                display: flex;
+            }
+        }
+    }
+
     .left-wrapper{
-        display: flex;
-        flex-direction: column;
+        flex:1;
+        display: grid;
         position: relative;
-        padding: 1.6rem 2rem 1rem;
+        padding: 3.5rem 2rem 1rem;
         button.back{
             position: absolute;
-            top:-7%;
+            top:2%;
             padding:0;
             left: 0%;
             gap:0;
+            font-size: 1rem;
             // font-size: .9rem;
             align-items: center;
             border: none;
@@ -30,13 +47,29 @@
                     filter: invert(50%) brightness(100%);
                 }
             }
+            button.leave {
+                display: flex;
+                position: relative;
+                right: -6%;
+                gap:.2rem;
+                padding: .2rem .5rem;
+                margin-top: auto;
+                margin-left: auto;
+                border: 1px solid rebeccapurple;
+                align-items: center;
+                img{
+                    order:-1;
+                    max-width: 30px;
+                }
+            }
         
         &[data-showedbar=true]{
-            padding: 2rem 1.6rem .5rem;
+            padding: 3.5rem 1.6rem .5rem;
             .left-wrapper-inner {
 
                 .channel {
                     display: grid;
+                    gap:.5rem;
                     &-name{
                         font-size: 1.2rem;
                     }
@@ -45,6 +78,7 @@
                         max-width: 30ch;
                     }
                     &-members {
+                        @extend .scrollbar;
                         overflow-y: scroll;
                         display: grid;
                         gap:1rem;
@@ -77,13 +111,12 @@
                 align-self: flex-end;
                 width: 18px;
                 position: absolute;
-                bottom: 18%;
-                right: 2%;
+                bottom: 2%;
+                right: 5%;
             }
         }
 
         .link{
-            // background: #252329;
             border-radius: 5px;
             min-width:30px !important;
             min-height: 30px;
@@ -125,7 +158,6 @@
                     visibility: visible;
                 }
                 filter: brightness(0) invert(1);
-                // visibility: hidden;
                 padding: .1rem;
                 max-width: 20px;
             }

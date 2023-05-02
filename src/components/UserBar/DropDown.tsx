@@ -14,12 +14,12 @@ const DropDown = () => {
             <div className='dropdown'>
                 <Button text='settings' img={settingIco} onClick={()=>navigate('/profile/settings')} name="link" />
                 <Button text='profile' img={profileIco} onClick={()=>navigate(`/profile`)} name="link" />
-                <Button text='Logout' img={logoutIco} onClick={()=>clearState('/auth/signin',navigate)} name="link" />
+                <Button text='Logout' img={logoutIco} onClick={()=>clearState('/auth/signin',navigate)} name="link logout-btn" />
             </div>
         )}
             
 
-            <Button img={triangleIco} name='dropdown-img'  text='' onClick={()=>setIsToggled(prev=>!prev)}/>
+            <Button isToggled={isToggled}  img={triangleIco} name='dropdown-img'  text='' onClick={()=>setIsToggled(prev=>!prev)}/>
         </>
     )
   return content

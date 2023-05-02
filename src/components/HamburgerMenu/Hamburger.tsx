@@ -70,12 +70,11 @@ const Hamburger = ({children,type}:PropsType) => {
             <button onClick={toggle} className='hamburger-btn'>
             <img src={img} alt="hamburgerIco" />
                 </button>
-            <div className={`hamburger channels`} data-istoggled={isToggled} >
-                
-            <div   className={`hamburger-children  ${isShowed}`}>
-                {children}
-            </div> 
-        </div>
+            <div className={`hamburger channel-navigation`} data-istoggled={isToggled} >
+                <div   className={`hamburger-children  ${isShowed}`}>
+                    {children}
+                </div> 
+            </div>
         </div>
         
     )

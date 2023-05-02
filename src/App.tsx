@@ -41,7 +41,7 @@ let router = createBrowserRouter([
       },
       {
         element: <UserComponent />,
-        path: '/user/:search?'
+        path: '/user/:userId'
       },
       {
         element: <ProtectedRoute />,

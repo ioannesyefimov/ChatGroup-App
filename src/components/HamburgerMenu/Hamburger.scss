@@ -129,14 +129,14 @@
         position: relative !important;
         // opacity: 1;
         width: 30% !important;
-        min-width:300px;
-
+        min-width:220px;
+        max-width: 300px;
     }    
     transition: all .5s ease-in-out;
-    display: flex;
+    display: grid;
    
     
-.hamburger.channels {
+.hamburger.channel-navigation {
     transition: .3s all ease-in-out;
   
     &[data-istoggled=loaded]{
@@ -169,7 +169,6 @@
     top:0px;
     bottom: 0;
     .hamburger-children{
-        display: flex;
         width: 100%;
         height: 100%;
      }
