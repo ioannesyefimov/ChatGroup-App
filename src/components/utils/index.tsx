@@ -1,9 +1,49 @@
 import { ChangeEvent, Ref, RefObject } from "react";
+import { MessageType } from "../types";
 
  const  validateEmail = function(email:string) {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
        return regex.test(email)
 };
+let sortMessages = (data?:MessageType[]){
+
+  
+  const sortedData = data.sort(
+    (a, b) => Number(a.createdAt.timeStamp) - Number(b.createdAt.timeStamp),
+  );
+  
+  
+  let currentDay = sortedData[0].createdAt;
+  
+  const stillCurrentDay = (dayOfMessage) => {
+    return dayOfMessage.getFullYear() === currentDay.getFullYear() &&
+      dayOfMessage.getMonth() === currentDay.getMonth() &&
+      dayOfMessage.getDate() === currentDay.getDate()
+  }
+  
+  let dayMessageArray = [];
+  const fullMessageArray = [];
+  
+  const createMessagesArray = (messages) => {
+    const newDay = {};
+    newDay[currentDay.toISOString().split('T')[0]] = messages;
+    fullMessageArray.push(newDay);
+  }
+  
+  sortedData.forEach(message => {
+    if (!stillCurrentDay(message.createdAt.timeStamp)) {
+      createMessagesArray(dayMessageArray);
+      currentDay = message.createdAt.timeStamp;
+      dayMessageArray = [];
+    }
+  
+    dayMessageArray.push(message);
+  });
+  
+  createMessagesArray(dayMessageArray);
+  
+  console.log(fullMessageArray);
+}
 
 
 
@@ -50,7 +90,7 @@ const setter = (e:ChangeEvent<HTMLInputElement>, setState:React.Dispatch<React.S
 
 export const createDate = ()=>{
   const today = new Date();
-const DATE = {day:"",time:""}
+const DATE = {day:"",time:"",timeStamp:today}
 const yyyy = today.getFullYear();
 let mm = today.getMonth() + 1; // Months start at 0!
 let dd = today.getDate();
@@ -58,7 +98,7 @@ let dd = today.getDate();
 if (dd < 10) dd = '0' + dd;
 if (mm < 10) mm = '0' + mm;
 
-const formattedToday = dd + '/' + mm + '/' + yyyy;
+const formattedToday = yyyy + '/' + mm + '/' + dd;
   DATE.day = formattedToday
   DATE.time = today.toLocaleTimeString()
   return DATE

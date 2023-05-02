@@ -19,8 +19,8 @@ type PropsType = {
 
 const displayDate = (date:{day:string,time:string}) => {
   let currentDate = createDate()
-  let day = Number(date.day.slice(0,2))
-  let currentDay = Number(currentDate.day.slice(0,2))
+  let day = Number(date.day.slice(8,10))
+  let currentDay = Number(currentDate.day.slice(8,10))
     
   if(day-currentDay === 0){
     return `today at ${date.time}`
@@ -31,6 +31,16 @@ const displayDate = (date:{day:string,time:string}) => {
     return `${date.day} at ${date.time}`
 
   }
+}
+type SortDateType= {
+  dates: [{day:string,time:string}][]
+}
+const sortDate = (dates:SortDateType) => {
+  let convertedDate= 
+  dates?.map(date=>{
+    return new Date(date.day)
+  })
+  return convertedDate
 }
 
 
