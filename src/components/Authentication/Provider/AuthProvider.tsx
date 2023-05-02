@@ -19,7 +19,7 @@ export const initAuthContextState: UseAuthContextType ={
   loading: false,
   setUser: () => { },
   setLoading: () => { },
-  serverUrl:'https://192.168.1.102:5050/api'
+  serverUrl:import.meta.env.VITE_IP_ADDRESS ??  'https://192.168.1.102:5050/api'
 }
 export const AuthContext = React.createContext<UseAuthContextType>(initAuthContextState)
 
