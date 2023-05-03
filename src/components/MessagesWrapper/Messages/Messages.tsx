@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import Message from '../../DashBoard/Message/Message';
-import { ChannelType, MessageType, UserType } from '../../types';
+import React from 'react'
+import Message from '../Message/Message';
+import { MessageType, UserType } from '../../types';
 import Button from '../../Button/Button';
-import { sortMessages } from '../../utils';
-import { useMessagesContext } from '../../../hooks';
 type PropsType ={
     
     messages?: MessageType[]
@@ -16,7 +14,7 @@ const Messages = ({messages,user,scrollToRef,date}:PropsType) => {
     let content = (
       <>
         <div className="messages-wrapper" id='messagesWrapper' >
-          <div className='data-divider'>
+          <div className='date-divider'>
             <span >{date}</span>
           </div> 
           {

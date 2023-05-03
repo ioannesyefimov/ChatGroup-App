@@ -16,7 +16,7 @@ export type HandleClickType = {
 const initMessagesContextState= {
     handleSubmitMessage:({ e, value, setValue, propsValue, setPropsValue }: HandleClickType)=>{},
     handleDeleteMessage:(message_id:string)=>{},
-    sortedMessages:null,
+    sortedMessages:[{fullMessageArray:[],dayMessageArray:[]}],
     setSortedMessages:()=>{},
     
 }
@@ -24,11 +24,11 @@ const initMessagesContextState= {
 
 type StoreStateType = {
     fullMessageArray: {[index:string]:MessageType[]}
-    dayMessageArray: MessageType[] 
+    dayMessageArray: MessageType[] | []
 }
 
 const useMessagesStore = ()=>{
-    const [sortedMessages,setSortedMessages]=useState<StoreStateType | null>(null)
+    const [sortedMessages,setSortedMessages]=useState<StoreStateType>()
     const {user,setLoading}=useAuth()
     const {setServerResponse} = useResponseContext()
     const {currentChannel}=useCurrentChannel()

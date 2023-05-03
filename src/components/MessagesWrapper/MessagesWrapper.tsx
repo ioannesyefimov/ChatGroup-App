@@ -1,10 +1,10 @@
 import React, { SetStateAction, useEffect, useState } from 'react'
-import { sleep, sortMessages } from '../utils'
+import { sleep, sortMessagesByDate } from '../utils'
 import { ChannelType, MessageType } from '../types'
 import Messages from './Messages/Messages'
 import { useMessagesContext } from '../../hooks'
 import SubmitInput from '../SubmitInput/SubmitInput'
-
+import './MessagesWrapper.scss'
 type PropsType ={
     currentChannel: ChannelType | null
     setCurrentChannel: React.Dispatch<SetStateAction<ChannelType|null>>
@@ -17,14 +17,16 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
    let initMessages = async()=>{
     await sleep(1000);
     let messages= currentChannel?.messages
+    if(!messages?.length) return
     console.log(`current channel`, currentChannel);
     
-      if(!messages?.length) return
       console.log('messages arr',messages )
-    let sorted = sortMessages(messages)
+    let sorted = sortMessagesByDate(messages)
     console.log(`SORTED`, sorted);
     if(sorted?.fullMessageArray?.length){
-      setSortedMessages(sorted)
+      if(sortedMessages?.fullMessageArray?.length){
+        setSortedMessages(sorted)
+      }
     }
 
    }
@@ -36,13 +38,18 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
     },[currentChannel?.messages]
   )
   let content = (
-    <div className='messages-wrapper'>
+    <div className='messages-wrapper-outer'>
         {
             sortedMessages?.fullMessageArray?.length ? (
+              // loop through array of every message
                 Object.keys(sortedMessages?.fullMessageArray).map((messages,i)=>{
+                  // then loop through every instance of array that is created on different day
+                  
                     return Object?.entries(sortedMessages?.fullMessageArray![messages]).map((arr,inx)=>{
-                        return (
-                            <Messages messages={arr[1]} date={arr[0]} key={arr[1]?.id ?? inx}  />
+                      let date =new Date(arr[0])?.toDateString()  
+                      // and return Messages with divider for day and time
+                      return (
+                            <Messages messages={arr[1]} date={date} key={arr[1]?.id ?? inx}  />
                         )
                         }) 
                 })

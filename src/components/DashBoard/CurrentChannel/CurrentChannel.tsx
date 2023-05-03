@@ -8,10 +8,11 @@ import SocketStore from '../../SocketStore'
 import './CurrentChannel.scss'
 import MessagesProvider from '../../MessagesWrapper/Context/MessagesContext'
 import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
+import { sleep } from '../../utils'
 
 const {certOptions,io,serverUrl} = SocketStore()
-
-export const channelSocket = io(serverUrl,{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
+console.log(serverUrl);
+export const channelSocket = io(`${serverUrl}/currentChannel`,{pfx:certOptions.pfx,passphrase:certOptions.passphrase});
 
 const CurrentChannel = () => {
   // const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
@@ -23,7 +24,8 @@ const CurrentChannel = () => {
   const location = useLocation()
   useEffect(
     ()=>{
-      channelSocket.connect()
+      console.log(channelSocket);
+      
       let onGetChannel = (data:SocketResponse)=>{
         if(!data.success) setServerResponse(data.err)
         console.log(`GETTING CHANNEL`, data)
@@ -76,15 +78,19 @@ const CurrentChannel = () => {
      
     },[location.search,user.email]
   )
+  let initCurrentChannel = async(signal:AbortSignal)=>{
+    setLoading(true)
+    await sleep(1500)
+     handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
+    
+  }
   useEffect(
     ()=>{    
-      setLoading(true)
       let controller = new AbortController()
       let {signal} = controller
-      let handle = async()=>await handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
-      let timeout = setTimeout(handle,3000)
+      initCurrentChannel(signal)
      return()=>{
-        clearTimeout(timeout)
+      
         controller?.abort()
       }
   },[location.search,user.email]

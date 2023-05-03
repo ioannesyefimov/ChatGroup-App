@@ -37,9 +37,6 @@ const Message = React.forwardRef(({createdAt,message,messageUser,_id}:PropsType,
   const {handleDeleteMessage}=useMessagesContext()!
   const {user} = useAuth()
   const navigate = useNavigate()
-  console.log(`user`,user);
-  console.log(`sentuser`,messageUser);
-  
   let sentBy = user?._id === messageUser?._id ? 'sent' : 'received'  
   
   let visitProfileFunc = sentBy ==='received' ? (

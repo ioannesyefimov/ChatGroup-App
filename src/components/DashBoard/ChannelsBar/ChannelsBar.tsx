@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { backIco, refreshIco, logoutIco, settingIco } from '../../../assets'
+import { backIco, refreshIco, logoutIco, settingIco, chatifyIco } from '../../../assets'
 import Channels from '../Channels/Channels'
 import './ChannelsBar.scss'
 import Hamburger from '../../HamburgerMenu/Hamburger'
@@ -55,8 +55,11 @@ useEffect(
      <Hamburger  type='channels'>
       <div className={`left-wrapper  `}  >
           <div className="left-wrapper-inner" data-showedbar={showedBar}  id="leftWrapperInner">
-          {currentChannel?._id && (
+          {currentChannel?._id ? (
             <Button onClick={()=>setShowedBar(true)}  text='Back to channel' name='link back' img={backIco} />
+            ) : (
+              
+              <Button onClick={()=>navigate('/chat')}   name='link back' img={chatifyIco} />
           )}
           
 

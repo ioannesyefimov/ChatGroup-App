@@ -10,7 +10,7 @@ import { sleep } from '../utils'
 
 const {io,serverUrl,certOptions}=SocketStore()
 
-const userSocket = io(serverUrl,{autoConnect:false,pfx:certOptions.pfx,passphrase:certOptions.passphrase});
+const userSocket = io(`${serverUrl}/user`,{autoConnect:false,pfx:certOptions.pfx,passphrase:certOptions.passphrase});
 
 const ProtectedRoute = () => {
   const {user,setUser,setLoading} = useAuth();

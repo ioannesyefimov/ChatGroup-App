@@ -5,12 +5,11 @@ import { MessageType } from "../types";
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
        return regex.test(email)
 };
-export function sortMessages  (data:MessageType[]){
+export function sortMessagesByDate  (data:MessageType[]){
 
-  
+  // Sort array of messages from the end message to the latest
   const sortedData = data.sort(
-    (a, b) => Number(a.createdAt?.date) - Number(b.createdAt?.date),
-  );
+    (a, b) => Number(a.createdAt?.date) - Number(b.createdAt?.date));
   console.log(`SORTED`, sortedData);
   
   
@@ -50,6 +49,9 @@ export function sortMessages  (data:MessageType[]){
   createMessagesArray(dayMessageArray);
   
   console.log(fullMessageArray);
+  console.log(fullMessageArray);
+  // reverse order of messages so that it is from the first message to the latest
+  fullMessageArray.reverse()
   return {fullMessageArray,dayMessageArray}
 }
 
