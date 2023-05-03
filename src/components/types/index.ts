@@ -10,7 +10,7 @@ export type SubmitInputType ={
 
 export type MessageType =  {
     user: UserType
-    createdAt: {day:string,time:string} 
+    createdAt: {day:string,time:string,timeStamp:string,date:Date} 
     message: string
     channelAt: ChangesType[]
     id?: string

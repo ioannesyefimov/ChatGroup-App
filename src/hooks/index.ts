@@ -1,3 +1,4 @@
+import useMessagesContext from "./useMessagesContext/useMessagesContext";
 import useCurrentContext from "./useCurrentChannelContext/useCurrentChannel";
 import useAuthCookies from "./useAuthCookies/useAuthCookies";
 import useAuth  from "./useAuthContext/useAuthContext";
@@ -18,5 +19,5 @@ export {
     useUpload,useResponseContext,useCurrentContext,
     useAuth,useAuthCookies,useChat,useSearch,
     useFacebook,useGithub,useGoogle,useTwitter,useHandleChannel,
-    useAddScript,useWindowSize,useImageUpload
+    useMessagesContext,   useAddScript,useWindowSize,useImageUpload
 }

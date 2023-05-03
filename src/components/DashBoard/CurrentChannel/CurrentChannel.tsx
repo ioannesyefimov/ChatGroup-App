@@ -3,21 +3,17 @@ import { useLocation } from 'react-router-dom'
 import { useAuth, useCurrentContext, useHandleChannel, useResponseContext } from '../../../hooks'
 import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
-import Messages from '../../Messages/Messages'
+import Messages from '../../MessagesWrapper/Messages/Messages'
 import SocketStore from '../../SocketStore'
 import { io } from 'socket.io-client'
 import './CurrentChannel.scss'
-export type HandleClickType = {
-  e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, 
-  value: any, 
-  setValue: Dispatch<SetStateAction<any>>,
-  propsValue: any, 
-  setPropsValue: Dispatch<SetStateAction<any>>
-}
+import MessagesProvider from '../../MessagesWrapper/Context/MessagesContext'
+import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
+
 
 const {certOptions} = SocketStore()
 
-const channelSocket = io('https://192.168.1.102:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
+export const channelSocket = io('https://192.168.1.102:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
 
 const CurrentChannel = () => {
   // const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
@@ -95,56 +91,29 @@ const CurrentChannel = () => {
       }
   },[location.search,user.email]
   )
-  const handleSubmitMessage=async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
-    try {
-      console.log(`SUBMITTING MESSAGE`)
-      setLoading(true)
-      channelSocket.emit('send_message',{message:value,channel_id: propsValue?._id,user,room:propsValue?._id})
-    } catch (error) {
-      setServerResponse(error)
-      console.error(`error:`, error)
-    } finally{
-      setLoading(false)
-      setValue('')
-    }
- }
-
-
- const handleDeleteMessage = async(_id:string) => {
-   try {
-     setLoading(true)
-     console.log(`DELETING :`, _id);
-     console.log(`USER:`, user);
-     console.log(`socket:`, channelSocket);
-     console.log(`channel:`, currentChannel);
-     if(!_id) return console.error(`missing id`);
-     channelSocket.emit('delete_message',{channel_id:currentChannel?._id,message_id:_id,userEmail:user.email,})
-  } catch (error) {
-    setServerResponse(error)
-  } finally{
-    setLoading(false)
-  }
-}
-    let channelContent =
-    (
-      <>
-        <h2 className='channel-title'>{currentChannel?.channelName}</h2> 
-        <Messages scrollToRef={scrollToRef} handleDelete={handleDeleteMessage} currentChannel={currentChannel} user={user} />
-        <SubmitInput  handleClick={handleSubmitMessage} setPropsValue={setCurrentChannel} propsValue={currentChannel} name="message-input" placeholder="Type a message here" e={undefined} value={undefined} setValue={function (value: any): void {
-          throw new Error('Function not implemented.')
-        } } />
-      </>
-      )
-          return (
+  
+  let channelContent =
+  (
+    <>
+      <h2 className='channel-title'>{currentChannel?.channelName}</h2> 
+      <MessagesProvider>
+        <MessagesWrapper setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
+      </MessagesProvider>
+    </>
+    )
+    return (
     
-      <div className="main-wrapper">
-      {currentChannel?.channelName ? channelContent : 
+    <div className="main-wrapper">
+      {
+        currentChannel?.channelName ? (
+          channelContent 
+        ) : 
         (
           <h2 className='channel-title dashboard'>Choose your channel</h2>
           ) 
-        }
-        </div>
-  )
+      }
+    </div>
+)
 }
 
 export default CurrentChannel

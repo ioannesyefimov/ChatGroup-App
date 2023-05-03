@@ -36,7 +36,7 @@ const Hamburger = ({children,type}:PropsType) => {
     }
     useEffect(
         ()=>{
-            if(location.pathname === '/chat' && isToggled!=='toggled'){
+            if(location.pathname === '/chat' ){
                 setIsToggled('toggled')
             }else {
                 setIsToggled('untoggled')

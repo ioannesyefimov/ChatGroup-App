@@ -1,39 +1,46 @@
-import { ChangeEvent, Ref, RefObject } from "react";
+import { ChangeEvent,  RefObject } from "react";
 import { MessageType } from "../types";
 
  const  validateEmail = function(email:string) {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
        return regex.test(email)
 };
-let sortMessages = (data?:MessageType[]){
+export function sortMessages  (data:MessageType[]){
 
   
   const sortedData = data.sort(
-    (a, b) => Number(a.createdAt.timeStamp) - Number(b.createdAt.timeStamp),
+    (a, b) => Number(a.createdAt?.date) - Number(b.createdAt?.date),
   );
+  console.log(`SORTED`, sortedData);
   
   
-  let currentDay = sortedData[0].createdAt;
+  let currentDay = new Date(sortedData[0].createdAt.date);
+  console.log(`CURRENT DAY`, currentDay);
   
-  const stillCurrentDay = (dayOfMessage) => {
-    return dayOfMessage.getFullYear() === currentDay.getFullYear() &&
-      dayOfMessage.getMonth() === currentDay.getMonth() &&
-      dayOfMessage.getDate() === currentDay.getDate()
+  
+  const stillCurrentDay = (dayOfMessage:Date) => {
+    if(typeof dayOfMessage ==='string'){
+      dayOfMessage = new Date(dayOfMessage)
+    }
+    return dayOfMessage?.getFullYear() === currentDay?.getFullYear() &&
+      dayOfMessage?.getMonth() === currentDay?.getMonth() &&
+      dayOfMessage?.getDate() === currentDay?.getDate()
   }
   
-  let dayMessageArray = [];
-  const fullMessageArray = [];
+  let dayMessageArray: MessageType[] = [];
+  const fullMessageArray:{[index:string]:MessageType[] | any}  = [];
   
-  const createMessagesArray = (messages) => {
-    const newDay = {};
+  const createMessagesArray = (messages:any) => {
+
+    const newDay:{[index:string]:any} = {};
     newDay[currentDay.toISOString().split('T')[0]] = messages;
-    fullMessageArray.push(newDay);
+    fullMessageArray.push(newDay); 
   }
   
   sortedData.forEach(message => {
-    if (!stillCurrentDay(message.createdAt.timeStamp)) {
+    if (!stillCurrentDay(message.createdAt.date)) {
       createMessagesArray(dayMessageArray);
-      currentDay = message.createdAt.timeStamp;
+      currentDay = new Date(message.createdAt.date);
       dayMessageArray = [];
     }
   
@@ -43,6 +50,7 @@ let sortMessages = (data?:MessageType[]){
   createMessagesArray(dayMessageArray);
   
   console.log(fullMessageArray);
+  return {fullMessageArray,dayMessageArray}
 }
 
 
@@ -92,11 +100,11 @@ export const createDate = ()=>{
   const today = new Date();
 const DATE = {day:"",time:"",timeStamp:today}
 const yyyy = today.getFullYear();
-let mm = today.getMonth() + 1; // Months start at 0!
-let dd = today.getDate();
+let mm:any = today.getMonth() + 1 // Months start at 0!
+let dd:any = today.getDate();
 
-if (dd < 10) dd = '0' + dd;
-if (mm < 10) mm = '0' + mm;
+if (dd < 10) (dd as string) = '0' + dd;
+if (mm < 10) (mm as string) = '0' + mm;
 
 const formattedToday = yyyy + '/' + mm + '/' + dd;
   DATE.day = formattedToday

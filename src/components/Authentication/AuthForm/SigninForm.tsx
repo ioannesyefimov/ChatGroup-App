@@ -46,7 +46,7 @@ export default function SigninForm({redirectUrl,redirectType,type,getToken}:Prop
         
         let response = await APIFetch({url:`${serverUrl}/auth/${type}`, method:'POST', body: {...params?.fields,loggedThrough:`INTERNAL`,signal}});
         console.log(`RESPONSE: `, response)
-        if(!response?.success) {
+        if(!response?.success || !response?.data?.accessToken) {
         throwErr(response?.err)
         }
         
@@ -59,7 +59,7 @@ export default function SigninForm({redirectUrl,redirectType,type,getToken}:Prop
 
 
         if(response?.data?.accessToken){
-        navigate(`/auth/redirect/?type=${redirectType}&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
+        navigate(`/auth/redirect/?type=${redirectType ?? 'auth/user'}&loggedThrough=INTERNAL&accessToken=${response?.data?.accessToken}`)
         }
         
 

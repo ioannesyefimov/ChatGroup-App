@@ -21,8 +21,6 @@ const useGithub = (TYPE?:string) => {
                         btn.disabled=true
                         if(btn){
                             btn.removeAttribute('disabled')
-                            console.log(`BTN:`, btn);
-                            
                         }
                 }
             )

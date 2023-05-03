@@ -14,7 +14,7 @@ const ChannelCreate = ()=>{
     const [channelAvatar,setChannelAvatar] = useState<string>('')
     const {file,handleUpload}=useUpload()
     const {setServerResponse} = useResponseContext()
-    const {serverUrl,setLoading} = useAuth()
+    const {serverUrl,setLoading,user} = useAuth()
     const {cookies} = useAuthCookies()
     const {setChannels} = useChat()
 
@@ -35,10 +35,10 @@ const ChannelCreate = ()=>{
                     throwErr(isEmpty?.errors)
                 }
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
-                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{accessToken:cookies?.accessToken,channelName,channelAvatar:file,channelDescription},method:'POST'})
+                let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{userEmail:user.email, accessToken:cookies?.accessToken,channelName,channelAvatar:file,channelDescription},method:'POST'})
                 if(!response.success) throwErr(response?.message)
                 setChannels(prev=>({...prev, ...response?.data }))
-                navigate(`/chat?channel=${channelName}`)
+                navigate(`/chat?channel=${response.data._id}`)
                 console.log(`RESPONSE : `, response)
             } catch (error) {
                 console.log(`ERROR:`,error)

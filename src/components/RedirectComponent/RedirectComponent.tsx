@@ -22,7 +22,6 @@ const RedirectComponent = () => {
     const {setCookie} = useAuthCookies()
     const {setServerResponse} = useResponseContext() 
     let location = useLocation()
-    const WELCOME_CHANNEL_ID = '644e9d88ffba9b7feb5d77f3'
 
     type HandleLoginProps = {
         accessToken: string
@@ -46,7 +45,7 @@ let handleLogin =
             }
             console.log(`RESP:"`, response);
             let data=response.data
-            setData({user:data.user,accessToken:data.accessToken,redirect:redirectUrl ?? data?.redirectUrl ?? `/chat?channel=${WELCOME_CHANNEL_ID}`,channels:data?.user?.channels})
+            setData({user:data.user,accessToken:data.accessToken,redirect:redirectUrl ?? data?.redirectUrl ?? '/chat' ,channels:data?.user?.channels})
         } catch (error) {
             setServerResponse(error)
             

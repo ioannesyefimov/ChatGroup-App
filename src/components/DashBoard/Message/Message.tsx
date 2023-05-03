@@ -6,15 +6,13 @@ import { trashIco, userIco } from '../../../assets'
 import { UserType } from '../../types'
 import MemberInfo from '../../UserSearch/UserSearch'
 import { useNavigate } from 'react-router-dom'
+import { useAuth, useMessagesContext } from '../../../hooks'
 type PropsType = {
-  user:UserType
     createdAt:{day:string,time:string}
     message:string
     messageUser?:UserType
     key:any
     _id?: string
-    channelName: string
-    handleDelete: (_id:string) => Promise<void>
 }
 
 const displayDate = (date:{day:string,time:string}) => {
@@ -32,21 +30,16 @@ const displayDate = (date:{day:string,time:string}) => {
 
   }
 }
-type SortDateType= {
-  dates: [{day:string,time:string}][]
-}
-const sortDate = (dates:SortDateType) => {
-  let convertedDate= 
-  dates?.map(date=>{
-    return new Date(date.day)
-  })
-  return convertedDate
-}
 
 
 
-const Message = React.forwardRef(({handleDelete,user,createdAt,message,messageUser,_id}:PropsType,ref:ForwardedRef<HTMLDivElement>) => {
-const navigate = useNavigate()
+const Message = React.forwardRef(({createdAt,message,messageUser,_id}:PropsType,ref:ForwardedRef<HTMLDivElement | undefined>) => {
+  const {handleDeleteMessage}=useMessagesContext()!
+  const {user} = useAuth()
+  const navigate = useNavigate()
+  console.log(`user`,user);
+  console.log(`sentuser`,messageUser);
+  
   let sentBy = user?._id === messageUser?._id ? 'sent' : 'received'  
   
   let visitProfileFunc = sentBy ==='received' ? (
@@ -65,7 +58,7 @@ return (
        </div>
        <p className="message-text">{message}</p>
        {sentBy==='sent'? (
-         <Button img={trashIco} name='message-delete' type="button" onClick={()=>handleDelete(_id!)} />
+         <Button img={trashIco} name='message-delete' type="button" onClick={()=>handleDeleteMessage(_id!,)} />
 
        ): (
         null
