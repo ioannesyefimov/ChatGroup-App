@@ -65,7 +65,7 @@ useEffect(
             <Button onClick={()=>navigate('/chat/manage')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels === undefined ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} />
+            <Channels type='leave' fallbackText={!searchedChannels ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels ? searchedChannels: searchedChannels?.length ? searchedChannels: channels} />
             <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>
       </div>

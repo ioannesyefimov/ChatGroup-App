@@ -4,6 +4,7 @@ import FormInput from '../../FormInput/FormInput'
 import { ChannelType, UserType } from '../../types'
 import { useSearch } from '../../../hooks'
 import { useLocation } from 'react-router-dom'
+import { sleep } from '../../utils'
 type PropsType ={
   channels:ChannelType[]
   user?:UserType
@@ -11,7 +12,7 @@ type PropsType ={
   setSearchedChannels: React.Dispatch<React.SetStateAction<ChannelType[] | null>>
 }
 const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => {
-  const {search,SEARCH_TYPE,searchedValue,handleSearch ,handleSearchChange} = useSearch()
+  const {search,setSearchedValue,SEARCH_TYPE,searchedValue,handleSearch ,handleSearchChange} = useSearch()
   const location = useLocation()
   useEffect(
     ()=>{
@@ -20,18 +21,18 @@ const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => 
       let params = new URLSearchParams(urlSearch)
       let searchParam = params?.get('search')
       if(searchParam){
-        handle = ()=>handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],channels})
+        sleep(1500).then(()=>handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],channels}))
       } else {
-        handle = ()=>handleSearch({search,searchType:SEARCH_TYPE[searchType],channels})
+        sleep(1500).then(()=>handleSearch({search,searchType:SEARCH_TYPE[searchType],channels}))
         }
-      let timeout = setTimeout(handle,1000)
-      return ()=>clearTimeout(timeout)
 
     },[search,location.search]
   )
   useEffect(
     ()=>{
-        setSearchedChannels(searchedValue?.channels!)
+        setSearchedChannels(searchedValue?.filteredChannels!)
+        return ()=>setSearchedChannels(null);
+
     },[searchedValue]
   )
 

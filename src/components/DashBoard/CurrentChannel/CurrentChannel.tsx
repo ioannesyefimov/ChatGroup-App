@@ -5,15 +5,13 @@ import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
 import Messages from '../../MessagesWrapper/Messages/Messages'
 import SocketStore from '../../SocketStore'
-import { io } from 'socket.io-client'
 import './CurrentChannel.scss'
 import MessagesProvider from '../../MessagesWrapper/Context/MessagesContext'
 import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
 
+const {certOptions,io,serverUrl} = SocketStore()
 
-const {certOptions} = SocketStore()
-
-export const channelSocket = io('https://192.168.1.102:5050/currentChannel',{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
+export const channelSocket = io(serverUrl,{pfx:certOptions.pfx,passphrase:certOptions.passphrase,autoConnect:false});
 
 const CurrentChannel = () => {
   // const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)

@@ -8,8 +8,7 @@ import { useServerUrl, useSetLoading } from '../useAuthContext/useAuthContext';
 
 const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined) => {
     const {setServerResponse}=useResponseContext()
-    const setLoading = useSetLoading()
-    const serverUrl = useServerUrl()
+    const {setUser,setLoading,serverUrl} = useAuth()
   const navigate = useNavigate()
     const {setChannels} =useChat() 
     const handleLeaveChannel = async(id:string,user:UserType)=>{
@@ -24,7 +23,8 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           if(!response.success){
             throwErr(response.err)
           }
-          setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
+          // setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
+          setUser(prev=>({...prev, channels: prev.channels.filter(channel=>channel._id !== id)}))
         } catch (error) {
           setServerResponse(error)
         } 
@@ -38,6 +38,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
               if(!response.success) throwErr(response?.err)
               setChannels(prev=>({...prev, ...response?.data?.channel }))
+              setUser(prev=>({...prev,channels:[...prev.channels ,response.data.channel]}))
               navigate(`/chat/?channel=${response?.data?.channel?._id}`)
               console.log(`RESPONSE : `, response)
           } catch (error) {

@@ -8,9 +8,9 @@ import SocketStore from '../SocketStore'
 import { sleep } from '../utils'
 
 
-const {io,certOptions}=SocketStore()
+const {io,serverUrl,certOptions}=SocketStore()
 
-const userSocket = io('https://192.168.1.102:5050/user',{autoConnect:false,pfx:certOptions.pfx,passphrase:certOptions.passphrase});
+const userSocket = io(serverUrl,{autoConnect:false,pfx:certOptions.pfx,passphrase:certOptions.passphrase});
 
 const ProtectedRoute = () => {
   const {user,setUser,setLoading} = useAuth();
@@ -37,6 +37,8 @@ const ProtectedRoute = () => {
       
     },[cookies.user]
   )
+
+
 
   useEffect(
     ()=>{
