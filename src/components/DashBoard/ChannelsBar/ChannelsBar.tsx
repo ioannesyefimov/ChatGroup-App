@@ -50,7 +50,7 @@ useEffect(
 
           </div>
             <Button onClick={()=>navigate('/chat')}  text='leave room' name='leave' img={logoutIco} />
-            <Button onClick={()=>handleLeaveChannel(currentChannel?._id,user)}  text='leave channel' name='leave' img={logoutIco} />
+            {/* <Button onClick={()=>handleLeaveChannel(currentChannel?._id,user)}  text='leave channel' name='leave channel' img={logoutIco} /> */}
 
       </div>
       <UserBar user={user} />
@@ -72,7 +72,7 @@ useEffect(
             <Button onClick={()=>navigate('/chat/manage')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels type='leave' fallbackText={!searchedChannels?.length ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels?.length  ? searchedChannels: channels} />
+            <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels?.length  ? searchedChannels: channels} />
             <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>
       </div>

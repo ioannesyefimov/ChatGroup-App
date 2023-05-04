@@ -22,6 +22,7 @@ export default () =>{
         setUser(initAuthContextState.user)
         removeCookie('accessToken', {path:'/'})
         removeCookie('refreshToken', {path:'/'})
+        removeCookie('channels', {path:'/'})
         if(!replace){
           console.log(`not replacing`)
         }else if(navigate !== undefined){

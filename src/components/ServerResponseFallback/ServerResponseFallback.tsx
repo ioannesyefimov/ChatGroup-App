@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AuthSocialButtons from "../AuthButtons/AuthSocialButtons";
@@ -24,14 +24,20 @@ type ResponseFallbackType ={
         <Outlet/>
         </>
     )
-    if(serverResponse !== typeof Error)return content
+    useEffect(
+        ()=>{
+            if(serverResponse){
+                console.error(serverResponse)
+            }
+        },[serverResponse]
+    )
+    if(!serverResponse)return content
     let handleOnClick = serverResponse?.name === Errors.NOT_A_MEMBER ? ()=>{setServerResponse(null);navigate(`/chat/manage/join?search=${serverResponse?.arguments?.channel_id}`)} : 
     serverResponse?.message===Errors.JWT_MALFORMED ? (()=>{
         clearState('/auth/signin', navigate)
     }) : serverResponse?.name === Errors.MISSING_ARGUMENTS ? ()=>setServerResponse(null):
     ()=> {
         setServerResponse(null);
-        navigate('/auth/signin')
     }
 
     let btnText = serverResponse?.name === Errors.NOT_A_MEMBER ? 'Join' : serverResponse?.message===Errors.JWT_MALFORMED ? (

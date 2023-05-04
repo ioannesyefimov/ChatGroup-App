@@ -100,22 +100,20 @@
 
 .hamburger-outer{
     position: relative;
-    // max-height: cacl(100dvh - 5%);
-   
     .hamburger-btn {
         left: 88% !important;
         top:3.5rem;
     }
    &[data-istoggled=toggled]{
         @include respond-to(small){
-            position: fixed;
             // clip-path: inset(0 0 99% 0) ;
+            position: fixed !important;
             inset: 0;
-            width: 85%;
+            width: 100% !important;
             z-index: 100;
         }
         @include respond-to(smallHeight){
-            position: fixed;
+            position: fixed !important;
             // clip-path: inset(0 0 99% 0) ;
             inset: 0;
             width: 85%;
@@ -129,8 +127,8 @@
         position: relative !important;
         // opacity: 1;
         width: 30% !important;
-        min-width:220px;
-        max-width: 300px;
+        max-width: 400px;
+        min-width:180px;
     }    
     transition: all .5s ease-in-out;
     display: grid;

@@ -42,7 +42,7 @@ const ChannelCreate = ()=>{
                 console.log(`RESPONSE : `, response)
             } catch (error) {
                 console.log(`ERROR:`,error)
-                setServerResponse(error)
+                return setServerResponse(error)
             }finally{
                 setLoading(false)
 

@@ -25,7 +25,7 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
     console.log(`SORTED`, sorted);
     if(sorted?.fullMessageArray?.length){
       if(sortedMessages?.length){
-
+        setSortedMessages(sorted.fullMessageArray)
       }else{
         setSortedMessages(sorted.fullMessageArray)
       }

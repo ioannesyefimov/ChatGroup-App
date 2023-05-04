@@ -43,16 +43,6 @@ scrollbar-color: gray black ;
 
 .App {
   display: flex;
-  &::after{
-    position: absolute;
-    content: '';
-    width: 100%;
-   left: 0;
-    top:3.2rem;
-    height: 1px;
-    box-shadow: 0 0 2px  1px black ;
-  }
-
   flex-direction: column;
   & > .app-wrapper {
     flex: 1;

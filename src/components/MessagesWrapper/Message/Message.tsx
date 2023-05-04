@@ -25,20 +25,15 @@ type DisplayDateProps ={
   }
 }
 const displayDate = (date:DisplayDateProps) => {
-  let currentDate = Number(createDate().date())
-  let messageDate = Number(new Date(date?.timeStamp)) 
-  
-  let isToday:boolean = (messageDate - currentDate == 0) 
-  let isYesterday:boolean = (messageDate - currentDate < 0) 
-  
-  if(isToday){
+  let today =createDate().date()
+  let messageDate =new Date(date?.timeStamp)
+  let yesterday = new Date();yesterday.setDate(today.getDate()-1)
+  if(messageDate.toLocaleDateString() == today.toLocaleDateString()){
     return `today at ${date.time}`
-  }else if(isYesterday){
+  }else if (messageDate.toLocaleDateString() == yesterday.toLocaleDateString()) {
     return `yesterday at ${date.time}`
-
   }else {
     return `${date.day} at ${date.time}`
-
   }
 }
 

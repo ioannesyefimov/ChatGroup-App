@@ -24,6 +24,8 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
             console.log(googleResponse)
             if(!googleResponse?.credential) return console.log(`MISSING GOOGLE'S RESPONSE `)
             let response = await APIFetch({url:`${serverUrl}/auth/google`,method:'POST',body:{credential:googleResponse.credential}})
+            console.log(`RESPONSE`,response);
+            
             if(!response?.success){
                 throwErr(response?.message)
             }

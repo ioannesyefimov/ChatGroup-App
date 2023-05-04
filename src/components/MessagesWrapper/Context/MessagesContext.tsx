@@ -25,7 +25,7 @@ const initMessagesContextState= {
 
 
 const useMessagesStore = ()=>{
-    const [sortedMessages,setSortedMessages]=useState<{[index:string]:MessageType[]}>()
+    const [sortedMessages,setSortedMessages]=useState<{[index:string]:MessageType[]}>([])
     const {user,setLoading}=useAuth()
     const {setServerResponse} = useResponseContext()
     const {currentChannel}=useCurrentChannel()
