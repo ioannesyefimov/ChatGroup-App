@@ -1,29 +1,44 @@
 import { ChangeEvent,  RefObject } from "react";
 import { MessageType } from "../types";
+import { log } from "console";
 
  const  validateEmail = function(email:string) {
     const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
        return regex.test(email)
 };
-export function sortMessagesByDate  (data:MessageType[]){
 
+
+//#########################################################
+
+export function sortMessagesByDate  (data:MessageType[]){
+  console.log(`MESSAGES`, data);
+  
+  function sortMessages(a,b){
+    return Number(new Date(a.createdAt?.timeStamp)) - Number(new Date(b.createdAt?.timeStamp))
+  } 
   // Sort array of messages from the end message to the latest
-  const sortedData = data.sort(
-    (a, b) => Number(a.createdAt?.date) - Number(b.createdAt?.date));
+  const sortedData = data.sort(sortMessages);
   console.log(`SORTED`, sortedData);
   
   
-  let currentDay = new Date(sortedData[0].createdAt.date);
+  // let currentDay = createDate().date;
+  let currentDay = new Date(sortedData[0].createdAt.timeStamp)
   console.log(`CURRENT DAY`, currentDay);
   
   
   const stillCurrentDay = (dayOfMessage:Date) => {
-    if(typeof dayOfMessage ==='string'){
-      dayOfMessage = new Date(dayOfMessage)
-    }
-    return dayOfMessage?.getFullYear() === currentDay?.getFullYear() &&
-      dayOfMessage?.getMonth() === currentDay?.getMonth() &&
-      dayOfMessage?.getDate() === currentDay?.getDate()
+   if( typeof dayOfMessage !=='object') {
+    dayOfMessage = new Date(dayOfMessage)
+   }
+    let messageYear=dayOfMessage?.getFullYear()
+    let messageMonth=dayOfMessage?.getMonth()
+    let messageDay=dayOfMessage?.getDay()
+    let currentDayYear = currentDay?.getFullYear()
+    let currentDayMonth = currentDay?.getMonth()
+    let currentDayDay = currentDay?.getDay()
+    return messageYear === currentDayYear
+      && messageMonth === currentDayMonth &&
+      messageDay=== currentDayDay
   }
   
   let dayMessageArray: MessageType[] = [];
@@ -37,9 +52,9 @@ export function sortMessagesByDate  (data:MessageType[]){
   }
   
   sortedData.forEach(message => {
-    if (!stillCurrentDay(message.createdAt.date)) {
+    if (!stillCurrentDay(message.createdAt.timeStamp)) {
       createMessagesArray(dayMessageArray);
-      currentDay = new Date(message.createdAt.date);
+      currentDay = new Date(message.createdAt.timeStamp);
       dayMessageArray = [];
     }
   
@@ -51,10 +66,9 @@ export function sortMessagesByDate  (data:MessageType[]){
   console.log(fullMessageArray);
   console.log(fullMessageArray);
   // reverse order of messages so that it is from the first message to the latest
-  fullMessageArray.reverse()
   return {fullMessageArray,dayMessageArray}
 }
-
+//#########################################################
 
 
 export const convertQueryString = ({uri,obj}:{[index:string]:any, uri:string})=>{
@@ -98,17 +112,17 @@ const setter = (e:ChangeEvent<HTMLInputElement>, setState:React.Dispatch<React.S
   setState(e?.currentTarget.value)
 }
 
-export const createDate = ()=>{
-  const today = new Date();
-const DATE = {day:"",time:"",timeStamp:today}
+export const createDate = (date?:string)=>{
+  const today = date ? new Date(date) : new Date();
+const DATE = {day:"",time:"",timeStamp:today.toISOString(),date:()=>new Date(today)}
 const yyyy = today.getFullYear();
-let mm:any = today.getMonth() + 1 // Months start at 0!
+let mm:any = today.getMonth() + 1; // Months start at 0!
 let dd:any = today.getDate();
 
-if (dd < 10) (dd as string) = '0' + dd;
-if (mm < 10) (mm as string) = '0' + mm;
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
 
-const formattedToday = yyyy + '/' + mm + '/' + dd;
+const formattedToday =  yyyy + '/' + mm + '/' + dd;
   DATE.day = formattedToday
   DATE.time = today.toLocaleTimeString()
   return DATE

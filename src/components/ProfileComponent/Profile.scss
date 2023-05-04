@@ -2,16 +2,19 @@
 
 .profile-component {
 
-    display: grid;
+    display: flex;
+    flex-direction: column;
     max-width: 1020px;
-    margin: 0 auto;
+    margin: 5rem auto auto;
 
     .link {
         margin: auto;
     }
     .user {
+        all: unset;
         margin: auto;
         display: flex;
+        text-align: center;
         flex-direction: column;
         gap:.4rem;
         &-img{
@@ -25,7 +28,13 @@
     }
 
     .channels{
+        margin-top: 4rem;
         min-width: 320px;
+
+        h4 {
+        text-align: center;
+
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Navigate,Outlet } from 'react-router-dom'
-import { useAuth, useAuthCookies } from '../../hooks'
+import { useAuth, useAuthCookies, useChat } from '../../hooks'
 import ChatProvider from '../ChatProvider/ChatProvider'
 import ChannelsBar from '../DashBoard/ChannelsBar/ChannelsBar'
 import CurrentChannelProvider from '../ChatProvider/CurrentChannelProvider'
@@ -14,13 +14,15 @@ const userSocket = io(`${serverUrl}/user`,{autoConnect:false,pfx:certOptions.pfx
 
 const ProtectedRoute = () => {
   const {user,setUser,setLoading} = useAuth();
-  const {cookies} = useAuthCookies()
+  const {cookies,setCookie} = useAuthCookies()
+  const {setChannels} =useChat()
   if(!user?.email && !cookies?.user?.email) return <Navigate to="/auth/signin" replace/> 
    
   useEffect(
     ()=>{
+      console.log(`cookies`,cookies);
       
-      sleep(2000).then( 
+      sleep(1000).then( 
         async()=>{
         if(!user?.email){
         let isLogged = cookies?.user
@@ -37,8 +39,28 @@ const ProtectedRoute = () => {
       
     },[cookies.user]
   )
-
-
+  useEffect(
+    ()=>{
+      console.log(`cookies`,cookies);
+      
+      sleep(1000).then( 
+        async()=>{
+        let cookiesChannels = cookies?.channels
+        let userChannels = user?.channels
+        console.log(`islogged`,cookiesChannels);
+        
+        if(cookiesChannels.length){
+          setChannels(cookiesChannels);
+        }else if(userChannels.length){
+          setChannels(cookiesChannels);
+        }
+      }
+      )
+      setLoading(false)
+      
+    },[cookies.channels]
+  )
+ 
 
   useEffect(
     ()=>{

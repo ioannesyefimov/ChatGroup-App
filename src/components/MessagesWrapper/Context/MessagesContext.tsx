@@ -22,13 +22,10 @@ const initMessagesContextState= {
 }
 
 
-type StoreStateType = {
-    fullMessageArray: {[index:string]:MessageType[]}
-    dayMessageArray: MessageType[] | []
-}
+
 
 const useMessagesStore = ()=>{
-    const [sortedMessages,setSortedMessages]=useState<StoreStateType>()
+    const [sortedMessages,setSortedMessages]=useState<{[index:string]:MessageType[]}>()
     const {user,setLoading}=useAuth()
     const {setServerResponse} = useResponseContext()
     const {currentChannel}=useCurrentChannel()

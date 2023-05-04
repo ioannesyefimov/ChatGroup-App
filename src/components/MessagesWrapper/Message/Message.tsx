@@ -15,14 +15,25 @@ type PropsType = {
     _id?: string
 }
 
-const displayDate = (date:{day:string,time:string}) => {
-  let currentDate = createDate()
-  let day = Number(date.day.slice(8,10))
-  let currentDay = Number(currentDate.day.slice(8,10))
-    
-  if(day-currentDay === 0){
+type DisplayDateProps ={
+  date:{
+    day:string,
+    time:string
+    date: ()=>Date 
+    timeStamp:'string'
+
+  }
+}
+const displayDate = (date:DisplayDateProps) => {
+  let currentDate = Number(createDate().date())
+  let messageDate = Number(new Date(date?.timeStamp)) 
+  
+  let isToday:boolean = (messageDate - currentDate == 0) 
+  let isYesterday:boolean = (messageDate - currentDate < 0) 
+  
+  if(isToday){
     return `today at ${date.time}`
-  }else if(day-currentDay === -1){
+  }else if(isYesterday){
     return `yesterday at ${date.time}`
 
   }else {

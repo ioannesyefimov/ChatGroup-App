@@ -39,12 +39,20 @@
             align-items: center;
             border: none;
             display: inherit;
+            img{
+                
+                order: -1;
+                width: 30px;
+                margin-right: auto;
+                filter: invert(50%) brightness(100%);
+            }
+        }
+            button.back.logo {
+                max-width: 65px;
+                top:0;
                 img{
-                    
-                    order: -1;
-                    width: 30px;
-                    margin-right: auto;
-                    filter: invert(50%) brightness(100%);
+                    width: 100% !important;
+                    filter: invert(100%);
                 }
             }
             button.leave {

@@ -73,13 +73,13 @@ const useSearch = () => {
                             return name.includes(search)
                         })
                         if(filtered?.length){
-                            result.channels = filtered
+                            result.filteredChannels = filtered
                             
                         }else if(!filtered?.length && search===''){
-                            result.channels = channels
+                            result.filteredChannels = channels
 
                         }else {
-                            result.channels = undefined
+                            result.filteredChannels = []
                         }
                         // console.log(`FILTERED:`, filtered);
                     break

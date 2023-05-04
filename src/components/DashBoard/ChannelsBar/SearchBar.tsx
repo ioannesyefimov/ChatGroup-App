@@ -9,7 +9,7 @@ type PropsType ={
   channels:ChannelType[]
   user?:UserType
   searchType:string
-  setSearchedChannels: React.Dispatch<React.SetStateAction<ChannelType[] | null>>
+  setSearchedChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
 }
 const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => {
   const {search,setSearchedValue,SEARCH_TYPE,searchedValue,handleSearch ,handleSearchChange} = useSearch()
@@ -31,8 +31,9 @@ const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => 
   useEffect(
     ()=>{
         setSearchedChannels(searchedValue?.filteredChannels!)
-        return ()=>setSearchedChannels(null);
-
+        return ()=>{
+          setSearchedChannels([]);
+        }
     },[searchedValue]
   )
 
@@ -41,5 +42,5 @@ const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => 
   )
 }
 
-export default React.memo(SearchBar)
+export default SearchBar
 

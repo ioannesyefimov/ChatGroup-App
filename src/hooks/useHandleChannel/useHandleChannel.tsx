@@ -1,6 +1,6 @@
 import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import { APIFetch, Errors, throwErr } from '../../components/utils';
-import { useAuth, useResponseContext,useChat} from '..';
+import { useAuth, useResponseContext,useChat, useAuthCookies} from '..';
 import { ChannelType, ResponseType, UserType } from '../../components/types';
 import { Socket } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +8,12 @@ import { useServerUrl, useSetLoading } from '../useAuthContext/useAuthContext';
 
 const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined) => {
     const {setServerResponse}=useResponseContext()
-    const {setUser,setLoading,serverUrl} = useAuth()
-  const navigate = useNavigate()
+    const {setUser,user, setLoading,serverUrl} = useAuth()
+    const navigate = useNavigate()
     const {setChannels} =useChat() 
+    const {setCookie,cookies} =useAuthCookies() 
+
+
     const handleLeaveChannel = async(id:string,user:UserType)=>{
         try {
           if(!id) return
@@ -23,8 +26,11 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           if(!response.success){
             throwErr(response.err)
           }
+          let newchannels = [...cookies.channels, cookies.channels.filter(channel=>channel._id !== id)]
           // setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
-          setUser(prev=>({...prev, channels: prev.channels.filter(channel=>channel._id !== id)}))
+          setCookie('channels',newchannels,{path:'/',maxAge:2000})
+          setLoading(false)
+
         } catch (error) {
           setServerResponse(error)
         } 
@@ -38,7 +44,8 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
               if(!response.success) throwErr(response?.err)
               setChannels(prev=>({...prev, ...response?.data?.channel }))
-              setUser(prev=>({...prev,channels:[...prev.channels ,response.data.channel]}))
+              let newUser = {...user, channels: [...user.channels, response.data.channel]}
+              setCookie('user',newUser,{path:'/',maxAge:2000})
               navigate(`/chat/?channel=${response?.data?.channel?._id}`)
               console.log(`RESPONSE : `, response)
           } catch (error) {
