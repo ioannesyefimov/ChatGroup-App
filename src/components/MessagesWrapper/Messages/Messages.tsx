@@ -4,7 +4,7 @@ import { MessageType, UserType } from '../../types';
 import Button from '../../Button/Button';
 type PropsType ={
     
-    messages?: MessageType[]
+    messages?: MessageType
     date?: string
     user?:UserType
     scrollToRef?:  React.ForwardedRef<HTMLDivElement |undefined>
@@ -24,7 +24,6 @@ const Messages = ({messages,user,scrollToRef,date}:PropsType) => {
                 )
               })
             }
-            <Button onClick={()=>{document.getElementById('messagesWrapper')!.scrollTop = 10000}} name='down-btn' text="↓"/>
         </div>
       </>
     )

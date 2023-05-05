@@ -18,17 +18,13 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
     await sleep(1000);
     let messages= currentChannel?.messages
     if(!messages?.length) return
-    console.log(`current channel`, currentChannel);
-    
-      console.log('messages arr',messages )
     let sorted = sortMessagesByDate(messages)
-    console.log(`SORTED`, sorted);
     if(sorted?.fullMessageArray?.length){
-      if(sortedMessages?.length){
-        setSortedMessages(sorted.fullMessageArray)
-      }else{
-        setSortedMessages(sorted.fullMessageArray)
-      }
+    if(sortedMessages?.length){
+      setSortedMessages(sorted.fullMessageArray)
+    }else{
+      setSortedMessages(sorted.fullMessageArray)
+    }
     }
 
    }
@@ -39,17 +35,20 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
       
     },[currentChannel?.messages]
   )
+  console.log(`sorted`,sortedMessages)
   let messages= 
     sortedMessages?.length ? (
+      
       // loop through array of every message
-        Object.keys(sortedMessages).map((messages,i)=>{
+        Object.keys(sortedMessages).map((arrays: any,i:number)=>{
           // then loop through every instance of array that is created on different day
           
-            return Object?.entries(sortedMessages[messages]).map((arr,inx)=>{
-              let date =new Date(arr[0])?.toDateString()  
+            return Object?.keys(sortedMessages[arrays]).map((key:any)=>{
+              let date =new Date(key)?.toDateString()  
+              let messages:unknown = sortedMessages[arrays][key]
               // and return Messages with divider for day and time
-              return (
-                    <Messages messages={arr[1]} date={date} key={arr[1]?.id ?? inx}  />
+              return(
+                    <Messages messages={messages as MessageType[]} date={date} key={sortedMessages[arrays][key]?._id}  />
                 )
                 }) 
         }) 

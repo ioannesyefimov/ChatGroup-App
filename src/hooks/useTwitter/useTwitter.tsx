@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {useAuth, useAuthCookies, useResponseContext} from '../index'
-import { APIFetch, getUrlWithQueryParams, throwErr } from '../../components/utils'
+import { APIFetch, throwErr } from '../../components/utils'
 import useFetch from '../useFetch'
 
 const useTwitter = (loginType:string) => {
@@ -56,16 +56,16 @@ const useTwitter = (loginType:string) => {
         setServerResponse({message: 'UNAVAIBLE'})
         return 
         // can't access developer account on twitter, so left it 
-        getUrlWithQueryParams(TWITTER_AUTH_URL, {
-            response_type:'code',
-            client_id: import.meta.env.VITE_APP_TWITTER_CLIENT_ID,
-            redirect_uri: redirectUri,
-            scope:TWITTER_SCOPE,
-            state: TWITTER_STATE,
-            code_challenge: TWITTER_CODE_CHALLENGE,
-            code_challenge_method: 'plain,'
+        // getUrlWithQueryParams(TWITTER_AUTH_URL, {
+        //     response_type:'code',
+        //     client_id: import.meta.env.VITE_APP_TWITTER_CLIENT_ID,
+        //     redirect_uri: redirectUri,
+        //     scope:TWITTER_SCOPE,
+        //     state: TWITTER_STATE,
+        //     code_challenge: TWITTER_CODE_CHALLENGE,
+        //     code_challenge_method: 'plain,'
 
-        })
+        // })
         console.log(type)
 
 

@@ -43,6 +43,7 @@ const CurrentChannel = () => {
         if(data.data.messages){
           setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
         }
+        setLoading(false)
       }
       let onDeleteMessage = (data:SocketResponse)=>{
         console.log(`DELETING  MESSAGE RESPONSE`,data);
@@ -53,6 +54,8 @@ const CurrentChannel = () => {
         } else {
           setServerResponse(data?.err)
         }
+        setLoading(false)
+
       }
       let onDisconnect = ()=>{
         console.log(`Disconnected from server`)
@@ -70,11 +73,13 @@ const CurrentChannel = () => {
         channelSocket.off('delete_message',onDeleteMessage);
         channelSocket.off('receive_message',onMessage);
         channelSocket.off('connect',onConnect);
-      channelSocket.off('disconnect',onDisconnect)
+        channelSocket.off('disconnect',onDisconnect)
         channelSocket.off('get_channel',onGetChannel);
-          console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
+        if(currentChannel?._id){
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
-        setCurrentChannel(null)
+          console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
+            setCurrentChannel(null)
+          }
     }
      
     },[location.search,user.email]

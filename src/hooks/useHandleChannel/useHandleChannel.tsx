@@ -52,7 +52,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               console.log(`ERROR:`,error)
               setServerResponse(error)
           }finally{
-              setLoading(false)
+              // setLoading(false)
           }
       }
 
@@ -69,6 +69,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
     const handleCurrentChannel =
       async({name,setter,socket,scrollToRef,user,signal}:HandleCurrentChannelProps)=>{
         try {
+          setLoading(true)
         console.log(`NAME: ${name}`);
         let query = new URLSearchParams(name)
         let channel_id = query.get('channel')
