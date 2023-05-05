@@ -79,7 +79,7 @@ const CurrentChannel = () => {
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
             setCurrentChannel(null)
-          }
+        }
     }
      
     },[location.search,user.email]

@@ -47,9 +47,9 @@ const ProtectedRoute = () => {
         async()=>{
         let cookiesChannels = cookies?.channels
         let userChannels = user?.channels
-        console.log(`islogged`,cookiesChannels);
+        console.log(` cookie channels`,cookiesChannels);
         
-        if(cookiesChannels.length){
+        if(cookiesChannels?.length){
           setChannels(cookiesChannels);
         }else if(userChannels.length){
           setChannels(cookiesChannels);

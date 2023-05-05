@@ -15,7 +15,7 @@ const ChannelCreate = ()=>{
     const {file,handleUpload}=useUpload()
     const {setServerResponse} = useResponseContext()
     const {serverUrl,setLoading,user} = useAuth()
-    const {cookies} = useAuthCookies()
+    const {cookies,setCookie} = useAuthCookies()
     const {setChannels} = useChat()
 
 
@@ -37,7 +37,7 @@ const ChannelCreate = ()=>{
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
                 let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{userEmail:user.email, accessToken:cookies?.accessToken,channelName,channelAvatar:file,channelDescription},method:'POST'})
                 if(!response.success) throwErr(response?.message)
-                setChannels(prev=>({...prev, ...response?.data }))
+                setCookie('channels',response.data.channels,{path:'/',maxAge:2000})
                 navigate(`/chat?channel=${response.data._id}`)
                 console.log(`RESPONSE : `, response)
             } catch (error) {
@@ -62,11 +62,11 @@ const ChannelCreate = ()=>{
         },[]
     )
     return (
-        <div className='prompt-menu-component  box-shadow--gray'>
+        <div className='prompt-menu-component '>
             <form action="">
-                <FormInput ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>{setChannelName(e.target.value)}}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
+                <FormInput textArea={{rows:2,cols:"40"}} ref={nameRef} labelName='Channel Name:' value={channelName} onChange={(e)=>{setChannelName(e.target.value)}}  type='text' placeholder={`type in channel's name`} name="name"id="channel-name"/>
                 
-                <FormInput ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
+                <FormInput textArea={{rows:3,cols:"40"}} ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
             
                 <UploadInput removeImg={handleRemoveImg} value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImage}/>
                 <Button text='Create' name='submit-btn' onClick={handleSubmit}/>

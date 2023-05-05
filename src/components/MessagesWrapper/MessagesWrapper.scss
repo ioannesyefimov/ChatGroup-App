@@ -60,6 +60,17 @@
 
         .form-wrapper{
             flex:1;
+
+            #message-input {
+                padding: .4rem 1.5rem;
+                width: 100%;
+                background-color: none;
+
+                &:focus{
+                    background-color: rgba(248, 248, 255, 0.515);
+                }
+                
+            }
             
         }
         button.submit-btn {

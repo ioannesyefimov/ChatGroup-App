@@ -9,9 +9,13 @@ interface FormProps {
     name:string,
     id:string,
     photo?: string,
-    onChange: (e:ChangeEvent<HTMLInputElement> ) => void 
+    onChange: (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement> ) => void 
     value:string
     children?:ReactNode
+    textArea?: {
+      rows:string
+      cols:string
+    }
 }
 
 declare module 'react' {
@@ -20,7 +24,7 @@ declare module 'react' {
   }
 }
 const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelElement | undefined>) => {
-  const {name,labelName,onChange ,value,placeholder, type,photo,children} = props
+  const {name,labelName,onChange,textArea ,value,placeholder, type,photo,children} = props
 
 
   return (
@@ -32,7 +36,12 @@ const FormInput =  React.forwardRef((props: FormProps,ref?: React.Ref<HTMLLabelE
         )
       }
       <div className='form-wrapper'>
-          <input onChange={onChange} value={value} placeholder={placeholder} type={type}   name={name} id={name} aria-label={`${name} `} />
+        {textArea ? (
+          <textarea onChange={onChange} value={value} className='field' name={name} rows={textArea.rows ?? 5} cols={textArea.cols ?? 30}  placeholder={placeholder}></textarea>
+        ) : (
+
+          <input onChange={onChange} className='field' value={value} placeholder={placeholder} type={type}   name={name} id={name} aria-label={`${name} `} />
+        )}
         {photo && (
             <img src={photo} alt="input-icon" />
         ) 

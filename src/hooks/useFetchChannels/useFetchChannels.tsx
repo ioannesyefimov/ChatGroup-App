@@ -23,8 +23,7 @@ const useFetchChannels = (user:UserType) => {
             let response = await APIFetch({signal,url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
             console.log(`CHANNELS RESPONSE:`, response)
             let channels = JSON.stringify(response?.data?.channels)
-
-            setCookie('channels', channels, {maxAge: 450,path:'/'})
+            setCookie('channels', response.data.channels, {maxAge: 2000,path:'/'})
             if(!response?.success){
                 console.log(`ERROR`)
                 throwErr(response?.err)
@@ -38,21 +37,23 @@ const useFetchChannels = (user:UserType) => {
         }
     }
     
-    useEffect(
-        ()=>{
-            setLoading(true)
-            let isChannels = cookies?.channels
-            if(isChannels?.length){
-                console.log(`CHANNELS`, isChannels);
+    // useEffect(
+    //     ()=>{
+    //         setLoading(true)
+    //         let isChannels = cookies?.channels
+    //         console.log(`CHANNELS`, isChannels);
+            
+    //         if(isChannels?.length){
+    //             console.log(`CHANNELS`, isChannels);
                 
-                setChannels(typeof isChannels ==='object' ? isChannels : [isChannels])
-            }else if(user.channels?.length) {
+    //             setChannels(typeof isChannels ==='object' ? isChannels : [isChannels])
+    //         }else if(user.channels?.length) {
                 
-                setChannels(typeof user.channels ==='object' ? user.channels : [user.channels])
-            }
-            setLoading(false)
-        },[user?.email,cookies.channels]
-        )
+    //             setChannels(typeof user.channels ==='object' ? user.channels : [user.channels])
+    //         }
+    //         setLoading(false)
+    //     },[cookies.channels]
+    //     )
     
  
         let value =useMemo(

@@ -28,7 +28,7 @@ const Channel = ({isJoined, name,avatar,handleChannel,id,type}:ChannelProps) => 
          (isJoined) ?
           ()=>navigate(`/chat/?channel=${id}`)
            : ()=>{}
-    let btmImg = (type==='leave' && isJoined) ? trashIco : (type==='join' && !isJoined) ? joinIco : (isJoined) ? correctUploadIco : ''
+    let btmImg = (type==='leave') ? trashIco : (type==='join' && !isJoined) ? joinIco : (isJoined) ? correctUploadIco : ''
     let content = (
         (
             <div className="channel">
