@@ -13,7 +13,7 @@ export type MessageType =  {
     createdAt: {day:string,time:string,timeStamp:string,Date: 'string', date?:()=>Date} 
     message: string
     channelAt: ChangesType[]
-    id?: string
+    _id?: string
 
 }
 

@@ -45,13 +45,16 @@
             align-self:center;
         }
     .channel-title{
-        position: absolute;
-        width: 100%;
-        background-color: black;
+        position: fixed;
+        width: 30%;
+        border-radius: 8px;
+        background-color: rgba(229, 119, 152, 0.279);
         left: 0;
+        right: 0;
+        top:0;
         text-align: center;
         z-index: 5;
-        top:0;
+        margin-inline: auto;
         font-size: 1.5rem; 
      }
     

@@ -70,6 +70,21 @@
                     max-width: 30px;
                 }
             }
+            button.leave {
+                display: flex;
+                position: relative;
+                right: -6%;
+                gap:.2rem;
+                padding: .2rem .5rem;
+                margin-top: auto;
+                margin-left: auto;
+                border: 1px solid rebeccapurple;
+                align-items: center;
+                img{
+                    order:-1;
+                    max-width: 30px;
+                }
+            }
         
         &[data-showedbar=true]{
             padding: 3.5rem 1.6rem .5rem;

@@ -22,10 +22,10 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           setLoading(true)
           let response = await APIFetch({url:`${serverUrl}/channels/leave`,method:'PUT',body:{
             userEmail:user.email,channel_id:id
-          }})
-          if(!response.success){
-            throwErr(response.err)
-          }
+          },setError:setServerResponse})
+          // if(!response.success){
+          //   throwErr(response.err)
+          // }
           let newchannels = [...cookies.channels, cookies.channels.filter(channel=>channel._id !== id)]
           // setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
           setCookie('channels',newchannels,{path:'/',maxAge:2000})
@@ -41,8 +41,8 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               let fields = {id}
               console.log(`FIELDS: `, fields)
               // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
-              let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST'})
-              if(!response.success) throwErr(response?.err)
+              let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST', setError:setServerResponse})
+              // if(!response.success) throwErr(response?.err)
               setChannels(prev=>({...prev, ...response?.data?.channel }))
               let newUser = {...user, channels: [...user.channels, response.data.channel]}
               setCookie('user',newUser,{path:'/',maxAge:2000})
@@ -72,8 +72,8 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
         console.log(`NAME: ${name}`);
         let query = new URLSearchParams(name)
         let channel_id = query.get('channel')
-        console.log(`channel_id:`, channel_id);
-        console.log(`user:`, user);
+        // console.log(`channel_id:`, channel_id);
+        // console.log(`user:`, user);
         if(!user?.email){
           return
         } 
@@ -85,11 +85,17 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
             setter(null)
           return setLoading(false)
         }
+        
         socket.emit('get_channel', {channel_id,userEmail:user?.email})
-          } catch (error) {
-        setServerResponse(error)
-      } finally{
-        scrollToRef?.current?.scrollIntoView({behaivor:'smooth'})
+
+        }
+        
+        catch (error) {
+        
+          setServerResponse(error)
+      } finally {
+        
+        scrollToRef?.current?.scrollIntoView({behavior:'smooth'})
       }
     }
 

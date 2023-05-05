@@ -11,11 +11,10 @@ import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
 import { sleep } from '../../utils'
 
 const {certOptions,io,serverUrl} = SocketStore()
-console.log(serverUrl);
-export const channelSocket = io(`${serverUrl}/currentChannel`,{pfx:certOptions.pfx,passphrase:certOptions.passphrase});
+export const channelSocket = io(`${serverUrl}/currentChannel`,{
+  pfx:certOptions.pfx,passphrase:certOptions.passphrase,reconnection:true,reconnectionDelayMax:5000,reconnectionAttempts:Infinity});
 
 const CurrentChannel = () => {
-  // const [currentChannel,setCurrentChannel] =useState<ChannelType | null>(null)
   const {currentChannel,setCurrentChannel}=useCurrentContext()
   const {user,setLoading} = useAuth()
   const {setServerResponse} = useResponseContext()
@@ -24,8 +23,9 @@ const CurrentChannel = () => {
   const location = useLocation()
   useEffect(
     ()=>{
-      console.log(channelSocket);
-      
+      let onConnect = ()=>{
+        console.log(`CONNECTED BY ID ${channelSocket.id}`)
+      }
       let onGetChannel = (data:SocketResponse)=>{
         if(!data.success) setServerResponse(data.err)
         console.log(`GETTING CHANNEL`, data)
@@ -45,6 +45,7 @@ const CurrentChannel = () => {
         }
       }
       let onDeleteMessage = (data:SocketResponse)=>{
+        console.log(`DELETING  MESSAGE RESPONSE`,data);
         if(data.success){
           console.log(`SUCCESS DELETE`, data);
           
@@ -53,26 +54,26 @@ const CurrentChannel = () => {
           setServerResponse(data?.err)
         }
       }
-      let onConnecting = ()=>{
-        console.log(`CONNECTED BY ID ${channelSocket.id}`)
+      let onDisconnect = ()=>{
+        console.log(`Disconnected from server`)
       }
       let onJoinChannel=(data:SocketResponse)=>{
         console.log(`JOINED CHANNEL ${data.data.room}`);
       }
       channelSocket.on('get_channel',onGetChannel)
-      channelSocket.on('connect',onConnecting)
+      channelSocket.on('disconnect',onDisconnect)
+      channelSocket.on('connect',onConnect)
       channelSocket.on('receive_message',onMessage)
       channelSocket.on('delete_message',onDeleteMessage)
       channelSocket.on('join_channel',onJoinChannel)
       return ()=>{
         channelSocket.off('delete_message',onDeleteMessage);
         channelSocket.off('receive_message',onMessage);
-        channelSocket.off('connect',onConnecting);
+        channelSocket.off('connect',onConnect);
+      channelSocket.off('disconnect',onDisconnect)
         channelSocket.off('get_channel',onGetChannel);
-        if(currentChannel?._id ){
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
-        };
         setCurrentChannel(null)
     }
      
@@ -93,7 +94,7 @@ const CurrentChannel = () => {
       
         controller?.abort()
       }
-  },[location.search,user.email]
+  },[location.search,user.email,channelSocket.connected]
   )
   
   let channelContent =

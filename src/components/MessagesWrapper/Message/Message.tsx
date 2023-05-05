@@ -1,4 +1,4 @@
-import React, { ForwardedRef, SetStateAction } from 'react'
+import React, { ForwardedRef, RefObject, SetStateAction } from 'react'
 import './Message.scss'
 import { APIFetch, createDate, throwErr } from '../../utils'
 import Button from '../../Button/Button'
@@ -8,21 +8,20 @@ import MemberInfo from '../../UserSearch/UserSearch'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useMessagesContext } from '../../../hooks'
 type PropsType = {
-    createdAt:{day:string,time:string}
+    createdAt:{day:string,
+      time:string
+      timeStamp:'string'}
     message:string
     messageUser?:UserType
     key:any
     _id?: string
+    channel_id:string
 }
 
 type DisplayDateProps ={
-  date:{
     day:string,
     time:string
-    date: ()=>Date 
     timeStamp:'string'
-
-  }
 }
 const displayDate = (date:DisplayDateProps) => {
   let today =createDate().date()
@@ -39,7 +38,7 @@ const displayDate = (date:DisplayDateProps) => {
 
 
 
-const Message = React.forwardRef(({createdAt,message,messageUser,_id}:PropsType,ref:ForwardedRef<HTMLDivElement | undefined>) => {
+const Message = React.forwardRef(({createdAt,message,messageUser,_id,channel_id}:PropsType,ref:ForwardedRef<HTMLDivElement | undefined>) => {
   const {handleDeleteMessage}=useMessagesContext()!
   const {user} = useAuth()
   const navigate = useNavigate()
@@ -52,7 +51,7 @@ const Message = React.forwardRef(({createdAt,message,messageUser,_id}:PropsType,
 return (
     <div  className={`message ${sentBy}`}>
          <button onClick={visitProfileFunc} className='show-member-button'>
-                <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
+            <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
           </button>
       
        <div className="message-wrapper">
@@ -61,12 +60,12 @@ return (
        </div>
        <p className="message-text">{message}</p>
        {sentBy==='sent'? (
-         <Button img={trashIco} name='message-delete' type="button" onClick={()=>handleDeleteMessage(_id!,)} />
+         <Button img={trashIco} name='message-delete' type="button" onClick={()=>handleDeleteMessage(_id!,channel_id)} />
 
        ): (
         null
        )}
-    <div className="scrolledToDiv" ref={ref}></div>
+    <div className="scrolledToDiv" ref={ref as RefObject<HTMLDivElement>}></div>
      </div>
   )
 })

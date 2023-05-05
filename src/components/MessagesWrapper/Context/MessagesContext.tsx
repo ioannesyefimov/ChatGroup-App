@@ -45,15 +45,15 @@ const useMessagesStore = ()=>{
      }
     
     
-     const handleDeleteMessage = async(message_id:string) => {
+     const handleDeleteMessage = async(message_id:string,channel_id:string) => {
        try {
          setLoading(true)
          console.log(`DELETING :`, message_id);
          console.log(`USER:`, user);
-         console.log(`socket:`, channelSocket);
+         console.log(`channelid`,currentChannel?._id);
         //  console.log(`channel:`, currentChannel);
          if(!message_id) return console.error(`missing id`);
-         channelSocket.emit('delete_message',{channel_id:currentChannel?._id,message_id,userEmail:user.email,})
+         channelSocket.emit('delete_message',{channel_id,message_id,userEmail:user.email,})
       } catch (error) {
         setServerResponse(error)
       } finally{

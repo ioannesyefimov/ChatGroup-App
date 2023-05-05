@@ -14,8 +14,6 @@ type PropsType = {
 }
 const Channels = ({type,fallbackText,channels}:PropsType) => {
   const user=useUser()
-  console.log(`channels`, channels);
-  
   let content = (
     channels?.length ? (
       <div className='channels'>

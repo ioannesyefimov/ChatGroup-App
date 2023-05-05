@@ -27,10 +27,6 @@ export const useAuthContext = (initAuthContextState:InitialStateType)=>{
   const [loading, setLoading] = useState<boolean>(false)
   const [user, setUser] = useState(initAuthContextState.user)
   const serverUrl =  initAuthContextState.serverUrl
-  console.log(`server url : ${serverUrl}`)
-
-   
-
   return {user,loading,serverUrl,setUser,setLoading}
 }
 

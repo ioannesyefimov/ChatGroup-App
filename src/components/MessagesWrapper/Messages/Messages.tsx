@@ -18,9 +18,9 @@ const Messages = ({messages,user,scrollToRef,date}:PropsType) => {
             <span >{date}</span>
           </div> 
           {
-            messages?.map((message:MessageType,i:number|string)=>{
+            messages?.map((message:MessageType| any,i:number|string)=>{
               return (
-                <Message ref={scrollToRef} _id={message?.id} key={message?.id}  message={message?.message} createdAt={message?.createdAt} messageUser={message?.user}  />
+                <Message channel_id={message.channelAt[0]?._id} ref={scrollToRef} _id={message?._id!} key={message?._id}  message={message?.message} createdAt={message?.createdAt} messageUser={message?.user}  />
                 )
               })
             }

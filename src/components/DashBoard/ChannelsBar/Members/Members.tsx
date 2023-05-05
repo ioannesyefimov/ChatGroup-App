@@ -7,7 +7,8 @@ export default function Members({members}:{members?:UserType[]}) {
     {
         members?.length ? (
             members?.map(member=>{
-                return (<User key={member.member?._id} user={member.member} location=""/>)  
+                
+                return (<User key={member?._id} user={member.member} location=""/>)  
             })
         ) : (
             <span>There is no members...</span>

@@ -1,4 +1,4 @@
-import { ChangeEvent,  RefObject } from "react";
+import React, { ChangeEvent,  RefObject, SetStateAction } from "react";
 import { MessageType } from "../types";
 import { log } from "console";
 
@@ -18,12 +18,12 @@ export function sortMessagesByDate  (data:MessageType[]){
   } 
   // Sort array of messages from the end message to the latest
   const sortedData = data.sort(sortMessages);
-  console.log(`SORTED`, sortedData);
+  // console.log(`SORTED`, sortedData);
   
   
   // let currentDay = createDate().date;
   let currentDay = new Date(sortedData[0].createdAt.timeStamp)
-  console.log(`CURRENT DAY`, currentDay);
+  // console.log(`CURRENT DAY`, currentDay);
   
   
   const stillCurrentDay = (dayOfMessage:Date) => {
@@ -63,7 +63,6 @@ export function sortMessagesByDate  (data:MessageType[]){
   
   createMessagesArray(dayMessageArray);
   
-  console.log(fullMessageArray);
   console.log(fullMessageArray);
   // reverse order of messages so that it is from the first message to the latest
   return {fullMessageArray,dayMessageArray}
@@ -133,7 +132,6 @@ export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=
     console.log(refs)
     for(let obj in fields){
       if(fields[obj] === '') {
-        console.log(`FIELD:`, fields[obj])
           refs[obj]?.current?.classList.add('error')
           errors[obj] = Errors.CANNOT_BE_EMPTY
           refs[obj].current?.setAttribute('error',errors[obj])
@@ -141,7 +139,6 @@ export const validateInput = ({fields,refs}:{fields:FieldsType,refs: RefsType})=
       }
       else if(obj==='email'){
         let isValid = validateEmail(fields[obj]);
-        console.log(isValid);
         
         if(!isValid) {
           refs[obj]?.current?.classList.add('error')
@@ -258,14 +255,6 @@ const Errors = {
 }
 
 
-const getUrlWithQueryParams = (baseUrl:string, params:object):string =>{
-  const query = Object.entries(params)
-  .map(([key,value])=> `${key}=${encodeURIComponent(value)}`)
-    .join(`&`)
-    return `${baseUrl}?${query}`
-}
-
-
 const timeout = (delay:number)=>{
   return new Promise(res=>setTimeout(res,delay));
 }
@@ -289,6 +278,7 @@ interface FetchProps {
   body?: Object
   headers?: HeadersInit | undefined 
   signal?: AbortSignal
+  setError: React.Dispatch<SetStateAction<any>>
 }
  const APIFetch = async({url,
   method='get',
@@ -296,7 +286,9 @@ interface FetchProps {
   "Content-Type": "application/json",
 }, 
 body,
-signal}:FetchProps) => {
+signal,
+setError,
+}:FetchProps) => {
   console.log(`headers: `, headers);
   console.log(`body: `, body);
   console.log(`url: `, url)
@@ -306,14 +298,14 @@ signal}:FetchProps) => {
     signal,
     headers,
     body: JSON.stringify(body)
-  }).then(response=>response.json())
+  }).then(response=>response.json()).catch(err=>setError(err))
  ) : (
   
   await fetch(url, {
     method: method,
     headers,
     signal,
-  }).then(response=>response.json())
+  }).then(response=>response.json()).catch(err=>setError(err))
  )
 }
 
@@ -389,5 +381,5 @@ function getFirstLetter(str:string,words?:number){
  
   export {
     countWords,getFirstLetter,
-    convertBase64, timeout, getUrlWithQueryParams, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,setter,
+    convertBase64, timeout, Errors, validateEmail,validatePassword, isTrue,isObj,APIFetch,throwErr,setter,
   }
