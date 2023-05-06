@@ -1,6 +1,7 @@
 import React, { SetStateAction, useState } from 'react'
 import { ChildrenType } from '../types'
 import { Outlet } from 'react-router-dom'
+import ServerResponseFallback from './ServerResponseFallback'
 
 type ResponseState = {
     serverResponse:any,
@@ -23,7 +24,7 @@ const ServerResponseProvider = ({children}: ChildrenType) => {
 
     return (
         <ResponseContext.Provider value={useResponseContext(initialState)}>
-            {children}
+            <ServerResponseFallback><Outlet/></ServerResponseFallback>
         </ResponseContext.Provider>
 )
 }

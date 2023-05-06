@@ -26,11 +26,10 @@ const ProtectedRoute = () => {
         async()=>{
         if(!user?.email){
         let isLogged = cookies?.user
-        console.log(`islogged`,isLogged);
         
         if(isLogged){
           setUser(isLogged);
-          
+          setChannels(isLogged.channels)
         }
       }
       setLoading(false)
@@ -39,29 +38,6 @@ const ProtectedRoute = () => {
       
     },[cookies.user]
   )
-  useEffect(
-    ()=>{
-      console.log(`cookies`,cookies);
-      
-      sleep(1000).then( 
-        async()=>{
-        let cookiesChannels = cookies?.channels
-        let userChannels = user?.channels
-        console.log(` cookie channels`,cookiesChannels);
-        
-        if(cookiesChannels?.length){
-          setChannels(cookiesChannels);
-        }else if(userChannels.length){
-          setChannels(cookiesChannels);
-        }
-      }
-      )
-      setLoading(false)
-      
-    },[cookies.channels]
-  )
- 
-
   useEffect(
     ()=>{
       if(user?.email){

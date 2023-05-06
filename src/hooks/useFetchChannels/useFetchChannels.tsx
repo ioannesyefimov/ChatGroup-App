@@ -8,6 +8,7 @@ import { UserType } from '../../components/types'
 
 const useFetchChannels = (user:UserType) => {
     const serverUrl = useServerUrl()
+    // const {user}=useAuth()
     const setLoading = useSetLoading()
     const {cookies,setCookie} = useAuthCookies()
     const channels = useChannels()
@@ -23,13 +24,13 @@ const useFetchChannels = (user:UserType) => {
             let response = await APIFetch({signal,url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
             console.log(`CHANNELS RESPONSE:`, response)
             let channels = JSON.stringify(response?.data?.channels)
-            setCookie('channels', response.data.channels, {maxAge: 2000,path:'/'})
+            // setCookie('channels', response.data.channels, {maxAge: 2000,path:'/'})
+            let updatedUser = {...user,channels:channels}
+            
             if(!response?.success){
-                console.log(`ERROR`)
                 throwErr(response?.err)
             }
-            // let updatedChannels = {...cookies.channels,channels:response.data.channels} 
-            // setCookie('channels',updatedChannels,{path:'/',maxAge:2000})
+            setCookie('user',updatedUser,{path:'/',maxAge:2000})
         } catch (error) {
         console.error(error)
         } finally{
@@ -37,23 +38,16 @@ const useFetchChannels = (user:UserType) => {
         }
     }
     
-    // useEffect(
-    //     ()=>{
-    //         setLoading(true)
-    //         let isChannels = cookies?.channels
-    //         console.log(`CHANNELS`, isChannels);
-            
-    //         if(isChannels?.length){
-    //             console.log(`CHANNELS`, isChannels);
-                
-    //             setChannels(typeof isChannels ==='object' ? isChannels : [isChannels])
-    //         }else if(user.channels?.length) {
-                
-    //             setChannels(typeof user.channels ==='object' ? user.channels : [user.channels])
-    //         }
-    //         setLoading(false)
-    //     },[cookies.channels]
-    //     )
+    useEffect(
+        ()=>{
+            setLoading(true)
+            let isChannels = user?.channels
+            if(isChannels?.length){
+                setChannels(typeof isChannels ==='object' ? isChannels : [isChannels])
+            }
+            setLoading(false)
+        },[cookies.channels]
+        )
     
  
         let value =useMemo(

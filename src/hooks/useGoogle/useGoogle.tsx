@@ -18,16 +18,15 @@ const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
     
     const handleGoogle = async(googleResponse:any)=>{
         try {
-            setServerResponse(null)
             // let loginType = window.localStorage.getItem('LOGIN_TYPE')
             console.log(loginType)
             console.log(googleResponse)
             if(!googleResponse?.credential) return console.log(`MISSING GOOGLE'S RESPONSE `)
-            let response = await APIFetch({url:`${serverUrl}/auth/google`,method:'POST',body:{credential:googleResponse.credential}})
+            let response = await APIFetch({setError:setServerResponse,url:`${serverUrl}/auth/google`,method:'POST',body:{credential:googleResponse.credential}})
             console.log(`RESPONSE`,response);
             
             if(!response?.success){
-                throwErr(response?.message)
+                throwErr(response?.err)
             }
             if(redirectUrl){
                 console.log(`REDIRECT ULR : ${redirectUrl}`)

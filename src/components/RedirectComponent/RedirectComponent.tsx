@@ -37,15 +37,14 @@ let handleLogin =
         async({accessToken,type,loggedThrough,signal,redirectUrl}:HandleLoginProps)=>{
            try {
             console.log(`LOGGIN IN`);
-            
             setLoading(true)
-            let response = await APIFetch({url:`${serverUrl}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
+            let response = await APIFetch({setError:setServerResponse, url:`${serverUrl}/${type}?accessToken=${accessToken}&loggedThrough=${loggedThrough}`, method:'get', signal})
             if(!response?.success){
                 throwErr(response?.err)
             }
             console.log(`RESP:"`, response);
             let data=response.data
-            setData({user:data.user,accessToken:data.accessToken,redirect:redirectUrl ?? data?.redirectUrl ?? '/chat' ,channels:data?.user?.channels})
+            setData({user:data?.user,accessToken:data?.accessToken,redirect:redirectUrl ?? data?.redirectUrl ?? '/chat' ,channels:data?.user?.channels})
         } catch (error) {
             setServerResponse(error)
             

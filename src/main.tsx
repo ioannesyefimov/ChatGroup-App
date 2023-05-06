@@ -12,9 +12,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <ErrorBoundary >
         <CookiesProvider>
         <AuthProvider >
-          <ServerResponseProvider>
+          {/* <ServerResponseProvider> */}
             <App />
-         </ServerResponseProvider>
+         {/* </ServerResponseProvider> */}
         </AuthProvider>
         </CookiesProvider>
     </ErrorBoundary>

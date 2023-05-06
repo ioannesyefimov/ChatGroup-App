@@ -9,12 +9,13 @@ import { log } from 'console'
 import { LoadingFallback } from './components/LoadingFallback/LoadingFallback'
 import NavigationBar from './components/NavigationBar/NavigationBar'
 import ErrorBoundary from './components/ErrorProvider/ErrorProvider'
+import { ResponseContext } from './components/ServerResponseFallback/ResponseContext'
 
 
 
 let router = createBrowserRouter([
   {
-    element:<ServerResponseFallback/>,
+    element:<ServerResponseProvider/>,
     children:[
       {
         element: <NotFound />,
@@ -58,21 +59,21 @@ let router = createBrowserRouter([
           {
     
            element: <ChatContainer  />,
-           path: '/chat/:channel?',
+           path: '/chat/:channel?/:manager?',
           },
           {
-            element: <ChannelManager/>,
-            path: '/chat/manage',
-            children: [
-              {
-                path:'create',
-                element: <ChannelCreate/>
-              },
-              {
-                path:'join/:search?',
-                element: <ChannelJoin/>
-              }
-            ]
+           // element: <ChannelManager/>,
+           // path: '/chat/manage',
+           // children: [
+              //{
+             //   path:'create',
+           //     element: <ChannelCreate/>
+              // },
+              // {
+                // path:'join/:search?',
+                // element: <ChannelJoin/>
+              // }
+            // ]
        
            },
         ]

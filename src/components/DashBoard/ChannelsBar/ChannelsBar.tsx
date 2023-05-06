@@ -22,10 +22,12 @@ const ChannelsBar = ({user}:{user:UserType}) => {
   } = useHandleChannel()
   const {channels,fetchChannels}=useFetchChannels(user)
   const  location = useLocation()
-  
+  const userChannels = searchedChannels.length ? searchedChannels : channels?.length ? channels:  user?.channels
 useEffect(
   ()=>{
     console.log(`CURRENT`, currentChannel);
+    console.log(`channels`,channels);
+    
     if(currentChannel){
       setShowedBar(true)
     }else {
@@ -69,10 +71,10 @@ useEffect(
 
             <div className="flex flex--between">
             <span>Channels</span>
-            <Button onClick={()=>navigate('/chat/manage')} name='link' img={settingIco} />
+            <Button onClick={()=>navigate('/chat/manage  ')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={searchedChannels?.length  ? searchedChannels: channels} />
+            <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={userChannels} />
             <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { ReactNode, useEffect } from 'react'
 type ButtonProps= {
     text?: string
     name: string
@@ -6,8 +6,9 @@ type ButtonProps= {
     isToggled?:boolean
     type?: "button" | "submit" | "reset" 
     onClick?: (e:React.MouseEvent<HTMLButtonElement>) => void
+    children?:ReactNode
 }
-const Button = ({text,onClick,name,img,isToggled,type='button'}:ButtonProps) => {
+const Button = ({text,onClick,name,img,isToggled,type='button',children}:ButtonProps) => {
   let btnRef = React.createRef<HTMLButtonElement>()
 
   
@@ -15,6 +16,7 @@ const Button = ({text,onClick,name,img,isToggled,type='button'}:ButtonProps) => 
     <button ref={btnRef}  className={name} type={type} onClick={onClick}>
       {text?   text : null }
       {img ? <img data-istoggled={isToggled} src={img} alt={`${name} image`}/> : null}
+      {children ?? null}
       </button>
   )
 }

@@ -224,6 +224,7 @@ interface validateProps {
 
  
 const Errors = {
+  SHORT_LENGTH:'SHORT_LENGTH',
   INVALID_CHANNEL_NAME: `Channel name must not contain any special characters such as [*|\":<>[\]{}\`\()';@&$] `,
   CHANNEL_NOT_FOUND: `Such channel wasn't found. Try to type in differently`,
   CHANNELS_NOT_FOUND: `Channels weren't found`,
@@ -278,7 +279,7 @@ interface FetchProps {
   body?: Object
   headers?: HeadersInit | undefined 
   signal?: AbortSignal
-  setError: React.Dispatch<SetStateAction<any>>
+  setError?: React.Dispatch<SetStateAction<any>>
 }
  const APIFetch = async({url,
   method='get',
@@ -289,7 +290,6 @@ body,
 signal,
 setError,
 }:FetchProps) => {
-  console.log(`headers: `, headers);
   console.log(`body: `, body);
   console.log(`url: `, url)
  return !method?.toLowerCase().includes('get')   ? (
@@ -298,14 +298,14 @@ setError,
     signal,
     headers,
     body: JSON.stringify(body)
-  }).then(response=>response.json()).catch(err=>setError(err))
+  }).then(response=>response.json()).catch(err=>{throwErr(err)})
  ) : (
   
   await fetch(url, {
     method: method,
     headers,
     signal,
-  }).then(response=>response.json()).catch(err=>setError(err))
+  }).then(response=>response.json()).catch(err=>{throwErr(err)})
  )
 }
 

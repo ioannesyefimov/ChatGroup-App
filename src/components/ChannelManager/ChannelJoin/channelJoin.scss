@@ -1,7 +1,9 @@
 .prompt-menu-component {
     display: flex;
+    position: relative;
     margin:auto;
     position: static;
+ 
     form {
         display: grid;
         .inner-wrapper {

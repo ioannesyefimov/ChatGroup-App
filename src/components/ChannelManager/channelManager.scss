@@ -1,8 +1,17 @@
 .channel-manager-component{
     display:flex;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    background-color:#0B090C  ;   
+    width: 250px;
+    border-radius: 8px;
+    height: 150px;
     align-items: center;
     flex:1;
     gap:1rem;
+    text-align: center;
+   
     div.wrapper {
         display:grid;
         gap:1rem;
@@ -14,7 +23,7 @@
             color:gold;
             font-weight: 700;
         }
-        outline: 1px solid gold;
+        outline: 1px solid gray;
         padding: .3rem .5rem;
         border-radius: 12px;
     }
@@ -23,4 +32,35 @@
     button{
         padding: .4rem;
     }
+}
+.prompt-menu-component{
+    button.close{
+        position: absolute;
+        right: 5px;
+        top:5px;
+        padding: 0;
+        img{
+            filter: brightness(100%) invert(50%);
+            max-width: 23px;
+    
+        }
+        &:hover{
+            img{
+                filter: brightness(50%) invert(100%);
+            }
+        }
+    }
+    button.back{
+        position: absolute;
+        left: 1px;
+        top:1px;
+        padding: 0;
+        img{
+            filter: brightness(100%) invert(50%);
+            max-width: 30px;
+    
+        }
+        
+    }
+        
 }
