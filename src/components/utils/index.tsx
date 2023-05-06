@@ -298,14 +298,14 @@ setError,
     signal,
     headers,
     body: JSON.stringify(body)
-  }).then(response=>response.json()).catch(err=>{throwErr(err)})
+  }).then(response=>response.json()).then(data=>{console.log(`data:`,data);return data}).catch(err=>{throwErr(err)})
  ) : (
   
   await fetch(url, {
     method: method,
     headers,
     signal,
-  }).then(response=>response.json()).catch(err=>{throwErr(err)})
+  }).then(response=>response.json()).then(data=>{console.log(`data:`,data);return data}).catch(err=>{throwErr(err)})
  )
 }
 

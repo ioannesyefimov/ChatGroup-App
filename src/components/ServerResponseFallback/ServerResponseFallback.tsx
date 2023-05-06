@@ -40,6 +40,7 @@ type ResponseFallbackType ={
     }) : serverResponse?.name === Errors.MISSING_ARGUMENTS ? ()=>setServerResponse(null):
     ()=> {
         setServerResponse(null);
+        navigate("/chat");
     }
 
     let btnText = serverResponse?.name === Errors.NOT_A_MEMBER ? 'Join' : serverResponse?.message===Errors.JWT_MALFORMED ? (

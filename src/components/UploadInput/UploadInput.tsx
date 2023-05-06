@@ -17,7 +17,7 @@ const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, 
 
     return(
 
-        <label ref={ref} htmlFor={id} className="file-upload-component inner-wrapper">
+        <label ref={ref as React.LegacyRef<HTMLLabelElement>} htmlFor={id} className="file-upload-component inner-wrapper">
             {labelName ?? ''}
             <div className="wrapper">
 

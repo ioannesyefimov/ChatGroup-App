@@ -35,10 +35,11 @@ const ChannelCreate = ()=>{
                 // let uploadedPicture = await APIFetch({url:`${serverUrl}/upload/picture`, body:{image:channelAvatar,accessToken:cookies?.accessToken}})
                 let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/create`, body:{userEmail:user.email, accessToken:cookies?.accessToken,channelName,channelAvatar:file,channelDescription},method:'POST'})
                 if(!response.success) throwErr(response?.message)
-                let updatedUser = {...user,channels:[...user.channels,response.data]}
+                let updatedUser = JSON.stringify({...user,channels:response?.data.channels})
                 setCookie('user',updatedUser,{path:'/',maxAge:2000})
-                navigate(`/chat?channel=${response.data._id}`)
+                navigate(`/chat?channel=${response?.data?.channel._id}`)
                 console.log(`RESPONSE : `, response)
+                console.log(`updatedUser : `, updatedUser)
             } catch (error) {
                 console.log(`ERROR:`,error)
                 return setServerResponse(error)

@@ -20,7 +20,9 @@ const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => 
       let handle
       let params = new URLSearchParams(urlSearch)
       let searchParam = params?.get('search')
-      if(searchParam){
+      console.log(`typeof search `,typeof searchParam);
+      
+      if(searchParam && searchParam!== 'undefined'){
         sleep(1500).then(()=>handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],channels}))
       } else {
         sleep(1500).then(()=>handleSearch({search,searchType:SEARCH_TYPE[searchType],channels}))

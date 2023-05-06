@@ -40,8 +40,8 @@ const useSearch = () => {
         try {
             setLoading(true)
             let result:ResultType= {users: [], channels:[],filtered:[]}
-            // console.log(`SEARCH:`, search);
-            // console.log(`type:`,searchType)
+            console.log(`SEARCH:`, search);
+            console.log(`type:`,searchType)
             search = search ? search.toLowerCase() : ''
             switch(searchType){
                 case SEARCH_TYPE.CHANNELS:{
@@ -109,7 +109,8 @@ const useSearch = () => {
                 }
             setSearchedValue(result)            
         } catch (error) {
-            setServerResponse(error)
+            // setServerResponse(error)
+            console.error(error)
         } finally{
             setLoading(false)
 

@@ -9,15 +9,8 @@ export const useChannels = ()=>useContext(ChatContext).channels
 export const useSetChannels = ()=>useContext(ChatContext).setChannels
  const useChat = () =>{
     const {channels, setChannels } = useContext(ChatContext)
-
-   
     
-    const value = useMemo(
-        ()=>({
-            channels, setChannels
-        }),[channels]
-    )
-    return value
+    return {channels, setChannels}
 }
  
 export default useChat

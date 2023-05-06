@@ -23,12 +23,13 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           let response = await APIFetch({url:`${serverUrl}/channels/leave`,method:'PUT',body:{
             userEmail:user.email,channel_id:id
           },setError:setServerResponse})
-          // if(!response.success){
-          //   throwErr(response.err)
-          // }
-          let newchannels = [...cookies.channels, cookies.channels.filter(channel=>channel._id !== id)]
+          if(!response.success){
+            throwErr(response.err)
+          }
+          // let newchannels = [...cookies.channels, cookies.channels.filter(channel=>channel._id !== id)]
+
           // setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
-          setCookie('channels',newchannels,{path:'/',maxAge:2000})
+          setCookie('channels',response.data.channels,{path:'/',maxAge:2000})
           setLoading(false)
 
         } catch (error) {
@@ -44,8 +45,9 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               let response:ResponseType = await APIFetch({url:`${serverUrl}/channels/join`, body:{channel_id:id,userEmail:user.email},method:'POST', setError:setServerResponse})
               // if(!response.success) throwErr(response?.err)
               setChannels(prev=>({...prev, ...response?.data?.channel }))
-              let newUser = {...user, channels: [...user.channels, response.data.channel]}
-              setCookie('user',newUser,{path:'/',maxAge:2000})
+              let newChannels = [...user.channels, response.data.channel]
+              // setCookie('user',newChannels,{path:'/',maxAge:2000})
+              setCookie('channels',newChannels,{path:'/',maxAge:2000})
               navigate(`/chat/?channel=${response?.data?.channel?._id}`)
               console.log(`RESPONSE : `, response)
           } catch (error) {

@@ -23,14 +23,16 @@ const useFetchChannels = (user:UserType) => {
             } 
             let response = await APIFetch({signal,url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
             console.log(`CHANNELS RESPONSE:`, response)
-            let channels = JSON.stringify(response?.data?.channels)
-            // setCookie('channels', response.data.channels, {maxAge: 2000,path:'/'})
-            let updatedUser = {...user,channels:channels}
-            
             if(!response?.success){
                 throwErr(response?.err)
             }
-            setCookie('user',updatedUser,{path:'/',maxAge:2000})
+            let channels = response?.data?.channels
+            console.log(`channels`, channels);
+            
+            setCookie('channels', response.data.channels, {maxAge: 2000,path:'/'})
+            // let updatedUser = {...user,channels:channels}
+            
+            setCookie('user',response.data.user,{path:'/',maxAge:2000})
         } catch (error) {
         console.error(error)
         } finally{
