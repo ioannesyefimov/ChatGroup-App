@@ -22,7 +22,7 @@ const ChannelsBar = ({user}:{user:UserType}) => {
   } = useHandleChannel()
   const {channels,fetchChannels}=useFetchChannels(user)
   const  location = useLocation()
-  const userChannels = searchedChannels.length ? searchedChannels : channels?.length ? channels:  user?.channels
+  const userChannels = searchedChannels.length ? searchedChannels : channels?.length ? channels:  user?.channels.map(channel=>channel.channel)
 useEffect(
   ()=>{
     console.log(`CURRENT`, currentChannel);
@@ -74,7 +74,7 @@ useEffect(
             <Button onClick={()=>navigate('/chat/manage  ')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={userChannels} />
+            <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={userChannels as ChannelType[]} />
             <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>
       </div>

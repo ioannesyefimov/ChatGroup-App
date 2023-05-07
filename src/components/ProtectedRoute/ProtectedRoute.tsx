@@ -7,6 +7,7 @@ import CurrentChannelProvider from '../ChatProvider/CurrentChannelProvider'
 import SocketStore from '../SocketStore'
 import { sleep } from '../utils'
 import { ChannelType } from '../types'
+import { channel } from 'diagnostics_channel'
 
 
 const {io,serverUrl,certOptions}=SocketStore()
@@ -26,18 +27,10 @@ const ProtectedRoute = () => {
       sleep(500).then( 
         async()=>{
         let isLogged = cookies?.user
-        let channels = cookies?.channels
-        console.log(`cookie channels`, channels);
-        let userchannels:any  = isLogged.channels.map(channel=>channel.channel)
-        let longer = channels?.length > userchannels?.length  ? channels : userchannels
-        console.log(`longer`,longer);
-        
-        if(isLogged){
+      
+        if(isLogged?.email){
           setUser(isLogged);
-          if(longer?.length){
-            setChannels(longer)
-          }
-      }
+        }
       setLoading(false)
       }
       )

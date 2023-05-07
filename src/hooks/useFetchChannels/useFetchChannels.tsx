@@ -14,7 +14,7 @@ const useFetchChannels = (user:UserType) => {
     const channels = useChannels()
     const setChannels = useSetChannels()
     // const user=useUser()
-    const fetchChannels = 
+    const fetchChannels = useCallback(
     async(user:UserType,signal?:AbortSignal)=>{
         setLoading(true)
         try {
@@ -29,7 +29,7 @@ const useFetchChannels = (user:UserType) => {
             let channels = response?.data?.channels
             console.log(`channels`, channels);
             
-            setCookie('channels', response.data.channels, {maxAge: 2000,path:'/'})
+            setCookie('channels', channels, {maxAge: 2000,path:'/'})
             // let updatedUser = {...user,channels:channels}
             
             setCookie('user',response.data.user,{path:'/',maxAge:2000})
@@ -38,17 +38,21 @@ const useFetchChannels = (user:UserType) => {
         } finally{
             setLoading(false)
         }
-    }
+    },[user])
     
     useEffect(
         ()=>{
             setLoading(true)
-            let isChannels = user?.channels
-            if(isChannels?.length){
-                setChannels(typeof isChannels ==='object' ? isChannels : [isChannels])
+            let userchannels:any  = user?.channels.map(channel=>channel.channel)
+            // let longer = channels?.length > userchannels?.length  ? channels : userchannels
+            console.log(`user channels`, userchannels);
+            // console.log(`longer`,longer);
+            // if(longer?.length){
+            if(userchannels?.length){
+                setChannels(userchannels)
             }
-            setLoading(false)
-        },[cookies.channels]
+                setLoading(false)
+        },[user.channels]
         )
     
  

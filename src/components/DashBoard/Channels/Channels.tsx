@@ -10,7 +10,7 @@ import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
 type PropsType = {
   type:string 
   fallbackText:string 
-  channels: ChannelType[] | null
+  channels: ChannelType[] 
 }
 const Channels = ({type,fallbackText,channels}:PropsType) => {
   const user=useUser()
@@ -20,7 +20,7 @@ const Channels = ({type,fallbackText,channels}:PropsType) => {
         <div className="channels-wrapper">
           {
             channels.map((channel:ChannelType,index)=>{
-              let isJoined = channel?.members?.some((member:UserType)=>member?.member?._id === user?._id!);
+              let isJoined = channel?.members?.some((member:UserType)=>member?.member?._id === user?._id! || member.member === user?._id);
             return (
             <Channel isJoined={isJoined} type={type} id={channel?._id!} key={channel?._id!}  name={channel?.channelName} avatar={channel?.channelAvatar}/>
             )
