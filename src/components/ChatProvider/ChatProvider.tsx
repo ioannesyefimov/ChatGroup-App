@@ -27,7 +27,11 @@ export type InitialChatStateType = {
   export const useChatContext = (initChatContextState:InitialChatStateType)=>{
     const [channels,setChannels] = useState<ChannelType[]>([])
     const [currentChannel,setCurrentChannel] = useState<ChannelType | null>(null)
-
+    useEffect(
+      ()=>{
+          console.log(`channels change`, channels)
+      },[channels]
+  )
 
     return {channels,currentChannel,setCurrentChannel,setChannels}
   }

@@ -47,7 +47,7 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
               let messages:unknown = sortedMessages[arrays][key]
               // and return Messages with divider for day and time
               return(
-                    <Messages messages={messages as MessageType[]} date={date} key={sortedMessages[arrays][key]?._id ?? 'newkey'}   />
+                    <Messages messages={messages as MessageType[]} date={date} key={key ?? 'newkey'}   />
                 )
                 }) 
         }) 

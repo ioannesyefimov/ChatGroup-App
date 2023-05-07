@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ChannelType, UserType } from '../../components/types'
-import { APIFetch, Errors, sleep, throwErr } from '../../components/utils'
+import { APIFetch, throwErr } from '../../components/utils'
 import { useAuth, useResponseContext } from '..'
 const useSearch = () => {
     const {setLoading,user,serverUrl} = useAuth()
@@ -68,6 +68,8 @@ const useSearch = () => {
                     
                 }
                 case SEARCH_TYPE.CHANNEL:{
+                    console.log(`searching channgel from `, channels);
+                    
                         let filtered = channels?.filter((channel:ChannelType)=>{
                             let name = channel.channelName.toLowerCase() 
                             return name.includes(search)
@@ -109,8 +111,7 @@ const useSearch = () => {
                 }
             setSearchedValue(result)            
         } catch (error) {
-            // setServerResponse(error)
-            console.error(error)
+            setServerResponse(error)
         } finally{
             setLoading(false)
 

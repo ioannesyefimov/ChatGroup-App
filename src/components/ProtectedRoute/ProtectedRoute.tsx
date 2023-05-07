@@ -28,17 +28,14 @@ const ProtectedRoute = () => {
         let isLogged = cookies?.user
         let channels = cookies?.channels
         console.log(`cookie channels`, channels);
+        let userchannels:any  = isLogged.channels.map(channel=>channel.channel)
+        let longer = channels?.length > userchannels?.length  ? channels : userchannels
+        console.log(`longer`,longer);
         
         if(isLogged){
           setUser(isLogged);
-          if(channels?.length){
-            setChannels(channels)
-          }else 
-          if(isLogged.channels?.length) {
-            let userchannels:unknown  = isLogged.channels.map(channel=>channel.channel)
-            console.log(`userchannels`,userchannels);
-            
-            setChannels(userchannels as ChannelType[])
+          if(longer?.length){
+            setChannels(longer)
           }
       }
       setLoading(false)

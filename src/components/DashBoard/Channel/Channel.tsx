@@ -21,14 +21,14 @@ const Channel = ({isJoined, name,avatar,handleChannel,id,type}:ChannelProps) => 
     const navigate=useNavigate()
     
     let handleFc =
-     (type === 'leave') ?
+     (type === 'leave' && isJoined) ?
          ()=>handleLeaveChannel(id!,user!) :
-        (type==='join' ) ? 
+        (type==='join' && !isJoined) ? 
         ()=> handleJoinChannel(id,user) :
          (isJoined) ?
           ()=>navigate(`/chat/?channel=${id}`)
            : ()=>{}
-    let btmImg = (type==='leave') ? trashIco : (type==='join' ) ? joinIco : (isJoined) ? correctUploadIco : ''
+    let btmImg = (type==='leave' && isJoined) ? trashIco : (type==='join' && !isJoined ) ? joinIco : (isJoined) ? correctUploadIco : ''
     let content = (
         (
             <div className="channel">
