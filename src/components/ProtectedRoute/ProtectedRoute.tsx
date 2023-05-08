@@ -6,16 +6,18 @@ import ChannelsBar from '../DashBoard/ChannelsBar/ChannelsBar'
 import CurrentChannelProvider from '../ChatProvider/CurrentChannelProvider'
 import SocketStore from '../SocketStore'
 import { sleep } from '../utils'
-import { ChannelType } from '../types'
-import { channel } from 'diagnostics_channel'
 
+
+import { useAuthStore } from '../../ZustandStore'
 
 const {io,serverUrl,certOptions}=SocketStore()
 
 const userSocket = io(`${serverUrl}/user`,{autoConnect:false,pfx:certOptions.pfx,passphrase:certOptions.passphrase});
 
 const ProtectedRoute = () => {
-  const {user,setUser,setLoading} = useAuth();
+  // const {user,setUser,setLoading} = useAuth();
+  const {user,setUser,setLoading}=useAuthStore()
+  console.log(`user`,user)
   const {cookies} = useAuthCookies()
   const {setChannels} =useChat()
   if(!user?.email && !cookies?.user?.email) return <Navigate to="/auth/signin" replace/> 

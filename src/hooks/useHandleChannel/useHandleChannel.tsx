@@ -48,7 +48,7 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
               let newChannels = [...user.channels, response.data.channel]
               // setCookie('user',newChannels,{path:'/',maxAge:2000})
               setCookie('channels',newChannels,{path:'/',maxAge:2000})
-              navigate(`/chat/?channel=${response?.data?.channel?._id}`)
+              navigate(`/chat/${response?.data?.channel?._id}`)
               console.log(`RESPONSE : `, response)
           } catch (error) {
               console.log(`ERROR:`,error)

@@ -6,15 +6,19 @@ import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
 import { useCallback, useEffect, useMemo } from 'react'
 import { UserType } from '../../components/types'
 import useSWR from 'swr'
+import { useAuthStore, useChatStore } from '../../ZustandStore'
 
 const useFetchChannels = (user:UserType) => {
-    const serverUrl = useServerUrl()
+    // const serverUrl = useServerUrl()
+    const setChannels=useChatStore((state)=>state.setChannels)
+    const serverUrl = useAuthStore(state=>state.serverUrl)
+    const setLoading = useAuthStore(state=>state.setLoading)
     const {cookies,setCookie} = useAuthCookies()
-    const setLoading=useSetLoading()
-    const setChannels = useSetChannels()
+    // const setLoading=useSetLoading()
+    // const setChannels = useSetChannels()
     let fetcher = ()=>APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
 
-    const {data:channels,error,isLoading} = useSWR('/api/channels/userChannels',fetcher )
+    const {data:channels,error,isLoading} = useSWR('/api/channels/userChannels',{fetcher} )
     
     setChannels(channels?.data?.channels)
     const fetchChannels = useCallback(

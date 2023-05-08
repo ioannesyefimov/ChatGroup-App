@@ -12,11 +12,13 @@ import { Button } from '../..'
 import useFetchChannels from '../../../hooks/useFetchChannels/useFetchChannels'
 import Members from './Members/Members'
 import { useCurrentChannel } from '../../ChatProvider/CurrentChannelProvider'
+import { useChatStore } from '../../../ZustandStore'
 
 const ChannelsBar = ({user}:{user:UserType}) => {
-  const [searchedChannels,setSearchedChannels] = useState<ChannelType[]>([])
+  // const [searchedChannels,setSearchedChannels] = useState<ChannelType[]>([])
   const [showedBar , setShowedBar]=useState(false)
-  const {currentChannel,setCurrentChannel}=useCurrentChannel()
+  const {searchedChannels,setSearchedChannels,currentChannel,setCurrentChannel}=useChatStore()
+  // const {currentChannel,setCurrentChannel}=useCurrentChannel()
   const  location = useLocation()
   const navigate = useNavigate()
   const {

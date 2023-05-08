@@ -49,7 +49,7 @@ const ProfileSettings = () => {
 
       let response = await APIFetch({url:`${serverUrl}/change`,method:'POST',body:
         {
-          accessToken:cookies.accessToken,
+          accessToken:cookies?.accessToken,
           updatedParams:state
         }
      })

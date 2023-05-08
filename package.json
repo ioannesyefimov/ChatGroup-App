@@ -16,8 +16,10 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0",
     "socket.io-client": "^4.6.1",
+    "stable-hash": "^0.0.3",
     "swr": "^2.1.5",
-    "vite-plugin-mkcert": "^1.13.4"
+    "vite-plugin-mkcert": "^1.13.4",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@types/node": "^18.15.5",

@@ -4,7 +4,7 @@ import { MessageType, UserType } from '../../types';
 import Button from '../../Button/Button';
 type PropsType ={
     
-    messages?: MessageType
+    messages?: MessageType[]
     date?: string
     user?:UserType
     scrollToRef?:  React.ForwardedRef<HTMLDivElement |undefined>
