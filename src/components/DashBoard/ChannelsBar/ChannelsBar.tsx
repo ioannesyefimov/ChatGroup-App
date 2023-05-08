@@ -11,30 +11,36 @@ import SearchBar from './SearchBar'
 import { Button } from '../..'
 import useFetchChannels from '../../../hooks/useFetchChannels/useFetchChannels'
 import Members from './Members/Members'
+import { useCurrentChannel } from '../../ChatProvider/CurrentChannelProvider'
 
 const ChannelsBar = ({user}:{user:UserType}) => {
   const [searchedChannels,setSearchedChannels] = useState<ChannelType[]>([])
   const [showedBar , setShowedBar]=useState(false)
-  const {currentChannel,setCurrentChannel}=useCurrentContext()
+  const {currentChannel,setCurrentChannel}=useCurrentChannel()
+  const  location = useLocation()
   const navigate = useNavigate()
   const {
     handleLeaveChannel
   } = useHandleChannel()
-  const {channels,fetchChannels}=useFetchChannels(user)
-  const  location = useLocation()
-  const userChannels = searchedChannels.length ? searchedChannels : channels?.length ? channels:  user?.channels.map(channel=>channel.channel)
-useEffect(
-  ()=>{
-    console.log(`CURRENT`, currentChannel);
-    console.log(`channels`,channels);
-    
-    if(currentChannel){
-      setShowedBar(true)
-    }else {
-      setShowedBar(false)
-    }
-  },[currentChannel,location.search]
-)
+  
+  useEffect(
+    ()=>{
+      console.log(`channels`,channels);
+      if(currentChannel){
+        setShowedBar(true)
+      }else {
+        setShowedBar(false)
+      }
+    },[currentChannel]
+  )
+  const 
+  {
+    channels,fetchChannels,isLoading
+  }  = 
+   useFetchChannels(user)
+
+  
+  const userChannels = searchedChannels?.length ? searchedChannels : channels?.length ? channels:  user?.channels?.map(channel=>channel.channel)
   
   let content = showedBar ? (
     <Hamburger type='channels'>
@@ -74,6 +80,7 @@ useEffect(
             <Button onClick={()=>navigate('/chat/manage  ')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
+            {isLoading ?? <>Loading...</>}
             <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={userChannels as ChannelType[]} />
             <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>

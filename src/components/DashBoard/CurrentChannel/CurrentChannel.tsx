@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useAuth, useCurrentContext, useHandleChannel, useResponseContext } from '../../../hooks'
 import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
@@ -15,8 +15,9 @@ export const channelSocket = io(`${serverUrl}/currentChannel`,{
   pfx:certOptions.pfx,passphrase:certOptions.passphrase,reconnection:true,reconnectionDelayMax:5000,reconnectionAttempts:Infinity});
 
 const CurrentChannel = () => {
-  const {currentChannel,setCurrentChannel}=useCurrentContext()
   const {user,setLoading} = useAuth()
+  const {channel_id}=useParams()
+  const {currentChannel,setCurrentChannel}=useCurrentContext(channel_id ?? '',user)
   const {setServerResponse} = useResponseContext()
   const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
   const scrollToRef = useRef<HTMLDivElement>()
@@ -26,17 +27,17 @@ const CurrentChannel = () => {
       let onConnect = ()=>{
         console.log(`CONNECTED BY ID ${channelSocket.id}`)
       }
-      let onGetChannel = (data:SocketResponse)=>{
-        if(!data.success) setServerResponse(data.err)
-        console.log(`GETTING CHANNEL`, data)
-        setCurrentChannel(data?.data?.channel)
-        channelSocket.emit('join_channel',{room:data.data.channel._id})
+      // let onGetChannel = (data:SocketResponse)=>{
+      //   if(!data.success) setServerResponse(data.err)
+      //   console.log(`GETTING CHANNEL`, data)
+      //   setCurrentChannel(data?.data?.channel)
+      //   channelSocket.emit('join_channel',{room:data.data.channel._id})
 
-        if(!data.success && data.message){
-          setServerResponse(data?.err)
-        }
-        setLoading(false)
-      }
+      //   if(!data.success && data.message){
+      //     setServerResponse(data?.err)
+      //   }
+      //   setLoading(false)
+      // }
       let onMessage = (data:SocketResponse)=>{
         console.log(`received message`, data);
         
@@ -63,7 +64,7 @@ const CurrentChannel = () => {
       let onJoinChannel=(data:SocketResponse)=>{
         console.log(`JOINED CHANNEL ${data.data.room}`);
       }
-      channelSocket.on('get_channel',onGetChannel)
+      // channelSocket.on('get_channel',onGetChannel)
       channelSocket.on('disconnect',onDisconnect)
       channelSocket.on('connect',onConnect)
       channelSocket.on('receive_message',onMessage)
@@ -74,7 +75,7 @@ const CurrentChannel = () => {
         channelSocket.off('receive_message',onMessage);
         channelSocket.off('connect',onConnect);
         channelSocket.off('disconnect',onDisconnect)
-        channelSocket.off('get_channel',onGetChannel);
+        // channelSocket.off('get_channel',onGetChannel);
         if(currentChannel?._id){
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
@@ -82,25 +83,25 @@ const CurrentChannel = () => {
         }
     }
      
-    },[location.search,user.email]
+    },[]
   )
-  let initCurrentChannel = async(signal:AbortSignal)=>{
-    setLoading(true)
-    await sleep(1500)
-     handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
+  // let initCurrentChannel = async(signal:AbortSignal)=>{
+  //   setLoading(true)
+  //   await sleep(1500)
+  //    handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
     
-  }
-  useEffect(
-    ()=>{    
-      let controller = new AbortController()
-      let {signal} = controller
-      initCurrentChannel(signal)
-     return()=>{
+  // }
+  // useEffect(
+  //   ()=>{    
+  //     let controller = new AbortController()
+  //     let {signal} = controller
+  //     initCurrentChannel(signal)
+  //    return()=>{
       
-        controller?.abort()
-      }
-  },[location.search,user.email,channelSocket.connected]
-  )
+  //       controller?.abort()
+  //     }
+  // },[location.search,user.email,channelSocket.connected]
+  // )
   
   let channelContent =
   (
@@ -115,7 +116,7 @@ const CurrentChannel = () => {
     
     <div className="main-wrapper">
       {
-        currentChannel?.channelName ? (
+        currentChannel?._id ? (
           channelContent 
         ) : 
         (

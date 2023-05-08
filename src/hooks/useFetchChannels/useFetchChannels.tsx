@@ -1,19 +1,22 @@
-import {useAuth, useAuthCookies } from '..'
-import { APIFetch, Errors, throwErr } from '../../components/utils'
+import {useAuth, useAuthCookies, useResponseContext } from '..'
+import { APIFetch, Errors, sleep, throwErr } from '../../components/utils'
 import { useNavigate } from 'react-router-dom'
 import { useServerUrl, useSetLoading, useUser } from '../useAuthContext/useAuthContext'
 import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
 import { useCallback, useEffect, useMemo } from 'react'
 import { UserType } from '../../components/types'
+import useSWR from 'swr'
 
 const useFetchChannels = (user:UserType) => {
     const serverUrl = useServerUrl()
-    // const {user}=useAuth()
-    const setLoading = useSetLoading()
     const {cookies,setCookie} = useAuthCookies()
-    const channels = useChannels()
+    const setLoading=useSetLoading()
     const setChannels = useSetChannels()
-    // const user=useUser()
+    let fetcher = ()=>APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
+
+    const {data:channels,error,isLoading} = useSWR('/api/channels/userChannels',fetcher )
+    
+    setChannels(channels?.data?.channels)
     const fetchChannels = useCallback(
     async(user:UserType,signal?:AbortSignal)=>{
         setLoading(true)
@@ -30,8 +33,6 @@ const useFetchChannels = (user:UserType) => {
             console.log(`channels`, channels);
             
             setCookie('channels', channels, {maxAge: 2000,path:'/'})
-            // let updatedUser = {...user,channels:channels}
-            
             setCookie('user',response.data.user,{path:'/',maxAge:2000})
         } catch (error) {
         console.error(error)
@@ -39,25 +40,8 @@ const useFetchChannels = (user:UserType) => {
             setLoading(false)
         }
     },[user])
-    
-    useEffect(
-        ()=>{
-            setLoading(true)
-            let userchannels:any  = user?.channels.map(channel=>channel.channel)
-            // let longer = channels?.length > userchannels?.length  ? channels : userchannels
-            console.log(`user channels`, userchannels);
-            // console.log(`longer`,longer);
-            // if(longer?.length){
-            if(userchannels?.length){
-                setChannels(userchannels)
-            }
-                setLoading(false)
-        },[user.channels]
-        )
-    
- 
-        let value =useMemo(
-            ()=>({channels,fetchChannels}),[channels]) 
+    let value =useMemo(
+        ()=>({channels:channels?.data?.channels,error,isLoading,fetchChannels}),[channels?.data]) 
     return value
 
 }

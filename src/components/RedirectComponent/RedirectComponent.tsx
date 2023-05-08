@@ -33,7 +33,7 @@ const RedirectComponent = () => {
 
 
     let navigate = useNavigate()
-let handleLogin = 
+    let handleLogin = 
         async({accessToken,type,loggedThrough,signal,redirectUrl}:HandleLoginProps)=>{
            try {
             console.log(`LOGGIN IN`);
@@ -64,8 +64,7 @@ let handleLogin =
                 let code = query.get("code")
                 let redirectUrl = query.get("redirectUrl")
                 if(signal.aborted) return
-                await sleep(3000);
-                console.log(`STARTED `);
+                await sleep(2000);
                 if(code){
                     return await handleGitHubLogin(code,signal);
                 }
@@ -81,10 +80,10 @@ let handleLogin =
                     let redirect = query.get('redirectUrl')!
                     navigate(redirect)
                     console.log(`REDIRECTION to ${redirect}`)
-                    return 
+                    return false
                 }
                 if(type && loggedThrough && accessToken){
-                    handleLogin({accessToken,type,loggedThrough,signal,redirectUrl});
+                   return handleLogin({accessToken,type,loggedThrough,signal,redirectUrl});
                 }
             } catch (error:any) {
                 setServerResponse(error)
@@ -100,20 +99,17 @@ let handleLogin =
 
     useEffect(
         ()=>{
-
-            
-            if(data.user){
+            if(data?.user){
                 let user= JSON.stringify(data.user)
                 setCookie('user',user,{path:'/',maxAge:2000})
             }
-            if(data.accessToken){
+            if(data?.accessToken){
                 setCookie('accessToken',data?.accessToken,{path:'/',maxAge:2500})
             }
-            if(data.channels){
-                let channels = JSON.stringify(data.channels)
-                setCookie('channels',channels,{path:'/',maxAge:2000})
+            if(data?.channels){
+                setCookie('channels',data?.channels,{path:'/',maxAge:2000})
             }
-            if(data.redirect){
+            if(data?.redirect){
                 navigate(data.redirect)
             }
         },[data]

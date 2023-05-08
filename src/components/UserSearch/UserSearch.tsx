@@ -1,76 +1,71 @@
 import React, { ReactNode, useEffect, useRef, useState } from 'react'
 import './UserSearch.scss'
 import { UserType } from '../types'
-import { APIFetch, Errors, throwErr } from '../utils'
+import { APIFetch, Errors, sleep, throwErr } from '../utils'
 import { useAuth, useResponseContext, useSearch } from '../../hooks'
 import User from '../UserComponent/User'
 import { Link } from 'react-router-dom'
 import { searchIco } from '../../assets'
 import FormInput from '../FormInput/FormInput'
 import Button from '../Button/Button'
+import useSWR from 'swr'
+import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
+
+
 const UserSearch = () => {
-    const [search,setSearch]= useState('')
-    const [showedUser,setShowedUser] = useState<UserType|UserType[]>([])
-    const {serverUrl,setLoading} = useAuth()
-    const {handleSearch, searchedValue,setSearchedValue} = useSearch()
-    const {setServerResponse} = useResponseContext()
+    let fetcher = ()=>APIFetch({url:`${serverUrl}/users`,method:'GET'})
+    const {data:users,isLoading,error}=useSWR('/api/auth/users',fetcher)
+    const [showedUser,setShowedUser]=useState<UserType | UserType[]>()
 
-    const findUser = async(query:URLSearchParams)=>{
-       try {
-        let email = query.get('email')
-        let userName = query.get('userName')
-        let id = query.get('id')
-        let params = {email,userName,id}
-        setLoading(true)
-       await handleSearch({search:`email=${email}&userName=${userName}&id=${id}`,searchType:'USERS'})
-        if(searchedValue?.users){
-            setShowedUser(searchedValue.users)
-        }
-       } catch (error) {
-        setServerResponse(error)
-       } finally{
-        setLoading(false)
-       } 
-       
-    }
+    // let fetcher = ()=>APIFetch({url:`${serverUrl}/users?email=${query.get("email")}&userName=${query.get("userName")}&id=${query.get("id")}`,method:'GET'})
+
+
+
+    const {serverUrl} = useAuth()
+ 
+    const {handleSearch,search,handleSearchChange} = useSearch()
     useEffect(
         ()=>{
-            findUser(new URLSearchParams(location.search))
-
-            // return ()=>setSearchedValue({})
-        },[location.search]
-    )
-
-    useEffect(
-        ()=>{
-            setLoading(true)
-            let timeout = setTimeout(()=>handleSearch({search,searchType:'USER'}),1500)
-            if(!search && !searchedValue.filtered.length){
-                handleSearch({search,searchType:'USERS'})
-            }
-            return ()=> clearTimeout(timeout)
+            sleep(1000).then(
+                async ()=>{
+                    if(search){
+                        let result =await  handleSearch({search,searchType:'USER',searchValues: {users:users?.data?.users}})
+                        console.log(`result`,result);
+                        
+                        setShowedUser(result?.filtered as UserType[])
+                    } else {
+                        setShowedUser(users?.data?.users)
+                    }
+                }
+            )
         },[search]
     )
-    useEffect(
-        ()=>{
-            console.log(`SEARCHED:`, searchedValue);
+    // useEffect(
+    //     ()=>{
+    //         console.log(`SEARCHED:`, searchedValue);
             
-            if(searchedValue?.filtered?.length){
-                setShowedUser(searchedValue.filtered as UserType[])
-            } else
-            if(searchedValue.users){
-                setShowedUser(searchedValue.users)
-            }
+    //         if(searchedValue?.filtered?.length){
+    //             setShowedUser(searchedValue.filtered as UserType[])
+    //         } else
+    //         if(searchedValue.users){
+    //             setShowedUser(searchedValue.users)
+    //         }
            
-        },[searchedValue]
-    )
+    //     },[searchedValue]
+    // )
+
+
+    if(isLoading)return <LoadingFallback/>
+
     let content = (
         <div className='member-info'>  
-       <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={(e)=>setSearch(e.target.value)} value={search} />
+       <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={(e)=>handleSearchChange(e)} value={search} />
         {
-            (showedUser as Array<UserType>).map((user:UserType)=>{
+            (showedUser as UserType[])?.map((user:UserType)=>{
                 return (
-                    <Link to={`/user?id=${user._id}`} replace ><User location='' key={user._id!} user={user}/></Link> 
+                    <Link key={user._id!} to={`/user?id=${user._id}`} replace >
+                        <User location=''  user={user}/>
+                    </Link> 
                 )
             })
         }      

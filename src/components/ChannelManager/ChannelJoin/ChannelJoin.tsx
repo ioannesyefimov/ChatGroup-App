@@ -13,7 +13,7 @@ import { backIco, closeIco, joinIco } from '../../../assets'
 import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
 
 const ChannelJoin = ()=>{
-    const [searchedChannels,setSearchedChannels] = useState<ChannelType[] | null>(null)
+    const [searchedChannels,setSearchedChannels] = useState<ChannelType[]>(null)
     const {channels} = useChat()
     let navigate = useNavigate()
     return (

@@ -11,8 +11,6 @@ import { log } from "console";
 //#########################################################
 
 export function sortMessagesByDate  (data:MessageType[]){
-  console.log(`MESSAGES`, data);
-  
   function sortMessages(a,b){
     return Number(new Date(a.createdAt?.timeStamp)) - Number(new Date(b.createdAt?.timeStamp))
   } 
@@ -26,7 +24,7 @@ export function sortMessagesByDate  (data:MessageType[]){
   // console.log(`CURRENT DAY`, currentDay);
   
   
-  const stillCurrentDay = (dayOfMessage:Date) => {
+  const stillCurrentDay = (dayOfMessage:Date|string) => {
    if( typeof dayOfMessage !=='object') {
     dayOfMessage = new Date(dayOfMessage)
    }

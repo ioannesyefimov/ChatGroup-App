@@ -1,41 +1,56 @@
 import React, { useEffect, useState } from 'react'
-import { backIco, triangleIco, userIco } from '../../assets'
 import { ChannelType, UserType } from '../types'
 import './UserComponent.scss'
-import { useSearch } from '../../hooks'
+import { useAuth, useResponseContext, useSearch } from '../../hooks'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import Channel from '../DashBoard/Channel/Channel'
 import User from './User'
 import NavigationBar from '../NavigationBar/NavigationBar'
+
+import useSWR from 'swr'
+import { APIFetch } from '../utils'
+import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
+
 const UserComponent = () => {
-  const [showedUser,setShowedUser] = useState<UserType|null>()
-  const {handleSearch,searchedValue,setSearchedValue} = useSearch()
+  // const {handleSearch,searchedValue,setSearchedValue} = useSearch()
+  // const [showedUser,setShowedUser] = useState<UserType|null>()
   let {userId} = useParams()
-  useEffect(
-    ()=>{
-      console.log(`id`,userId);
-      if(!userId) return console.log(`params is empty`);
-      handleSearch({search:userId,searchType:'USERS'})
-      return ()=>{setSearchedValue({});setShowedUser(null)}
-    },[]
-  )
-  useEffect(()=>{
-    console.log(`SEARCHEDVALUE `, searchedValue);
+  console.log(`id`,userId)
+  const {serverUrl}=useAuth()
+  const {setServerResponse}=useResponseContext()
+  const fetcher = ()=>APIFetch({url:`${serverUrl}/users/user/${userId}`,method:'GET'})
+  const {data,isLoading,error}=useSWR(`/api/users/user/${userId}`,fetcher)
+
+  if(isLoading) return <LoadingFallback/>
+  if(error) setServerResponse(error)
+
+  // useEffect(
+  //   ()=>{
+  //     console.log(`id`,userId);
+  //     if(!userId) return console.log(`params is empty`);
+  //     handleSearch({search:userId,searchType:'USERS'})
+  //     return ()=>{setSearchedValue({});setShowedUser(null)}
+  //   },[]
+  // )
+  // useEffect(()=>{
+  //   console.log(`SEARCHEDVALUE `, searchedValue);
     
-    if(searchedValue?.users){
-      handleSearch({search:userId,searchType:'USER'})
-    }
-    if(searchedValue?.filteredUsers){
-      setShowedUser(searchedValue.filteredUsers[0])
-    }
-  },[searchedValue])
+  //   if(searchedValue?.users){
+  //     handleSearch({search:userId,searchType:'USER'})
+  //   }
+  //   if(searchedValue?.filteredUsers){
+  //     setShowedUser(searchedValue.filteredUsers[0])
+  //   }
+  // },[searchedValue])
 
   type UserChannelsType = {default?:any,channel:ChannelType,_id:string}
+
+  const showedUser = data?.data?.user
   let userChannels =(
     <div className="user-channels">
       <h4 className='subtitle'>Users channels:</h4>
         {showedUser?.channels ? ( 
-           showedUser.channels.map((c)=>{
+           showedUser.channels.map((c:any)=>{
             let channel = c.channel ?? c
             return <Channel id={channel._id!} key={channel._id ?? '13'} name={channel.channelName} avatar={channel.channelAvatar} type='' />
              })

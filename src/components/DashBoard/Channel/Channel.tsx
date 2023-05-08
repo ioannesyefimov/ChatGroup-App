@@ -37,7 +37,7 @@ const Channel = ({isJoined, name,avatar,handleChannel,id,type}:ChannelProps) => 
                 ) : (
                     <div className="channel-logo">{getFirstLetter(name,2)}</div>
                 )}
-                <Link className='link-tag' to={`/chat/?channel=${id}`} replace><div className="channel-name">{name}</div></Link>
+                <Link className='link-tag' to={`/chat/${id}`} replace><div className="channel-name">{name}</div></Link>
                 {type!==''  ? (
                     <Button onClick={handleFc} name={type??''} img={btmImg}  />
                 ): (

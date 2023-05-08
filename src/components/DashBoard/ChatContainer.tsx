@@ -5,8 +5,9 @@ import { Outlet, useLocation} from 'react-router-dom'
 import ChannelManager from '../ChannelManager/ChannelManager'
 
 const ChatContainer = () => {
-    
     const location = useLocation()
+    
+    
 
     let content = (
         <div className='chat-container-outer '>  

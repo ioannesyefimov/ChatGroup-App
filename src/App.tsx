@@ -59,7 +59,7 @@ let router = createBrowserRouter([
           {
     
            element: <ChatContainer  />,
-           path: '/chat/:channel?/:manager?',
+           path: '/chat/:channel_id?/:manager?',
           },
           {
            // element: <ChannelManager/>,
