@@ -25,7 +25,8 @@ scrollbar-color: gray black ;
 
 #root {
   display: grid;
-  height: 100dvh;
+  min-height: 100dvh;
+  max-height: 100dvh;
   min-width: 320px;
 }
 

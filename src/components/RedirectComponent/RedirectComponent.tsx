@@ -7,6 +7,7 @@ import { ChannelType, UserType } from '../types'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 import './RedirectComponent.scss'
 import SocketStore from '../SocketStore'
+import { useAuthStore } from '../../ZustandStore'
 
 type StateType = {
     user:UserType | null,accessToken:string|null
@@ -17,7 +18,7 @@ type StateType = {
 let initDataState = {user:null,accessToken:null,redirect:null,channels:null}
 const RedirectComponent = () => {
     const [data,setData]=useState<StateType>(initDataState)
-    const {setLoading,loading,serverUrl}=useAuth()
+    const {setLoading,loading,serverUrl}=useAuthStore()
     const {handleGitHubLogin}=useGithub('')
     const {setCookie} = useAuthCookies()
     const {setServerResponse} = useResponseContext() 

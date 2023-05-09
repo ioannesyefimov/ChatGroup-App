@@ -3,7 +3,7 @@ import { backIco, refreshIco, logoutIco, settingIco, chatifyIco } from '../../..
 import Channels from '../Channels/Channels'
 import './ChannelsBar.scss'
 import Hamburger from '../../HamburgerMenu/Hamburger'
-import {  useCurrentContext, useHandleChannel } from '../../../hooks'
+import {   useHandleChannel } from '../../../hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ChannelType, UserType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
@@ -27,8 +27,8 @@ const ChannelsBar = ({user}:{user:UserType}) => {
   
   useEffect(
     ()=>{
-      console.log(`channels`,channels);
-      if(currentChannel){
+      // console.log(`channels`,channels);
+      if(currentChannel?._id){
         setShowedBar(true)
       }else {
         setShowedBar(false)
@@ -41,8 +41,7 @@ const ChannelsBar = ({user}:{user:UserType}) => {
   }  = 
    useFetchChannels(user)
 
-  
-  const userChannels = searchedChannels?.length ? searchedChannels : channels?.length ? channels:  user?.channels?.map(channel=>channel.channel)
+  const userChannels = searchedChannels!== null  ?  searchedChannels : channels?.length ? channels:  user?.channels?.map(channel=>channel.channel)
   
   let content = showedBar ? (
     <Hamburger type='channels'>

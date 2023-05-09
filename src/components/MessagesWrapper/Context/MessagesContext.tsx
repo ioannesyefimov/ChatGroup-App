@@ -4,6 +4,7 @@ import { useSetLoading } from "../../../hooks/useAuthContext/useAuthContext";
 import { useAuth, useResponseContext } from "../../../hooks";
 import { channelSocket } from "../../DashBoard/CurrentChannel/CurrentChannel";
 import { useCurrentChannel } from "../../ChatProvider/CurrentChannelProvider";
+import { useAuthStore, useChatStore } from "../../../ZustandStore";
 
 export type HandleClickType = {
     e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<any> | MouseEvent  | KeyboardEvent | undefined, 
@@ -28,10 +29,12 @@ type SortedStateType = {
 }
 const useMessagesStore = ()=>{
     const [sortedMessages,setSortedMessages]=useState<SortedStateType>()
-    const {user,setLoading}=useAuth()
+    const user=useAuthStore(s=>s.user)
+    const setLoading=useAuthStore(s=>s.setLoading)
     const {setServerResponse} = useResponseContext()
-    const {currentChannel}=useCurrentChannel()
-
+    const currentChannel=useChatStore(s=>s.currentChannel)
+  console.log(`USER`,user);
+  
     const handleSubmitMessage=async({e,value,setValue,propsValue,setPropsValue}:HandleClickType): Promise<void> =>{
         try {
           console.log(`SUBMITTING MESSAGE`)
@@ -57,7 +60,6 @@ const useMessagesStore = ()=>{
          if(!message_id) return console.error(`missing id`);
          channelSocket.emit('delete_message',{channel_id,message_id,userEmail:user.email,})
       } catch (error) {
-        setServerResponse(error)
       } finally{
         setLoading(false)
       }

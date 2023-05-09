@@ -4,8 +4,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AuthSocialButtons from "../AuthButtons/AuthSocialButtons";
 import Button from "../Button/Button";
 import { Errors, isObj } from "../utils";
-import { useAuth, useResponseContext } from "../../hooks";
+import { useAuth, useAuthCookies, useResponseContext } from "../../hooks";
 import NavigationBar from "../NavigationBar/NavigationBar";
+import { useAuthStore } from "../../ZustandStore";
 type ResponseFallbackType ={
     children?:React.ReactNode| React.ReactNode[]
 
@@ -15,8 +16,7 @@ type ResponseFallbackType ={
     const {serverResponse,setServerResponse}= useResponseContext();
     const navigate = useNavigate()
     const location = useLocation()
-    
-    const {clearState} = useAuth()
+    const clearState = useAuthCookies().clearState
     let content = (
         <>
         {location.pathname.includes("/auth") || location.pathname.includes('/profile') ?  <NavigationBar/> : null}
@@ -31,7 +31,7 @@ type ResponseFallbackType ={
             }
         },[serverResponse]
     )
-    if(serverResponse ===null) {
+    if(!serverResponse || !isObj(serverResponse)) {
         return content
     }
     let handleOnClick = serverResponse?.name === Errors.NOT_A_MEMBER ? ()=>{setServerResponse(null);navigate(`/chat/manage/join?search=${serverResponse?.arguments?.channel_id}`)} : 

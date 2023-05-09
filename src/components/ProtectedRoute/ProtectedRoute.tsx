@@ -17,7 +17,6 @@ const userSocket = io(`${serverUrl}/user`,{autoConnect:false,pfx:certOptions.pfx
 const ProtectedRoute = () => {
   // const {user,setUser,setLoading} = useAuth();
   const {user,setUser,setLoading}=useAuthStore()
-  console.log(`user`,user)
   const {cookies} = useAuthCookies()
   const {setChannels} =useChat()
   if(!user?.email && !cookies?.user?.email) return <Navigate to="/auth/signin" replace/> 

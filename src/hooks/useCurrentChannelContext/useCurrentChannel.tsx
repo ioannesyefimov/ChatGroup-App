@@ -6,15 +6,18 @@ import SocketStore from "../../components/SocketStore"
 import { useAuth } from ".."
 import { UserType } from "../../components/types"
 import { channelSocket } from "../../components/DashBoard/CurrentChannel/CurrentChannel"
+import { useChatStore } from "../../ZustandStore"
+import { useLocation } from "react-router-dom"
  
  const serverUrl = SocketStore().serverUrl
 
- export function useCurrentChat() {
-    return useContext(CurrentChannelContext)
- }
-export default function useCurrentContext(channel_id:string,user:UserType) {
-    const {currentChannel,setCurrentChannel} = useContext(CurrentChannelContext)
-    const fetcher = useCallback(
+export default function useCurrentChannel(channel_id:string,user:UserType) {
+    const currentChannel=useChatStore(state=>state.currentChannel)
+    const setCurrentChannel=useChatStore(state=>state.setCurrentChannel)  
+    const setCurrentChannelMessages = useChatStore(s=>s.setCurrentChannelMessages)
+    const currentChannelMessages = useChatStore(s=>s.currentChannelMessages)
+    const location = useLocation()
+      const fetcher = useCallback(
         ()=>APIFetch({
                 url:`${serverUrl}/api/channels/channel/${channel_id}?userEmail=${user?.email}`,method:'GET'
             })
@@ -25,6 +28,7 @@ export default function useCurrentContext(channel_id:string,user:UserType) {
 
     useEffect(
         ()=>{
+            if(location.pathname ==='/chat') return setCurrentChannel([])
             if(channel?.data){
                 console.log(`CURRENT CHANNEL RESPONSE `, channel);
                 let current = channel?.data?.channel
@@ -35,10 +39,10 @@ export default function useCurrentContext(channel_id:string,user:UserType) {
                 }
                 
             }
-        },[channel?.data]
+        },[channel?.data,user?.email,location.pathname]
     )
 
     
 
-    return {currentChannel,setCurrentChannel}
+    return {currentChannel,currentChannelMessages,setCurrentChannel,setCurrentChannelMessages}
 }

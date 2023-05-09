@@ -18,9 +18,15 @@ const useFetchChannels = (user:UserType) => {
     // const setChannels = useSetChannels()
     let fetcher = ()=>APIFetch({url: `${serverUrl}/channels/userChannels?userEmail=${user?.email ? user.email : cookies.user.email}`, method:"GET",headers: {"Content-Type":"application/json"}})
 
-    const {data:channels,error,isLoading} = useSWR('/api/channels/userChannels',{fetcher} )
+    const {data:channels,error,isLoading} = useSWR('/api/channels/userChannels',fetcher )
     
-    setChannels(channels?.data?.channels)
+    useEffect(
+        ()=>{
+            if(channels){
+                setChannels(channels?.data?.channels)
+            }
+        },[channels]
+    )
     const fetchChannels = useCallback(
     async(user:UserType,signal?:AbortSignal)=>{
         setLoading(true)

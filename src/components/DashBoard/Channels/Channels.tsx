@@ -7,13 +7,14 @@ import { ChannelType, UserType } from '../../types'
 import Channel from '../Channel/Channel'
 import { useAuth, useChat, useHandleChannel } from '../../../hooks'
 import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
+import { useAuthStore } from '../../../ZustandStore'
 type PropsType = {
   type:string 
   fallbackText:string 
   channels: ChannelType[] 
 }
 const Channels = ({type,fallbackText,channels}:PropsType) => {
-  const user=useUser()
+  const user=useAuthStore(s=>s.user)
   let content = (
     channels?.length ? (
       <div className='channels'>

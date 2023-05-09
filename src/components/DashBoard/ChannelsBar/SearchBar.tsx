@@ -6,35 +6,35 @@ import { useAuth, useSearch } from '../../../hooks'
 import { useLocation } from 'react-router-dom'
 import { APIFetch, sleep } from '../../utils'
 import useSWR from 'swr'
+import { useAuthStore, useChatStore } from '../../../ZustandStore'
 type PropsType ={
   channels:ChannelType[]
   user?:UserType
   searchType:string
-  setSearchedChannels: React.Dispatch<React.SetStateAction<ChannelType[]>>
+  setSearchedChannels: (channel:ChannelType)=>void
 }
 const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => {
-  const {serverUrl}=useAuth()
+  const serverUrl=useAuthStore(s=>s.serverUrl)
+  const search = useChatStore(s=>s.search)
+  const setSearch = useChatStore(s=>s.setSearch)
   const fetcher = ()=>APIFetch({
     url:`${serverUrl}/channels`,
     method:'GET'
   })
   const {data:searchedChannels,error,isLoading}=useSWR(()=>searchType==='CHANNELS' ? '/api/channels' : null,fetcher)
-  const {search,SEARCH_TYPE,handleSearch ,handleSearchChange} = useSearch()
+  const {SEARCH_TYPE,handleSearch ,handleSearchChange} = useSearch()
   
  
   const location = useLocation()
   useEffect(
     ()=>{
-      let params = new URLSearchParams(location.search)
-      let searchParam = params?.get('search') ?? search
-        sleep(1500).then(async()=>{
+      sleep(1500).then(async()=>{
+        let params = new URLSearchParams(location.search)
+          let searchParam = params?.get('search') ?? search
+          if(!searchParam)return setSearchedChannels(null)
         let result = await  handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],searchValues:{channels}})
-        if(result?.filtered?.length){
-          setSearchedChannels(result?.filtered as ChannelType[])
-        }else if(searchedChannels?.data?.channels) {
-          
-          setSearchedChannels(searchedChannels?.data?.channels)
-        }
+          setSearchedChannels(result?.filtered as any)
+          // setSearchedChannels(searchedChannels?.data?.channels)
         } 
         )
           
@@ -50,7 +50,7 @@ const SearchBar = ({user,setSearchedChannels,channels,searchType}:PropsType) => 
   // )
 
   return (
-    <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={(e)=>handleSearchChange(e)} value={search} />
+    <FormInput name='search' id="searchInput" placeholder='Search' photo={searchIco} type='text' onChange={(e)=>setSearch(e.currentTarget.value)} value={search} />
   )
 }
 

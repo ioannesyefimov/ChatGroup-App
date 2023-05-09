@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { useAuth, useCurrentContext, useHandleChannel, useResponseContext } from '../../../hooks'
+import { useAuth, useCurrentChannel, useHandleChannel, useResponseContext } from '../../../hooks'
 import { ChannelType,SocketResponse } from '../../types'
 import {SubmitInput} from '../..'
 import Messages from '../../MessagesWrapper/Messages/Messages'
@@ -9,49 +9,41 @@ import './CurrentChannel.scss'
 import MessagesProvider from '../../MessagesWrapper/Context/MessagesContext'
 import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
 import { sleep } from '../../utils'
+import { useAuthStore, useChatStore } from '../../../ZustandStore'
 
 const {certOptions,io,serverUrl} = SocketStore()
 export const channelSocket = io(`${serverUrl}/currentChannel`,{
   pfx:certOptions.pfx,passphrase:certOptions.passphrase,reconnection:true,reconnectionDelayMax:5000,reconnectionAttempts:Infinity});
 
 const CurrentChannel = () => {
-  const {user,setLoading} = useAuth()
-  const {channel_id}=useParams()
-  const {currentChannel,setCurrentChannel}=useCurrentContext(channel_id ?? '',user)
+  const setLoading = useAuthStore(state=>state.setLoading)
+  const user = useAuthStore(state=>state.user)
   const {setServerResponse} = useResponseContext()
-  const {handleCurrentChannel} =  useHandleChannel(setCurrentChannel)
+  const {channel_id}=useParams()
+  const {currentChannel,setCurrentChannel,setCurrentChannelMessages,currentChannelMessages}=useCurrentChannel(channel_id ?? '',user)
+  const deleteCurrentChannelMessage = useChatStore(s=>s.deleteCurrentChannelMessage)
+
   const scrollToRef = useRef<HTMLDivElement>()
-  const location = useLocation()
   useEffect(
     ()=>{
       let onConnect = ()=>{
         console.log(`CONNECTED BY ID ${channelSocket.id}`)
       }
-      // let onGetChannel = (data:SocketResponse)=>{
-      //   if(!data.success) setServerResponse(data.err)
-      //   console.log(`GETTING CHANNEL`, data)
-      //   setCurrentChannel(data?.data?.channel)
-      //   channelSocket.emit('join_channel',{room:data.data.channel._id})
-
-      //   if(!data.success && data.message){
-      //     setServerResponse(data?.err)
-      //   }
-      //   setLoading(false)
-      // }
       let onMessage = (data:SocketResponse)=>{
+        if(!data?.success) setServerResponse(data?.err)
         console.log(`received message`, data);
         
-        if(data.data.messages){
-          setCurrentChannel(prevState=>({...prevState,messages:data.data.messages} as ChannelType))
+        if(data?.data?.messages){
+          setCurrentChannelMessages(data?.data?.messages)
         }
         setLoading(false)
       }
       let onDeleteMessage = (data:SocketResponse)=>{
+        if(!data?.success) setServerResponse(data?.err)
         console.log(`DELETING  MESSAGE RESPONSE`,data);
-        if(data.success){
+        if(data?.success){
           console.log(`SUCCESS DELETE`, data);
-          
-          setCurrentChannel(data.data.channel)
+          deleteCurrentChannelMessage(data?.data?.message?._id)
         } else {
           setServerResponse(data?.err)
         }
@@ -62,6 +54,7 @@ const CurrentChannel = () => {
         console.log(`Disconnected from server`)
       }
       let onJoinChannel=(data:SocketResponse)=>{
+        if(!data?.success) setServerResponse(data?.err)
         console.log(`JOINED CHANNEL ${data.data.room}`);
       }
       // channelSocket.on('get_channel',onGetChannel)
@@ -85,30 +78,12 @@ const CurrentChannel = () => {
      
     },[]
   )
-  // let initCurrentChannel = async(signal:AbortSignal)=>{
-  //   setLoading(true)
-  //   await sleep(1500)
-  //    handleCurrentChannel({name:location.search,setter:setCurrentChannel,socket:channelSocket,scrollToRef,user,signal})
-    
-  // }
-  // useEffect(
-  //   ()=>{    
-  //     let controller = new AbortController()
-  //     let {signal} = controller
-  //     initCurrentChannel(signal)
-  //    return()=>{
-      
-  //       controller?.abort()
-  //     }
-  // },[location.search,user.email,channelSocket.connected]
-  // )
-  
   let channelContent =
   (
     <>
       <h2 className='channel-title'>{currentChannel?.channelName}</h2> 
       <MessagesProvider>
-        <MessagesWrapper setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
+        <MessagesWrapper currentChannelMessages={currentChannelMessages} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
       </MessagesProvider>
     </>
     )

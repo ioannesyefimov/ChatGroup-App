@@ -17,8 +17,8 @@ const useResponseContext = (initErrorContextState?: ResponseState) => {
     const [serverResponse,setServerResponse] = useState<any>(null)
     return {serverResponse,setServerResponse}
 }
-export type UseErrorContextType = ReturnType<typeof useResponseContext>
-export const ResponseContext = React.createContext<UseErrorContextType>(initialState)
+export type UseReponseContextType = ReturnType<typeof useResponseContext>
+export const ResponseContext = React.createContext<UseReponseContextType>(initialState)
 
 const ServerResponseProvider = ({children}: ChildrenType) => {
 

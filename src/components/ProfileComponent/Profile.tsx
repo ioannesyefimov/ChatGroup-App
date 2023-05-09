@@ -6,15 +6,11 @@ import Channels from '../DashBoard/Channels/Channels'
 import User from '../UserComponent/User'
 import useFetchChannels from '../../hooks/useFetchChannels/useFetchChannels'
 import { Link } from 'react-router-dom'
+import { useAuthStore, useChatStore } from '../../ZustandStore'
 const Profile = () => {
-    const {user} = useAuth()
-    // const {channels,fetchChannels} = useFetchChannels()
-    const {channels}=useChat()   
-    // useEffect(
-    //     ()=>{
-    //         fetchChannels()
-    //     },[]
-    // )
+    const user = useAuthStore(s=>s.user)
+    const channels=useChatStore(s=>s.channels)   
+  
     let content = (
 
         <div className='profile-component' >

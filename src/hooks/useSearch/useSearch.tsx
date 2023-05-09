@@ -45,16 +45,16 @@ const useSearch = () => {
         try {
             setLoading(true)
             let result:{
+                filtered: ChannelType[] | UserType[],
                 // users:UserType[]
                 // channels: ChannelType[],
-                filtered: ChannelType[] | UserType[],
                 // filteredUsers:UserType[],
             } = {
+                filtered:[],
                 // users:[],
                 // channels:[],
                 // filteredChannels:[],
                 // filteredChannels:[],
-                filtered:[],
             }
             console.log(`SEARCH:`, search);
             console.log(`type:`,searchType)

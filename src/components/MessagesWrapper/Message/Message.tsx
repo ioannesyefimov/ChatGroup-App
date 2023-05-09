@@ -7,6 +7,7 @@ import { UserType } from '../../types'
 import MemberInfo from '../../UserSearch/UserSearch'
 import { useNavigate } from 'react-router-dom'
 import { useAuth, useMessagesContext } from '../../../hooks'
+import { useAuthStore } from '../../../ZustandStore'
 type PropsType = {
     createdAt:{day:string,
       time:string
@@ -40,7 +41,7 @@ const displayDate = (date:DisplayDateProps) => {
 
 const Message = React.forwardRef(({createdAt,message,messageUser,_id,channel_id}:PropsType,ref:ForwardedRef<HTMLDivElement | undefined>) => {
   const {handleDeleteMessage}=useMessagesContext()!
-  const {user} = useAuth()
+  const user = useAuthStore(s=>s.user)
   const navigate = useNavigate()
   let sentBy = user?._id === messageUser?._id ? 'sent' : 'received'  
   

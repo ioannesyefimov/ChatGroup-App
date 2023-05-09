@@ -5,18 +5,25 @@ import Messages from './Messages/Messages'
 import { useMessagesContext } from '../../hooks'
 import SubmitInput from '../SubmitInput/SubmitInput'
 import './MessagesWrapper.scss'
+import { useChatStore } from '../../ZustandStore'
 type PropsType ={
     currentChannel: ChannelType | null
-    setCurrentChannel: React.Dispatch<SetStateAction<ChannelType|null>>
+    currentChannelMessages: MessageType[] | null
+    setCurrentChannel: (channel:ChannelType)=>void
 }
 
 
-export default function MessagesWrapper({currentChannel,setCurrentChannel}:PropsType) {
-   const {sortedMessages,setSortedMessages,handleSubmitMessage,handleDeleteMessage}=useMessagesContext()!
+export default function MessagesWrapper({currentChannel,currentChannelMessages,setCurrentChannel}:PropsType) {
+   const {
+    sortedMessages=[]
+    ,setSortedMessages
+    ,handleSubmitMessage
+    ,handleDeleteMessage
+  }=useMessagesContext()!
 
    let initMessages = async()=>{
     await sleep(1000);
-    let messages= currentChannel?.messages
+    let messages= currentChannelMessages?.length ? currentChannelMessages : currentChannel?.messages ?? []
     if(!messages?.length) return
     let sorted = sortMessagesByDate(messages)
     if(sorted?.fullMessageArray?.length){
@@ -33,7 +40,7 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
     ()=>{
         initMessages()    
       
-    },[currentChannel?.messages]
+    },[currentChannelMessages]
   )
   let messages= 
     sortedMessages?.length ? (
@@ -56,12 +63,6 @@ export default function MessagesWrapper({currentChannel,setCurrentChannel}:Props
               <h4>There is no any messages yet.</h4>
             </div>
           )
-        // let todaysMessages =sortedMessages?.dayMessageArray.length ? (
-        //     <Messages messages={sortedMessages?.dayMessageArray} date={'today'} />
-        // ): (
-        //   
-        // )
-  
   let content = (
     <div className='messages-wrapper-outer'>
       {messages}
