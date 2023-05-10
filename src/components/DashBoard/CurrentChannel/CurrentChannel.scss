@@ -11,6 +11,8 @@
     padding:0rem 1.25rem 1rem 2.5rem ;
     h2.channel-title.dashboard{
         text-align: center;
+        margin: auto;
+        position: relative;
         
     }
     
@@ -45,17 +47,21 @@
             align-self:center;
         }
     .channel-title{
-        position: sticky;
+        position: fixed;
+        margin-top: .25rem;
         width: 30%;
         border-radius: 8px;
         background-color: rgba(229, 119, 152, 1);
         left: 0;
         right: 0;
-        top:0;
+        top:5px;
         text-align: center;
         z-index: 3;
         margin-inline: auto;
-        font-size: clamp(1rem, 0.857rem + 0.714vw, 1.5rem);
+        h2 {
+             font-size: clamp(1rem, 0.857rem + 0.714vw, 1.5rem);
+              }
+
          }
     
 

@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useState } from 'react'
 import { mailIco, lockerIco } from '../../../assets'
-import { useServerUrl, useSetLoading } from '../../../hooks/useAuthContext/useAuthContext'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 import FormInput from '../../FormInput/FormInput'
 import { initState } from '../../ProfileComponent/ProfileSettings/settingsReducer'
 import { useResponseContext } from '../../../hooks'
 import { validateInput, APIFetch, throwErr } from '../../utils'
 import { useNavigate } from 'react-router-dom'
+import { useAuthStore } from '../../../ZustandStore'
 type PropsType = {
     redirectUrl?:string
     redirectType?:string
@@ -21,8 +21,8 @@ export default function SigninForm({redirectUrl,redirectType,type,getToken}:Prop
       setForm({...form,[e.target.name]:e.target.value})
     }
 
-    const setLoading = useSetLoading()
-    const serverUrl = useServerUrl()
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const serverUrl = useAuthStore(s=>s.serverUrl)
     
     const {setServerResponse} = useResponseContext()
     const navigate=useNavigate()

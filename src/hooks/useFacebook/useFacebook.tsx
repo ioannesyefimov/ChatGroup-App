@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react'
 import ReactFacebookLogin, { ReactFacebookFailureResponse, ReactFacebookLoginInfo } from 'react-facebook-login';
-import { useAddScript, useAuth, useResponseContext } from '../index';
+import { useAddScript, useResponseContext } from '../index';
 import { Errors,APIFetch, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
 import { useNavigate } from 'react-router-dom';
-import { useCookiesData } from '../useAuthCookies/useAuthCookies';
+import useAuthCookies, { useCookiesData } from '../useAuthCookies/useAuthCookies';
+import { useAuthStore } from '../../ZustandStore';
 
 const useFacebook = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id: 'facebookAuth',src:'https://connect.facebook.net/en_US/sdk.js', text:''})
 
     const {setServerResponse} = useResponseContext()
-    const {clearState,setLoading,serverUrl} = useAuth()
+    const serverUrl = useAuthStore(s=>s.serverUrl)
+    const setLoading = useAuthStore(s=>s.setLoading)
     const {handleDelete} = useFetch()
-    const cookies = useCookiesData()
+    const {cookies,clearState} = useAuthCookies()
     const navigate = useNavigate()
    
     useEffect(

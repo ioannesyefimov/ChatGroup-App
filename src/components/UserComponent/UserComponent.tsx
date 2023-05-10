@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { ChannelType, UserType } from '../types'
+import { ChannelType } from '../types'
 import './UserComponent.scss'
-import { useAuth, useResponseContext, useSearch } from '../../hooks'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import {  useResponseContext } from '../../hooks'
+import { Link, useParams } from 'react-router-dom'
 import Channel from '../DashBoard/Channel/Channel'
 import User from './User'
 import NavigationBar from '../NavigationBar/NavigationBar'
@@ -10,13 +9,14 @@ import NavigationBar from '../NavigationBar/NavigationBar'
 import useSWR from 'swr'
 import { APIFetch } from '../utils'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
+import { useAuthStore } from '../../ZustandStore'
 
 const UserComponent = () => {
   // const {handleSearch,searchedValue,setSearchedValue} = useSearch()
   // const [showedUser,setShowedUser] = useState<UserType|null>()
   let {userId} = useParams()
   console.log(`id`,userId)
-  const {serverUrl}=useAuth()
+  const serverUrl=useAuthStore(s=>s.serverUrl)
   const {setServerResponse}=useResponseContext()
   const fetcher = ()=>APIFetch({url:`${serverUrl}/users/user/${userId}`,method:'GET'})
   const {data,isLoading,error}=useSWR(`/api/users/user/${userId}`,fetcher)

@@ -17,7 +17,7 @@ const Profile = () => {
             <Link className='link' to='settings'>Settings</Link>
             <User location='profile'  user={user!} key={user?._id}/>
 
-            <Channels channels={channels} type='leave' fallbackText='there is no channels yet' /> 
+            <Channels channels={channels!} type='leave' fallbackText='there is no channels yet' /> 
        </div>
     )
 

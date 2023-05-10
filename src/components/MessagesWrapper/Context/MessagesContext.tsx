@@ -1,9 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { ChildrenType, MessageType } from "../../types";
-import { useSetLoading } from "../../../hooks/useAuthContext/useAuthContext";
-import { useAuth, useResponseContext } from "../../../hooks";
+import { useResponseContext } from "../../../hooks";
 import { channelSocket } from "../../DashBoard/CurrentChannel/CurrentChannel";
-import { useCurrentChannel } from "../../ChatProvider/CurrentChannelProvider";
 import { useAuthStore, useChatStore } from "../../../ZustandStore";
 
 export type HandleClickType = {
@@ -25,11 +23,13 @@ const initMessagesContextState= {
 
 
 type SortedStateType = {
-  [index:number | string]: MessageType[]
+  [index:number | string]: MessageType[] |undefined  
 }
 const useMessagesStore = ()=>{
     const [sortedMessages,setSortedMessages]=useState<SortedStateType>()
     const user=useAuthStore(s=>s.user)
+  const scrollToRef = useRef<HTMLDivElement>()
+
     const setLoading=useAuthStore(s=>s.setLoading)
     const {setServerResponse} = useResponseContext()
     const currentChannel=useChatStore(s=>s.currentChannel)
@@ -46,6 +46,7 @@ const useMessagesStore = ()=>{
         } finally{
           setLoading(false)
           setValue('')
+          scrollToRef?.current?.scrollIntoView({behavior:'smooth'})
         }
      }
     
@@ -65,12 +66,20 @@ const useMessagesStore = ()=>{
       }
     }
     return {
-        handleDeleteMessage,handleSubmitMessage,sortedMessages,setSortedMessages
+        handleDeleteMessage,handleSubmitMessage,sortedMessages,setSortedMessages,scrollToRef
     }
 }
 
 type UseMessageStoreType = ReturnType<typeof useMessagesStore>
-export const MessagesContext = React.createContext<UseMessageStoreType | null>(null)
+const initState:unknown = {
+  handleDeleteMessage:(message_id:string,channel_id:string)=>{},
+  setSortedMessages:()=>{},
+  handleSubmitMessage:({e,value,setValue,propsValue,setPropsValue}:HandleClickType)=>{},
+  sortedMessages:[],
+
+  scrollToRef: undefined
+}
+export const MessagesContext = React.createContext<UseMessageStoreType | null>(initState as UseMessageStoreType)
 
 const MessagesProvider = ({children}:ChildrenType)=>{
     return (

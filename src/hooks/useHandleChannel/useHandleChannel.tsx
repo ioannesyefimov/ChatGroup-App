@@ -1,14 +1,15 @@
 import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import { APIFetch, Errors, throwErr } from '../../components/utils';
-import { useAuth, useResponseContext,useChat, useAuthCookies} from '..';
+import {  useResponseContext,useChat, useAuthCookies} from '..';
 import { ChannelType, ResponseType, UserType } from '../../components/types';
 import { Socket } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
-import { useServerUrl, useSetLoading } from '../useAuthContext/useAuthContext';
+import { useAuthStore } from '../../ZustandStore';
 
 const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined) => {
     const {setServerResponse}=useResponseContext()
-    const {setUser,user, setLoading,serverUrl} = useAuth()
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const serverUrl = useAuthStore(s=>s.serverUrl)
     const navigate = useNavigate()
     const {setChannels} =useChat() 
     const {setCookie,cookies} =useAuthCookies() 

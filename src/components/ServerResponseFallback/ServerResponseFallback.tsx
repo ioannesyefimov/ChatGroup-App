@@ -19,7 +19,7 @@ type ResponseFallbackType ={
     const clearState = useAuthCookies().clearState
     let content = (
         <>
-        {location.pathname.includes("/auth") || location.pathname.includes('/profile') ?  <NavigationBar/> : null}
+        {location.pathname.includes("/auth")  ?  <NavigationBar/> : null}
        
         <Outlet/>
         </>

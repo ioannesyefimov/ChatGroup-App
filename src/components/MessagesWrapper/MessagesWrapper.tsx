@@ -18,7 +18,7 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
     sortedMessages=[]
     ,setSortedMessages
     ,handleSubmitMessage
-    ,handleDeleteMessage
+    ,handleDeleteMessage,scrollToRef
   }=useMessagesContext()!
 
    let initMessages = async()=>{
@@ -26,12 +26,10 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
     let messages= currentChannelMessages?.length ? currentChannelMessages : currentChannel?.messages ?? []
     if(!messages?.length) return
     let sorted = sortMessagesByDate(messages)
+    if(sorted===null) return 
     if(sorted?.fullMessageArray?.length){
-    if(sortedMessages?.length){
       setSortedMessages(sorted.fullMessageArray)
-    }else{
       setSortedMessages(sorted.fullMessageArray)
-    }
     }
 
    }
@@ -42,7 +40,8 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
       
     },[currentChannelMessages]
   )
-  let messages= 
+  let messages=
+    sortedMessages !== null &&
     sortedMessages?.length ? (
       
       // loop through array of every message
@@ -54,7 +53,7 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
               let messages:unknown = sortedMessages[arrays][key]
               // and return Messages with divider for day and time
               return(
-                    <Messages messages={messages as MessageType[]} date={date} key={key ?? 'newkey'}   />
+                    <Messages scrollToRef={scrollToRef} messages={messages as MessageType[]} date={date} key={key ?? 'newkey'}   />
                 )
                 }) 
         }) 
@@ -66,9 +65,7 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
   let content = (
     <div className='messages-wrapper-outer'>
       {messages}
-      {/* {todaysMessages} */}
-        
-        <SubmitInput  handleClick={handleSubmitMessage} setPropsValue={setCurrentChannel} propsValue={currentChannel} name="message-input" placeholder="Type a message here" e={undefined} value={undefined} setValue={function (value: any): void {
+      <SubmitInput  handleClick={handleSubmitMessage} setPropsValue={setCurrentChannel} propsValue={currentChannel} name="message-input" placeholder="Type a message here" e={undefined} value= {undefined} setValue={function (value: any): void {
       throw new Error('Function not implemented.')
     } } />
     </div>

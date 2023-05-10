@@ -1,13 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../Button/Button'
 import { logoutIco, profileIco, settingIco, triangleIco } from '../../assets'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../hooks'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuthCookies } from '../../hooks'
 
 const DropDown = () => {
     const [isToggled,setIsToggled]= useState(false)
     const navigate = useNavigate()
-    const {clearState}=useAuth()
+    const clearState = useAuthCookies().clearState  
+    const location = useLocation()
+    useEffect(
+        ()=>{
+            setIsToggled(prev=>!prev)
+        },[location.pathname]
+    )
+    // const {clearState}=useAuth()
     let content = (
         <>
         {isToggled && (

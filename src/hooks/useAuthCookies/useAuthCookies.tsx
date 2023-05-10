@@ -4,7 +4,6 @@ import { Cookies, useCookies } from 'react-cookie'
 import { ChannelType, UserType } from '../../components/types'
 import { useAuthStore } from '../../ZustandStore'
 import { NavigateFunction } from 'react-router-dom'
-import { initAuthContextState } from '../../components/Authentication/Provider/AuthProvider'
 export type CookiesType = {
   user: UserType
   accessToken:string,
@@ -23,7 +22,7 @@ const useAuthCookies = () => {
 const clearState =(replace:string, navigate?:NavigateFunction) => {
   const setUser = useAuthStore.getState().setUser
   console.log('CLEARNING STATE')
-  setUser(initAuthContextState.user)
+  setUser({userName:'',email:'',_id:'',channels:[]})
   removeCookie('accessToken', {path:'/'})
   removeCookie('refreshToken', {path:'/'})
   removeCookie('channels', {path:'/'})

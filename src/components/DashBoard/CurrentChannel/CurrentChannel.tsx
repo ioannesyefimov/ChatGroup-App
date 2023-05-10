@@ -1,14 +1,11 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
-import { useAuth, useCurrentChannel, useHandleChannel, useResponseContext } from '../../../hooks'
-import { ChannelType,SocketResponse } from '../../types'
-import {SubmitInput} from '../..'
-import Messages from '../../MessagesWrapper/Messages/Messages'
+import  { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useCurrentChannel, useResponseContext } from '../../../hooks'
+import { SocketResponse } from '../../types'
 import SocketStore from '../../SocketStore'
 import './CurrentChannel.scss'
 import MessagesProvider from '../../MessagesWrapper/Context/MessagesContext'
 import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
-import { sleep } from '../../utils'
 import { useAuthStore, useChatStore } from '../../../ZustandStore'
 
 const {certOptions,io,serverUrl} = SocketStore()
@@ -23,7 +20,6 @@ const CurrentChannel = () => {
   const {currentChannel,setCurrentChannel,setCurrentChannelMessages,currentChannelMessages}=useCurrentChannel(channel_id ?? '',user)
   const deleteCurrentChannelMessage = useChatStore(s=>s.deleteCurrentChannelMessage)
 
-  const scrollToRef = useRef<HTMLDivElement>()
   useEffect(
     ()=>{
       let onConnect = ()=>{
@@ -35,6 +31,7 @@ const CurrentChannel = () => {
         
         if(data?.data?.messages){
           setCurrentChannelMessages(data?.data?.messages)
+          // scrollToRef?.current?.scrollIntoView({behavior:'smooth'}) 
         }
         setLoading(false)
       }
@@ -73,6 +70,7 @@ const CurrentChannel = () => {
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
             setCurrentChannel(null)
+            setCurrentChannelMessages([])
         }
     }
      
@@ -81,9 +79,11 @@ const CurrentChannel = () => {
   let channelContent =
   (
     <>
-      <h2 className='channel-title'>{currentChannel?.channelName}</h2> 
+    <div className='channel-title'>
+      <h2 >{currentChannel?.channelName}</h2> 
+    </div>
       <MessagesProvider>
-        <MessagesWrapper currentChannelMessages={currentChannelMessages} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
+        <MessagesWrapper  currentChannelMessages={currentChannelMessages} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
       </MessagesProvider>
     </>
     )

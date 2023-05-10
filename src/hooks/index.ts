@@ -1,7 +1,6 @@
 import useMessagesContext from "./useMessagesContext/useMessagesContext";
 import useCurrentChannel from "./useCurrentChannelContext/useCurrentChannel";
 import useAuthCookies from "./useAuthCookies/useAuthCookies";
-import useAuth  from "./useAuthContext/useAuthContext";
 import useChat from "./useChatContext/useChatContext";
 import useResponseContext from "./useServerResponse";
 
@@ -17,7 +16,7 @@ import useImageUpload from "./useImageUpload/useImageUpload";
 import useHandleChannel from "./useHandleChannel/useHandleChannel";
 export {
     useUpload,useResponseContext,useCurrentChannel,
-    useAuth,useAuthCookies,useChat,useSearch,
+    useAuthCookies,useChat,useSearch,
     useFacebook,useGithub,useGoogle,useTwitter,useHandleChannel,
     useMessagesContext,   useAddScript,useWindowSize,useImageUpload
 }

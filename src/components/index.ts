@@ -28,14 +28,13 @@ import ServerResponseProvider from "./ServerResponseFallback/ResponseContext";
 import ChatContainer from "./DashBoard/ChatContainer";
 import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
-import AuthProvider from "./Authentication/Provider/AuthProvider";
 export 
 {
     ChatProvider,ServerResponseProvider,
     Profile,ProfileSettings,
     
     
-    AuthProvider,ErrorProvider,  Authentication, 
+    ErrorProvider,  Authentication, 
     
     Button,SubmitInput , UploadInput,MemberInfo,SearchComponent,ChannelSearch,Landing,
     ChannelManager,ChannelJoin,UserBar,UserComponent,ServerResponseFallback,ProtectedRoute,

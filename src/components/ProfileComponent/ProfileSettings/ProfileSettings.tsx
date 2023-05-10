@@ -1,18 +1,18 @@
 import React, { useEffect, useReducer, useRef } from 'react'
-import { useServerUrl, useSetLoading, useUser } from '../../../hooks/useAuthContext/useAuthContext'
 import User from '../../UserComponent/User'
 import FormInput from '../../FormInput/FormInput'
 import settingsReducer,{initState,ACTIONS} from './settingsReducer'
 import Button from '../../Button/Button'
 import { APIFetch, Errors, isObj, isTrue, throwErr, validateInput } from '../../utils'
 import UploadInput from '../../UploadInput/UploadInput'
-import { useAuth, useResponseContext, useUpload } from '../../../hooks'
+import {  useResponseContext, useUpload } from '../../../hooks'
 import { sendIco,trashIco } from '../../../assets'
 import './index.scss' 
 import useAuthCookies, { useCookiesData, useSetCookies } from '../../../hooks/useAuthCookies/useAuthCookies'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthForm from '../../Authentication/AuthForm/AuthForm'
 import PromptLogin from '../../PromptLogin/PromptLogin'
+import { useAuthStore } from '../../../ZustandStore'
 
 
 
@@ -21,11 +21,11 @@ const ProfileSettings = () => {
   const [state,dispatch] = useReducer(settingsReducer,initState);
   const {setServerResponse} = useResponseContext()
   const {file,handleUpload}=useUpload()
-  const {cookies} = useAuthCookies()
-  const {user} = useAuth()
+  const {cookies,clearState,setCookie} = useAuthCookies()
+  const user = useAuthStore(s=>s.user)
   const navigate =useNavigate()
-  const setLoading = useSetLoading()
-  const serverUrl = useServerUrl()
+  const setLoading = useAuthStore(s=>s.setLoading)
+  const serverUrl = useAuthStore(s=>s.serverUrl)
 
   const userNameRef= useRef<HTMLLabelElement>()
   const passwordRef= useRef<HTMLLabelElement>()
@@ -58,7 +58,10 @@ const ProfileSettings = () => {
 
      if(response?.succeess) throwErr(response?.err)
      if(response?.data?.accessToken){
-      navigate(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile`)
+      // clearState(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile&loggedThrough=${response?.data?.loggedThrough}`,navigate)
+      setCookie('user',response?.data?.user,{path:'/',maxAge:2000})
+      // navigate(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile`)
+      navigate(`/profile`)
      }
     } catch (error) {
       setServerResponse(error)
@@ -87,7 +90,7 @@ const ProfileSettings = () => {
             
             <FormInput labelName='password'  ref={passwordRef} type='text' name='password' id='password-input' onChange={(e)=>dispatch({type:ACTIONS.SET_PASSWORD,payload:e?.target?.value})} value={state.password}/>
             
-            <UploadInput value={state.picture} ref={avatarRef} labelName='Avatar'
+            <UploadInput value={state.picture} ref={avatarRef as React.Ref<HTMLLabelElement>} labelName='Avatar'
              onChange={handleAvatar} removeImg={()=>handleAvatar()} id='avatar' />
             <Button  name='submit-btn' text='submit'  type='submit' />
         </form>

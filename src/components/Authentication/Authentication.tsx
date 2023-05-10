@@ -1,9 +1,8 @@
 import {Navigate, Outlet, useLocation} from 'react-router-dom'
-import { useAuth } from '../../hooks'
-import { useUser } from '../../hooks/useAuthContext/useAuthContext'
+import { useAuthStore } from '../../ZustandStore'
 
 const AuthenticationForm = () => {
-  const user = useUser()
+  const user = useAuthStore(s=>s.user)
   let location = useLocation()
   if(location.pathname === '/auth') return <Navigate to='/auth/signin' replace/>
   if(!user?.email) return <Outlet/> 

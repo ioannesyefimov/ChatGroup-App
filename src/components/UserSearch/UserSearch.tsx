@@ -1,27 +1,23 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import './UserSearch.scss'
 import { UserType } from '../types'
-import { APIFetch, Errors, sleep, throwErr } from '../utils'
-import { useAuth, useResponseContext, useSearch } from '../../hooks'
+import { APIFetch, sleep } from '../utils'
+import {  useSearch } from '../../hooks'
 import User from '../UserComponent/User'
 import { Link } from 'react-router-dom'
 import { searchIco } from '../../assets'
 import FormInput from '../FormInput/FormInput'
-import Button from '../Button/Button'
 import useSWR from 'swr'
 import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
+import { useAuthStore } from '../../ZustandStore'
 
 
 const UserSearch = () => {
     let fetcher = ()=>APIFetch({url:`${serverUrl}/users`,method:'GET'})
     const {data:users,isLoading,error}=useSWR('/api/auth/users',fetcher)
     const [showedUser,setShowedUser]=useState<UserType | UserType[]>()
-
     // let fetcher = ()=>APIFetch({url:`${serverUrl}/users?email=${query.get("email")}&userName=${query.get("userName")}&id=${query.get("id")}`,method:'GET'})
-
-
-
-    const {serverUrl} = useAuth()
+    const serverUrl = useAuthStore(s=>s.serverUrl)
  
     const {handleSearch,search,handleSearchChange} = useSearch()
     useEffect(

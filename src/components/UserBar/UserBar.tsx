@@ -1,5 +1,4 @@
 import React, { MouseEventHandler } from 'react'
-import { useAuth } from '../../hooks'
 import './UserBar.scss'
 import { triangleIco, userIco } from '../../assets'
 import { UserType } from '../types'

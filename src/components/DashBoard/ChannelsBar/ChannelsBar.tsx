@@ -81,8 +81,9 @@ const ChannelsBar = ({user}:{user:UserType}) => {
             <Button onClick={()=>navigate('/chat/manage  ')} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
-            {isLoading ?? <>Loading...</>}
-            <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={userChannels as ChannelType[]} />
+            {isLoading ? <>Loading...</> : (
+                <Channels type='leave' fallbackText={searchedChannels?.length   ? 'Not found' : `You aren't member of any channels`} channels={userChannels as ChannelType[]} />
+            )} 
             <Button name='refetch'  onClick={()=>fetchChannels!(user)} img={refreshIco} type='button'/>
           </div>
       </div>

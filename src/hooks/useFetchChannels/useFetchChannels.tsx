@@ -1,8 +1,5 @@
-import {useAuth, useAuthCookies, useResponseContext } from '..'
+import { useAuthCookies, useResponseContext } from '..'
 import { APIFetch, Errors, sleep, throwErr } from '../../components/utils'
-import { useNavigate } from 'react-router-dom'
-import { useServerUrl, useSetLoading, useUser } from '../useAuthContext/useAuthContext'
-import { useChannels, useSetChannels } from '../useChatContext/useChatContext'
 import { useCallback, useEffect, useMemo } from 'react'
 import { UserType } from '../../components/types'
 import useSWR from 'swr'
@@ -22,6 +19,8 @@ const useFetchChannels = (user:UserType) => {
     
     useEffect(
         ()=>{
+            console.log(`fetching channels`,channels);
+            
             if(channels){
                 setChannels(channels?.data?.channels)
             }

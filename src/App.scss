@@ -24,9 +24,9 @@ scrollbar-color: gray black ;
 }
 
 #root {
-  display: grid;
+  // display: grid;
   min-height: 100dvh;
-  max-height: 100dvh;
+  // max-height: 100dvh;
   min-width: 320px;
 }
 
@@ -43,6 +43,8 @@ scrollbar-color: gray black ;
 }
 
 .App {
+  height: 100dvh;
+  
   display: flex;
   flex-direction: column;
   & > .app-wrapper {

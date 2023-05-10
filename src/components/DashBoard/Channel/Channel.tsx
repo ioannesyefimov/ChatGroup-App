@@ -1,12 +1,11 @@
-import { channel } from 'diagnostics_channel'
-import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getFirstLetter } from '../../utils'
 import './Channel.scss'
 import { correctUploadIco, joinIco, trashIco } from '../../../assets'
 import { UserType } from '../../types'
 import Button from '../../Button/Button'
-import { useAuth, useHandleChannel } from '../../../hooks'
+import {  useHandleChannel } from '../../../hooks'
+import { useAuthStore } from '../../../ZustandStore'
 type ChannelProps = {
     id:string
     isJoined?:boolean 
@@ -16,7 +15,7 @@ type ChannelProps = {
     handleChannel?:(_id:string,user:UserType)=>void 
 }
 const Channel = ({isJoined, name,avatar,handleChannel,id,type}:ChannelProps) => {
-    const {user}=useAuth()
+    const user = useAuthStore(s=>s.user)
     const {handleLeaveChannel,handleJoinChannel} = useHandleChannel()
     const navigate=useNavigate()
     

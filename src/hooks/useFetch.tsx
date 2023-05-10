@@ -1,19 +1,19 @@
-import { useAuth, useAuthCookies, useResponseContext } from './index'
+import {  useAuthCookies, useResponseContext } from './index'
 import {HandleFetchProps } from '../components/types';
 import { APIFetch, throwErr } from '../components/utils/index';
 import { convertBase64} from '../components/utils/index';
 import { useCallback } from 'react';
-import { useServerUrl } from './useAuthContext/useAuthContext';
+import { useAuthStore } from '../ZustandStore';
 
 
 
 
 
 const useFetch = () => {
-    const {setCookie} = useAuthCookies()
-    const serverUrl= useServerUrl() 
-    const {setLoading, clearState} = useAuth()
+    const {setCookie,clearState} = useAuthCookies()
     const {setServerResponse}= useResponseContext()
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const serverUrl =useAuthStore(s=>s.serverUrl)
    const getUserData= useCallback(async(accessToken:string, loggedThrough:string | null) =>{
      try {
       setLoading(true)

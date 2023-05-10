@@ -1,14 +1,19 @@
 import React, {useEffect} from 'react'
 import { Search, useNavigate } from 'react-router-dom';
-import { useAuth, useAuthCookies, useResponseContext } from '../index'
+import { useAuthCookies, useResponseContext } from '../index'
 import { HandleFetchProps,LogType } from '../../components/types'
 import { APIFetch, sleep, throwErr } from '../../components/utils';
 import useFetch from '../useFetch';
+import { useAuthStore } from '../../ZustandStore';
 
 const useGithub = (TYPE?:string) => {
     const {setServerResponse} = useResponseContext()
-    const {setCookie} = useAuthCookies()
-    const {clearState,setLoading,user,serverUrl} = useAuth()
+    const {setCookie,clearState} = useAuthCookies()
+    // const {clearState,setLoading,user,serverUrl} = useAuth()
+
+    const serverUrl = useAuthStore(s=>s.serverUrl)
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const user = useAuthStore(s=>s.user)
     const {handleDelete} = useFetch()
     const navigate = useNavigate()
 

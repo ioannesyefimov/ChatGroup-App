@@ -1,12 +1,13 @@
 import React, { ChangeEvent, useCallback, useRef, useState } from 'react'
-import {AuthForm,FormInput,Button,UploadInput} from '../..'
-import { APIFetch, convertBase64, throwErr, validateInput } from '../../utils'
-import { useAuth, useAuthCookies, useChat, useResponseContext, useUpload } from '../../../hooks'
+import {FormInput,Button,UploadInput} from '../..'
+import { APIFetch, throwErr, validateInput } from '../../utils'
+import {  useAuthCookies, useResponseContext, useUpload } from '../../../hooks'
 import { ResponseType } from '../../types'
 import { useNavigate } from 'react-router-dom'
-import { backIco, closeIco, trashIco } from '../../../assets'
+import { backIco, closeIco } from '../../../assets'
 
 import './ChannelCreate.scss'
+import { useAuthStore } from '../../../ZustandStore'
 
 const ChannelCreate = ()=>{
     const [channelName,setChannelName] = useState<string>('')
@@ -14,7 +15,10 @@ const ChannelCreate = ()=>{
     const [channelAvatar,setChannelAvatar] = useState<string>('')
     const {file,handleUpload}=useUpload()
     const {setServerResponse} = useResponseContext()
-    const {serverUrl,setLoading,user} = useAuth()
+    
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const user = useAuthStore(s=>s.user)
+    const serverUrl = useAuthStore(s=>s.serverUrl)
     const {cookies,setCookie} = useAuthCookies()
 
     const nameRef = useRef<null | HTMLLabelElement >(null)

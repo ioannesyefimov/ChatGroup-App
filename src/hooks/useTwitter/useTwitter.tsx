@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
-import {useAuth, useAuthCookies, useResponseContext} from '../index'
+import { useAuthCookies, useResponseContext} from '../index'
 import { APIFetch, throwErr } from '../../components/utils'
 import useFetch from '../useFetch'
+import { useAuthStore } from '../../ZustandStore'
 
 const useTwitter = (loginType:string) => {
     const {setServerResponse} = useResponseContext()
-    const {setCookie} = useAuthCookies()
-    const {clearState, setLoading} = useAuth()
-    
+    const {clearState,setCookie} = useAuthCookies()
+    const setLoading = useAuthStore(s=>s.setLoading)    
     const url = `http://localhost:5050/api/auth/`
 
     const TWITTER_AUTH_URL = ``

@@ -101,7 +101,7 @@ let router = createBrowserRouter([
     ]
   },
   {
-    errorElement: <ErrorBoundary/>
+    ErrorBoundary: <ErrorBoundary/> as any
   }  
  
 ])

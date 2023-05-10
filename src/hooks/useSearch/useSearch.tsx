@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { ChannelType, UserType } from '../../components/types'
 import { APIFetch, sleep, throwErr } from '../../components/utils'
-import { useAuth, useResponseContext } from '..'
+import {  useResponseContext } from '..'
+import { useAuthStore } from '../../ZustandStore'
 type SearchedValueType = {
     users?:UserType[]
     channels?:ChannelType[],
@@ -27,7 +28,9 @@ const SEARCH_TYPE: {[index:string]:string} = {
 
 
 const useSearch = () => {
-    const {setLoading,user,serverUrl} = useAuth()
+    const user = useAuthStore(s=>s.user)
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const serverUrl = useAuthStore(s=>s.serverUrl)
     const [search, setSearch] = useState<any>('')
     const {setServerResponse} =useResponseContext()
     // const [searchedValue,setSearchedValue] = useState<SearchedValueType>(
@@ -109,7 +112,7 @@ const useSearch = () => {
                 case SEARCH_TYPE.USER: {
                     console.log(`SEARCHING FROM `,searchValues?.users);
                     
-                    if(!searchValues?.users || !Array.isArray(searchValues.users)) return console.error(`SEARCHED USERS IS `,searchedValue.users) 
+                    if(!searchValues?.users || !Array.isArray(searchValues.users)) return console.error(`SEARCHED USERS IS `,searchValues?.users) 
                     let filtered = searchValues?.users?.filter((user:UserType)=>{
 
                         let id = user._id?.toLocaleLowerCase()

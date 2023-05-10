@@ -1,14 +1,17 @@
-import React, { useEffect } from 'react'
+// import React, { useEffect } from 'react'
 import './NavigationBar.scss'
-import NavLink from './NavLink'
-import { useAuth, useWindowSize } from '../../hooks'
+// import NavLink from './NavLink'
+import {  useAuthCookies, useWindowSize } from '../../hooks'
 import { Link, useNavigate } from 'react-router-dom'
 import { chatifyIco } from '../../assets'
-import Hamburger from '../HamburgerMenu/Hamburger'
+// import Hamburger from '../HamburgerMenu/Hamburger'
+import { useAuthStore } from '../../ZustandStore'
 const NavigationBar = () => {
-  const {clearState,user} = useAuth()
+  // const {clearState,user} = useAuth()
   const windowSize= useWindowSize()
 
+  const user = useAuthStore(s=>s.user)
+  const clearState = useAuthCookies().clearState
   const navBar = user.email ? (
 
     <div className="flex">

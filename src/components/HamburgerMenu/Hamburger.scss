@@ -99,7 +99,9 @@
 
 
 .hamburger-outer{
-    position: relative;
+    position: fixed !important;
+    height: 100%;
+    z-index: 5;
     .hamburger-btn {
         left: 88% !important;
         top:3.5rem;
@@ -107,7 +109,7 @@
    &[data-istoggled=toggled]{
         @include respond-to(small){
             // clip-path: inset(0 0 99% 0) ;
-            position: fixed !important;
+            position: relative ;
             inset: 0;
             width: 100% !important;
             z-index: 100;
@@ -124,19 +126,19 @@
             top:1%;
         }
         // @extend .disappearToLeft;
-        position: relative !important;
+        position: relative ;
         // opacity: 1;
-        width: 30% !important;
+        width: 30% ;
         max-width: 400px;
-        min-width:180px;
+        min-width:230px;
     }    
     transition: all .5s ease-in-out;
     display: grid;
    
     
-.hamburger.channel-navigation {
-    transition: .3s all ease-in-out;
-  
+    .hamburger.channel-navigation {
+        transition: .3s all ease-in-out;
+        
     &[data-istoggled=loaded]{
         position: absolute;
         transform: translateX(-120%);
@@ -168,7 +170,6 @@
     bottom: 0;
     .hamburger-children{
         width: 100%;
-        height: 100%;
      }
 
  }

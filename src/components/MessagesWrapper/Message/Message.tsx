@@ -40,7 +40,7 @@ const displayDate = (date:DisplayDateProps) => {
 
 
 const Message = React.forwardRef(({createdAt,message,messageUser,_id,channel_id}:PropsType,ref:ForwardedRef<HTMLDivElement | undefined>) => {
-  const {handleDeleteMessage}=useMessagesContext()!
+  const {handleDeleteMessage,scrollToRef}=useMessagesContext()!
   const user = useAuthStore(s=>s.user)
   const navigate = useNavigate()
   let sentBy = user?._id === messageUser?._id ? 'sent' : 'received'  
@@ -66,7 +66,7 @@ return (
        ): (
         null
        )}
-    <div className="scrolledToDiv" ref={ref as RefObject<HTMLDivElement>}></div>
+    <div className="scrolledToDiv" ref={scrollToRef as anyh}></div>
      </div>
   )
 })

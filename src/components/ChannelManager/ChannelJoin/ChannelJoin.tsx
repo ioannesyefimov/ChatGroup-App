@@ -11,10 +11,12 @@ import Channels from '../../DashBoard/Channels/Channels'
 import Button from '../../Button/Button'
 import { backIco, closeIco, joinIco } from '../../../assets'
 import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
+import { useChatStore } from '../../../ZustandStore'
 
 const ChannelJoin = ()=>{
-    const [searchedChannels,setSearchedChannels] = useState<ChannelType[]>(null)
-    const {channels} = useChat()
+    const channels = useChatStore( s=>s.channels)
+    const setSearchedChannels = useChatStore( s=>s.setSearchedChannels)
+    const searchedChannels = useChatStore( s=>s.searchedChannels)
     let navigate = useNavigate()
     return (
         <div className='prompt-menu-component  box-shadow--gray'>
@@ -25,8 +27,12 @@ const ChannelJoin = ()=>{
                 <img src={backIco} alt="back icon" />
             </Button>
             <form>
-                <SearchBar  channels={channels} searchType='CHANNELS' setSearchedChannels={setSearchedChannels}/>
-                <Channels  type="join" fallbackText={`Nothing  was found...`}  channels={searchedChannels}/>
+                <SearchBar   channels={channels} searchType='CHANNELS' fetchParams={{
+                    isFetch:true,
+                    url:'channels',
+                    swrKey:'/api/channels'
+                }} setSearchedChannels={setSearchedChannels}/>
+                <Channels  type="join" fallbackText={`Nothing  was found...`}  channels={searchedChannels!}/>
             </form>
         </div>
     )

@@ -1,16 +1,19 @@
 import React, {useEffect, useLayoutEffect} from 'react'
-import { useAddScript, useAuth, useAuthCookies, useResponseContext} from '../index';
+import { useAddScript, useAuthCookies, useResponseContext} from '../index';
 import useFetch from '../useFetch';
 import { APIFetch, throwErr, timeout } from '../../components/utils';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../ZustandStore';
 
 
 const useGoogle = (loginType:string,redirectUrl:string|undefined) => {
   useAddScript({id:'oauthGoogle', src:'https://accounts.google.com/gsi/client',text:''})
     const {setServerResponse} = useResponseContext()
-    const {setCookie} = useAuthCookies()
-    const {clearState,setLoading,user,serverUrl} = useAuth()
-    const {handleDelete} = useFetch()
+    const {clearState} = useAuthCookies()
+
+    const serverUrl = useAuthStore(s=>s.serverUrl)
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const user = useAuthStore(s=>s.user)
     const navigate = useNavigate()
   
 

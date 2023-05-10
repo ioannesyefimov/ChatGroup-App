@@ -2,11 +2,11 @@ import React, { ChangeEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { profileIco, mailIco, lockerIco } from '../../../assets'
 import { useResponseContext } from '../../../hooks'
-import { useSetLoading, useServerUrl } from '../../../hooks/useAuthContext/useAuthContext'
 import AuthSocialButtons from '../../AuthButtons/AuthSocialButtons'
 import FormInput from '../../FormInput/FormInput'
 import { initState } from '../../ProfileComponent/ProfileSettings/settingsReducer'
 import { validateInput, APIFetch, throwErr } from '../../utils'
+import { useAuthStore } from '../../../ZustandStore'
 type PropsType = {
   redirectUrl?:string
   redirectType?:string
@@ -16,12 +16,12 @@ export default function RegisterForm({redirectUrl,redirectType,type}:PropsType) 
     const [form,setForm] = useState(initState)
 
 
-    const handleFormChange =(e:ChangeEvent<HTMLInputElement>)=>{
+    const handleFormChange =(e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>)=>{
       setForm({...form,[e.target.name]:e.target.value})
     }
 
-    const setLoading = useSetLoading()
-    const serverUrl = useServerUrl()
+    const setLoading = useAuthStore(s=>s.setLoading)
+    const serverUrl = useAuthStore(s=>s.serverUrl)
     
     const {setServerResponse} = useResponseContext()
     const navigate=useNavigate()
