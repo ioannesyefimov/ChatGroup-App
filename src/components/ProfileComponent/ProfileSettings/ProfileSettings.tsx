@@ -94,7 +94,7 @@ const ProfileSettings = () => {
             <FormInput labelName='password'  ref={passwordRef} type='text' name='password' id='password-input' onChange={(e)=>dispatch({type:ACTIONS.SET_PASSWORD,payload:e?.target?.value})} value={state.password}/>
             
             <UploadInput value={state.picture} ref={avatarRef as React.Ref<HTMLLabelElement>} labelName='Avatar'
-             onChange={handleAvatar} removeImg={()=>handleAvatar()} id='avatar' />
+             onChange={handleAvatar} handleRemoveImg={()=>handleAvatar()} id='avatar' />
             <Button  name='submit-btn' text='submit'  type='submit' />
         </form>
 

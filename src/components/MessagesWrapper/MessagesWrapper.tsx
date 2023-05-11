@@ -15,7 +15,7 @@ type PropsType ={
 
 export default function MessagesWrapper({currentChannel,currentChannelMessages,setCurrentChannel}:PropsType) {
    const {
-    sortedMessages=[]
+    sortedMessages
     ,setSortedMessages
     ,handleSubmitMessage
     ,handleDeleteMessage,scrollToRef
@@ -48,9 +48,10 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
         Object.keys(sortedMessages).map((arrays: any,i:number)=>{
           // then loop through every instance of array that is created on different day
           
-            return Object?.keys(sortedMessages[arrays]).map((key:any)=>{
+            return Object?.keys(sortedMessages[arrays] as any).map((key:any)=>{
               let date =new Date(key)?.toDateString()  
-              let messages:unknown = sortedMessages[arrays][key]
+              if(!arrays) return
+              let messages:unknown = sortedMessages[arrays as keyof typeof sortedMessages]![key]
               // and return Messages with divider for day and time
               return(
                     <Messages scrollToRef={scrollToRef} messages={messages as MessageType[]} date={date} key={key ?? 'newkey'}   />

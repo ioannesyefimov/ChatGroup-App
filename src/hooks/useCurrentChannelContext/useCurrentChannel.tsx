@@ -12,8 +12,9 @@ import { useLocation } from "react-router-dom"
 export default function useCurrentChannel(channel_id:string,user:UserType) {
     const currentChannel=useChatStore(state=>state.currentChannel)
     const setCurrentChannel=useChatStore(state=>state.setCurrentChannel)  
-    const setCurrentChannelMessages = useChatStore(s=>s.setCurrentChannelMessages)
-    const currentChannelMessages = useChatStore(s=>s.currentChannelMessages)
+    const addCurrentChannelMessage = useChatStore(s=>s.addCurrentChannelMessage)
+    const currentChannelMessages = useChatStore(s=>s.currentChannel?.messages)
+    
     const location = useLocation()
       const fetcher = useCallback(
         ()=>APIFetch({
@@ -26,11 +27,13 @@ export default function useCurrentChannel(channel_id:string,user:UserType) {
 
     useEffect(
         ()=>{
+            console.log(`channelid`,channel_id);
+            
             if(location.pathname ==='/chat') return setCurrentChannel([])
             if(channel?.data){
                 console.log(`CURRENT CHANNEL RESPONSE `, channel);
                 let current = channel?.data?.channel
-                if(current){
+                if(current?._id){
                     setCurrentChannel(current)
                     channelSocket.emit('join_channel',{room:current?._id})
 
@@ -42,5 +45,5 @@ export default function useCurrentChannel(channel_id:string,user:UserType) {
 
     
 
-    return {currentChannel,currentChannelMessages,setCurrentChannel,setCurrentChannelMessages}
+    return {currentChannel,currentChannelMessages,setCurrentChannel,addCurrentChannelMessage}
 }

@@ -17,7 +17,7 @@ const CurrentChannel = () => {
   const user = useAuthStore(state=>state.user)
   const {setServerResponse} = useResponseContext()
   const {channel_id}=useParams()
-  const {currentChannel,setCurrentChannel,setCurrentChannelMessages,currentChannelMessages}=useCurrentChannel(channel_id ?? '',user)
+  const {currentChannel,setCurrentChannel,addCurrentChannelMessage,currentChannelMessages}=useCurrentChannel(channel_id ?? '',user)
   const deleteCurrentChannelMessage = useChatStore(s=>s.deleteCurrentChannelMessage)
 
   useEffect(
@@ -30,7 +30,7 @@ const CurrentChannel = () => {
         console.log(`received message`, data);
         
         if(data?.data?.messages){
-          setCurrentChannelMessages(data?.data?.messages)
+          addCurrentChannelMessage(data?.data?.message)
           // scrollToRef?.current?.scrollIntoView({behavior:'smooth'}) 
         }
         setLoading(false)
@@ -70,7 +70,6 @@ const CurrentChannel = () => {
           channelSocket.emit('leave_channel',{user:user.email,id:currentChannel?._id})
           console.log(`LEAVING CHANNEL: ${currentChannel?._id}`);
             setCurrentChannel(null)
-            setCurrentChannelMessages([])
         }
     }
      
@@ -85,7 +84,7 @@ const CurrentChannel = () => {
       <h2 >{currentChannel?.channelName}</h2> 
     </div>
       <MessagesProvider>
-        <MessagesWrapper  currentChannelMessages={currentChannelMessages} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
+        <MessagesWrapper  currentChannelMessages={currentChannelMessages ?? []} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
       </MessagesProvider>
     </>
     )
