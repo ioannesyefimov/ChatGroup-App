@@ -8,12 +8,12 @@ type PropsType ={
     labelName?:string
     id:string
     img?:string
-    removeImg: () => void
+    handleRemoveImg: () => void
     onChange: (e:React.ChangeEvent<HTMLInputElement>)=>void
     value?:  string
 }
 
-const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, value}: PropsType,ref?: React.Ref<HTMLLabelElement>) => {
+const UploadInput = React.forwardRef(({channel,labelName,id,onChange,handleRemoveImg, value}: PropsType,ref?: React.Ref<HTMLLabelElement>) => {
 
     return(
 
@@ -23,7 +23,7 @@ const UploadInput = React.forwardRef(({channel,labelName,id,onChange,removeImg, 
 
                 <img className="converted-img"  src={!value ? uploadIco : value }  />
                 <input  type="file" name={'upload'} id={id} onChange={onChange}  />
-                <Button img={trashIco} name='delete-btn' onClick={removeImg}/>
+                <Button img={trashIco} name='delete-btn' onClick={handleRemoveImg}/>
             </div>
 
         </label>

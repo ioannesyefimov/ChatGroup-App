@@ -11,7 +11,7 @@ const DropDown = () => {
     const location = useLocation()
     useEffect(
         ()=>{
-            setIsToggled(prev=>!prev)
+            setIsToggled(false)
         },[location.pathname]
     )
     // const {clearState}=useAuth()

@@ -1,12 +1,11 @@
-import React, { ForwardedRef, RefObject, SetStateAction } from 'react'
+import React, { ForwardedRef } from 'react'
 import './Message.scss'
-import { APIFetch, createDate, throwErr } from '../../utils'
+import { createDate } from '../../utils'
 import Button from '../../Button/Button'
 import { trashIco, userIco } from '../../../assets'
 import { UserType } from '../../types'
-import MemberInfo from '../../UserSearch/UserSearch'
 import { useNavigate } from 'react-router-dom'
-import { useAuth, useMessagesContext } from '../../../hooks'
+import { useMessagesContext } from '../../../hooks'
 import { useAuthStore } from '../../../ZustandStore'
 type PropsType = {
     createdAt:{day:string,

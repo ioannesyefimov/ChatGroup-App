@@ -1,9 +1,7 @@
-import { useMemo,useContext, useCallback, useEffect} from "react"
-import { CurrentChannelContext } from "../../components/ChatProvider/CurrentChannelProvider"
+import {  useCallback, useEffect} from "react"
 import useSWR from 'swr'
 import { APIFetch } from "../../components/utils"
 import SocketStore from "../../components/SocketStore"
-import { useAuth } from ".."
 import { UserType } from "../../components/types"
 import { channelSocket } from "../../components/DashBoard/CurrentChannel/CurrentChannel"
 import { useChatStore } from "../../ZustandStore"

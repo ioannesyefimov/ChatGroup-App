@@ -64,6 +64,8 @@ const ChannelCreate = ()=>{
     const handleRemoveImg = useCallback(
         ()=>{
             handleUpload()
+            console.log(`removing` );
+            
         },[]
     )
     return (
@@ -79,7 +81,7 @@ const ChannelCreate = ()=>{
                 
                 <FormInput textArea={{rows:"3",cols:"40"}} ref={descriptionRef} labelName='Channel description:' value={channelDescription} onChange={(e)=>{setChannelDescription(e.target.value)}}  type='text' placeholder={`type in channel's description`} name="description"id="channel-description"/>
             
-                <UploadInput removeImg={handleRemoveImg} value={channelAvatar} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImage}/>
+                <UploadInput handleRemoveImg={handleRemoveImg} value={file} ref={avatarRef} labelName='Channel Avatar:' id="image-input" onChange={handleImage}/>
                 <Button text='Create' name='submit-btn' onClick={handleSubmit}/>
             </form>
         </div>

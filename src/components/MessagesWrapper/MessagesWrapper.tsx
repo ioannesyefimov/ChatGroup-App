@@ -23,7 +23,7 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
 
    let initMessages = async()=>{
     await sleep(1000);
-    let messages= currentChannelMessages?.length ? currentChannelMessages : currentChannel?.messages ?? []
+    let messages=currentChannel?.messages ?? []
     if(!messages?.length) return
     let sorted = sortMessagesByDate(messages)
     if(sorted===null) return 

@@ -24,16 +24,11 @@ import UserComponent from "./UserComponent/UserComponent";
 import ProfileSettings from "./ProfileComponent/ProfileSettings/ProfileSettings";
 
 
-import ServerResponseProvider from "./ServerResponseFallback/ResponseContext";
 import ChatContainer from "./DashBoard/ChatContainer";
-import ChatProvider from "./ChatProvider/ChatProvider";
 import ErrorProvider from "./ErrorProvider/ErrorProvider";
 export 
 {
-    ChatProvider,ServerResponseProvider,
     Profile,ProfileSettings,
-    
-    
     ErrorProvider,  Authentication, 
     
     Button,SubmitInput , UploadInput,MemberInfo,SearchComponent,ChannelSearch,Landing,

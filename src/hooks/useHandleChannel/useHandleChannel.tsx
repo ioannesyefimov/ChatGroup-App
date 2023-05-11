@@ -1,17 +1,17 @@
 import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import { APIFetch, Errors, throwErr } from '../../components/utils';
-import {  useResponseContext,useChat, useAuthCookies} from '..';
+import {  useResponseContext, useAuthCookies} from '..';
 import { ChannelType, ResponseType, UserType } from '../../components/types';
 import { Socket } from 'socket.io-client';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../ZustandStore';
+import { useAuthStore, useChatStore } from '../../ZustandStore';
 
 const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined) => {
     const {setServerResponse}=useResponseContext()
     const setLoading = useAuthStore(s=>s.setLoading)
     const serverUrl = useAuthStore(s=>s.serverUrl)
     const navigate = useNavigate()
-    const {setChannels} =useChat() 
+    const setChannels =useChatStore(s=>s.setChannels) 
     const {setCookie,cookies} =useAuthCookies() 
 
 
@@ -29,7 +29,8 @@ const useHandleChannel = (setCurrent?:Dispatch<SetStateAction<any>> | undefined)
           }
           // let newchannels = [...cookies.channels, cookies.channels.filter(channel=>channel._id !== id)]
 
-          // setChannels(prev=>(prev.filter(channel=>channel._id !== response.data.channel._id)))
+          setChannels(response?.data?.channels)
+
           setCookie('channels',response.data.channels,{path:'/',maxAge:2000})
           setLoading(false)
 

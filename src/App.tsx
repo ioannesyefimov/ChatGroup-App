@@ -1,21 +1,14 @@
 import './App.scss'
 import './components/Themes/Themes.scss'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import {ProtectedRoute,Landing,ChatContainer,ChannelManager,ChannelJoin,UserComponent, ServerResponseFallback, Authentication, ChannelCreate,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile, ProfileSettings, ServerResponseProvider} from './components'
-import { useAuthCookies } from './hooks'
-import { useLoading, useSetLoading, useSetUser, useUser } from './hooks/useAuthContext/useAuthContext'
-import { useEffect } from 'react'
-import { log } from 'console'
-import { LoadingFallback } from './components/LoadingFallback/LoadingFallback'
-import NavigationBar from './components/NavigationBar/NavigationBar'
+import {ProtectedRoute,Landing,ChatContainer,UserComponent, Authentication,NotFound,AuthForm, RedirectComponent, MemberInfo, SearchComponent, ChannelSearch, Profile, ProfileSettings, ServerResponseFallback} from './components'
 import ErrorBoundary from './components/ErrorProvider/ErrorProvider'
-import { ResponseContext } from './components/ServerResponseFallback/ResponseContext'
 
 
 
 let router = createBrowserRouter([
   {
-    element:<ServerResponseProvider/>,
+    element:<ServerResponseFallback/>,
     children:[
       {
         element: <NotFound />,

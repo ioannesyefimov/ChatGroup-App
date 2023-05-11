@@ -1,14 +1,46 @@
 @use '../utils/utils.scss' as *;
+@use '../../App.scss' as *;
 
 .profile-component {
-
-    display: flex;
+    @include respond-to(medium){
+        justify-content: space-around;
+        flex-direction: row
+       };
     flex-direction: column;
+    display: flex;
+    flex:1;
+    display: flex;
     max-width: 1020px;
-    margin: 5rem auto auto;
+    margin: 1rem auto auto auto;
+    align-items: center;
+    .profile-information{
+        display: grid;
+        gap:0.5rem;
+        gap:.5rem;
+        p{
+            max-width: 55ch;
+            word-wrap:break-word;
+            strong {
+                color:burlywood;
+            }
+        }
+        .channels {
+            margin: 0
+        }
+    }
+    .wrapper {
+        // @extend .box-shadow--gray;
+        padding: .5rem 2rem;
+        border:1px solid gray;
+        background: #0B090C;
 
+        border-radius: 8px;
+        place-content: center;
+        display:grid;
+
+    }
     .link {
-        margin: auto;
+        margin: auto;        
     }
     .user {
         all: unset;
@@ -31,6 +63,7 @@
         margin-top: 4rem;
         padding: 1.5rem;
         border-radius: 8px;
+        border:1px solid gray;
         background: #0B090C;
         min-width: 320px;
 

@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { ResponseContext } from "../../components/ServerResponseFallback/ResponseContext";
+import { useAuthStore } from "../../ZustandStore";
 
 
 
-export default function useResponseContext(){
-    const {serverResponse,setServerResponse} =useContext(ResponseContext)
+export default function useServerResponse(){
+    const serverResponse =useAuthStore(s =>s.serverResponse)
+    const setServerResponse =useAuthStore(s=> s.setServerResponse)
 
     return {serverResponse,setServerResponse}
 }

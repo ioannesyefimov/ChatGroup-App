@@ -28,6 +28,8 @@ const ChannelsBar = ({user}:{user:UserType}) => {
   useEffect(
     ()=>{
       // console.log(`channels`,channels);
+      console.log(`RENDERED`);
+      
       if(currentChannel?._id){
         setShowedBar(true)
       }else {
@@ -78,7 +80,7 @@ const ChannelsBar = ({user}:{user:UserType}) => {
 
             <div className="flex flex--between">
             <span>Channels</span>
-            <Button onClick={()=>navigate('/chat/manage  ')} name='link' img={settingIco} />
+            <Button onClick={()=>navigate(`${location.pathname}?manage`)} name='link' img={settingIco} />
             </div>
             <SearchBar searchType='CHANNEL' channels={channels} setSearchedChannels={setSearchedChannels}  />
             {isLoading ? <>Loading...</> : (

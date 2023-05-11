@@ -4,8 +4,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AuthSocialButtons from "../AuthButtons/AuthSocialButtons";
 import Button from "../Button/Button";
 import { Errors, isObj } from "../utils";
-import { useAuth, useAuthCookies, useResponseContext } from "../../hooks";
+import {  useAuthCookies, useResponseContext } from "../../hooks";
 import NavigationBar from "../NavigationBar/NavigationBar";
+import { LoadingFallback } from "../LoadingFallback/LoadingFallback";
 import { useAuthStore } from "../../ZustandStore";
 type ResponseFallbackType ={
     children?:React.ReactNode| React.ReactNode[]
@@ -14,6 +15,7 @@ type ResponseFallbackType ={
 
  const ServerResponseFallback = ({children}:ResponseFallbackType)=>{
     const {serverResponse,setServerResponse}= useResponseContext();
+    const loading = useAuthStore(s=>s.loading)
     const navigate = useNavigate()
     const location = useLocation()
     const clearState = useAuthCookies().clearState
@@ -85,6 +87,7 @@ type ResponseFallbackType ={
     ) 
     return <>
         {Object?.keys(serverResponse)?.length ? displayedMsg : null}
+        {loading ?? <LoadingFallback/>}
         {content}
     </>
 

@@ -1,12 +1,12 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import  {  useEffect, useState } from 'react'
 import { searchIco } from '../../../assets'
 import FormInput from '../../FormInput/FormInput'
 import { ChannelType, UserType } from '../../types'
-import { useAuth, useSearch } from '../../../hooks'
+import { useSearch } from '../../../hooks'
 import { useLocation } from 'react-router-dom'
 import { APIFetch, sleep } from '../../utils'
 import useSWR from 'swr'
-import { useAuthStore, useChatStore } from '../../../ZustandStore'
+import { useAuthStore } from '../../../ZustandStore'
 type PropsType ={
   channels:ChannelType[]|null
   user?:UserType
@@ -16,30 +16,33 @@ type PropsType ={
     isFetch:boolean
     swrKey:string
   }
-  setSearchedChannels: (channel:ChannelType[])=>void
+  setSearchedChannels: (channel:ChannelType[] | null)=>void
 }
 const SearchBar = ({user,fetchParams,setSearchedChannels,channels,searchType}:PropsType) => {
   const serverUrl=useAuthStore(s=>s.serverUrl)
-  const search = useChatStore(s=>s.search)
-  const setSearch = useChatStore(s=>s.setSearch)
+  const setServerResponse=useAuthStore(s=>s.setServerResponse)
+  const [search,setSearch]=useState('')
+  // const search = useChatStore(s=>s.search)
+  // const setSearch = useChatStore(s=>s.setSearch)
   const fetcher = ()=>APIFetch({
-    url:`${serverUrl}/${fetchParams}`,
+    url:`${serverUrl}/${fetchParams?.url}`,
     method:'GET'
   })
-  const {data:searchedChannels,error,isLoading}=useSWR(()=>fetchParams?.isFetch ? fetchParams?.swrKey : null,fetcher)
-  const {SEARCH_TYPE,handleSearch ,handleSearchChange} = useSearch()
-  
+  const {data,error,isLoading}=useSWR(()=>fetchParams?.isFetch ? fetchParams?.swrKey : null,fetcher)
+  const {SEARCH_TYPE,handleSearch} = useSearch()
+  if(error){
+    setServerResponse(error)
+  }  
     async function  initSearch(){
-      await sleep(1500);
+      await sleep(3000);
         let params = new URLSearchParams(location.search)
         let searchParam = params?.get('search') ?? search
-        console.log(`SEARCHPARAM`,searchParam);
         console.log(Boolean(searchParam))
         if(!searchParam && fetchParams?.isFetch) {
-         return setSearchedChannels(searchedChannels?.data?.channels ?? searchedChannels?.data?.users)
+         return setSearchedChannels(data?.data?.channels ?? data?.data?.users)
         }
         if(!searchParam)return setSearchedChannels(null)
-        let result = await  handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],searchValues:{channels}})
+        let result = await  handleSearch({search:searchParam,searchType:SEARCH_TYPE[searchType],searchValues:{channels:data?.data?.channels ?? channels}})
           setSearchedChannels(result?.filtered as any)
           // setSearchedChannels(searchedChannels?.data?.channels)
     } 
@@ -49,7 +52,7 @@ const SearchBar = ({user,fetchParams,setSearchedChannels,channels,searchType}:Pr
     ()=>{
       
           initSearch()
-    },[search,location.search]
+    },[search,data?.data]
   )
   // useEffect(
   //   ()=>{

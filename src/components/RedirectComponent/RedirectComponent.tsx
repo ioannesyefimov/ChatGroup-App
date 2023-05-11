@@ -1,12 +1,10 @@
 import {  useEffect, useState } from 'react'
-import { useAuth, useGithub, useResponseContext } from '../../hooks'
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import {  useGithub, useResponseContext } from '../../hooks'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useAuthCookies from '../../hooks/useAuthCookies/useAuthCookies'
 import { APIFetch, Errors, sleep, throwErr } from '../utils'
 import { ChannelType, UserType } from '../types'
-import { LoadingFallback } from '../LoadingFallback/LoadingFallback'
 import './RedirectComponent.scss'
-import SocketStore from '../SocketStore'
 import { useAuthStore } from '../../ZustandStore'
 
 type StateType = {

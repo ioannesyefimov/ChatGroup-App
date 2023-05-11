@@ -1,16 +1,10 @@
-import React, { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
 import './channelJoin.scss'
-import FormInput from '../../FormInput/FormInput'
-import { APIFetch, convertBase64, throwErr, validateInput } from '../../utils'
-import { useAuth, useAuthCookies, useChat, useError } from '../../../hooks'
-import AuthForm from '../../Authentication/AuthForm/AuthForm'
-import { ChannelType, ResponseType } from '../../types'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import SearchBar from '../../DashBoard/ChannelsBar/SearchBar'
 import Channels from '../../DashBoard/Channels/Channels'
 import Button from '../../Button/Button'
-import { backIco, closeIco, joinIco } from '../../../assets'
-import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
+import { backIco, closeIco } from '../../../assets'
+
 import { useChatStore } from '../../../ZustandStore'
 
 const ChannelJoin = ()=>{

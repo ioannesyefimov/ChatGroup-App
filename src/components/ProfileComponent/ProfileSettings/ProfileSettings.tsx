@@ -56,7 +56,9 @@ const ProfileSettings = () => {
      console.log(`RESPONSE`, response);
      
 
-     if(response?.succeess) throwErr(response?.err)
+     if(!response?.success){
+       throwErr(response?.err)
+     }
      if(response?.data?.accessToken){
       // clearState(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile&loggedThrough=${response?.data?.loggedThrough}`,navigate)
       setCookie('user',response?.data?.user,{path:'/',maxAge:2000})
@@ -64,6 +66,7 @@ const ProfileSettings = () => {
       navigate(`/profile`)
      }
     } catch (error) {
+      console.error(error)
       setServerResponse(error)
     } finally{
       setLoading(false)

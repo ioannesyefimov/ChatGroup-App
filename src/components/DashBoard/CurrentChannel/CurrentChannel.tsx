@@ -76,6 +76,8 @@ const CurrentChannel = () => {
      
     },[]
   )
+
+
   let channelContent =
   (
     <>

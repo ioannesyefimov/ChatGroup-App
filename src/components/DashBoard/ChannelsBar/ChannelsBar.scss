@@ -8,7 +8,6 @@
     }
 
     .hamburger-outer {
-
         .hamburger.channel-navigation{
             display: flex;
             flex:1;
@@ -22,8 +21,8 @@
     }
 
     .left-wrapper{
-            flex:1;
-        display: grid;
+        flex:1;
+        display:grid;
         position: relative;
         padding: 3.5rem 2rem 1rem;
         button.back{
@@ -87,10 +86,13 @@
         &[data-showedbar=true]{
             padding: 3.5rem 1.6rem .5rem;
             .left-wrapper-inner {
-
+                flex:1;
                 .channel {
+                    @include respond-to(littleHeight){
+                        gap:.1rem;
+                    }
+                    gap:.7rem,;
                     display: grid;
-                    gap:.5rem;
                     &-name{
                         font-size: 1.2rem;
                     }
@@ -99,15 +101,20 @@
                         max-width: 30ch;
                     }
                     &-members {
+                        @include respond-to(littleHeight){
+                            gap:.1rem;
+                            display: block
+                        }
                         @extend .scrollbar;
+                        max-height: 450px;
                         overflow-y: scroll;
-                        display: grid;
-                        gap:1rem;
+                        gap:.35rem;
+                            display: grid;
                         .user {
                             all:unset;
                             display: flex;
+                            gap:.5rem;
                             align-items: center;
-                            gap:1rem;
                             &-img{
                                 max-width: 35px;
                                 border-radius: 6px;
@@ -124,6 +131,7 @@
             
         }
 
+     
         &-inner {
             display: flex;
             flex-direction: column;

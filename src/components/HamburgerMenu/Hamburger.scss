@@ -1,4 +1,5 @@
 @use '../utils/utils.scss' as * ;
+@use '../../App.scss' as * ;
 
 .dashboard-component:has(.hamburger.navbar[data-istoggled=toggled]){
     &::after{
@@ -99,14 +100,23 @@
 
 
 .hamburger-outer{
+    
     position: fixed !important;
     height: 100%;
     z-index: 5;
+    display: grid;
+    // align-items: center;
     .hamburger-btn {
         left: 88% !important;
         top:3.5rem;
     }
-   &[data-istoggled=toggled]{
+    &[data-istoggled=toggled]{
+        @extend .scrollbar;
+        @include respond-to(littleHeight){
+            overflow-y: scroll;
+            overflow-x: hidden;
+            // min-width: 60%;
+        }
         @include respond-to(small){
             // clip-path: inset(0 0 99% 0) ;
             position: relative ;
@@ -125,18 +135,13 @@
             left: 88% !important;
             top:1%;
         }
-        // @extend .disappearToLeft;
-        position: relative ;
-        // opacity: 1;
         width: 30% ;
         max-width: 400px;
         min-width:230px;
     }    
     transition: all .5s ease-in-out;
-    display: grid;
-   
-    
     .hamburger.channel-navigation {
+        
         transition: .3s all ease-in-out;
         
     &[data-istoggled=loaded]{
@@ -157,7 +162,7 @@
             width: 100%;
         }
     }
-
+    
     &[data-istoggled=untoggled]{
         // @extend .disappearToLeft;
         animation-name: disappearToLeft;
