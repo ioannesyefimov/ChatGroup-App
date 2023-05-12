@@ -6,9 +6,9 @@ export default function Members({members}:{members?:UserType[]}) {
   let content = <>
     {
         members?.length ? (
-            members?.map(member=>{
-                
-                return (<User key={member.member?._id} user={member.member} location=""/>)  
+            members?.filter(member=>member.member !== null).map(user=>{
+                return (<User key={user.member?._id} user={user.member} location=""/>)  
+
             })
         ) : (
             <span>There is no members...</span>

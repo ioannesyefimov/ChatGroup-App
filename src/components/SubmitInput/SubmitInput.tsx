@@ -1,8 +1,14 @@
-import React, {useEffect, useState } from "react"
+import React, {SetStateAction, useEffect, useState } from "react"
 import { sendIco } from "../../assets"
 import Button from "../Button/Button"
 import {  SubmitInputType } from "../types"
-import { HandleClickType } from "../DashBoard/CurrentChannel/CurrentChannel"
+type HandleClickType = {
+  e:React.MouseEvent | KeyboardEvent
+  value:string
+  propsValue:string
+  setValue:React.Dispatch<SetStateAction<string>>
+  setPropsValue:React.Dispatch<SetStateAction<string>>
+}
 interface PropsType extends SubmitInputType {
   placeholder?: string
   name?: string

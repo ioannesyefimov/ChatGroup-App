@@ -4,9 +4,10 @@ import { createDate } from '../../utils'
 import Button from '../../Button/Button'
 import { trashIco, userIco } from '../../../assets'
 import { UserType } from '../../types'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useMessagesContext } from '../../../hooks'
 import { useAuthStore } from '../../../ZustandStore'
+import User from '../../UserComponent/User'
 type PropsType = {
     createdAt:{day:string,
       time:string
@@ -44,18 +45,19 @@ const Message = React.forwardRef(({createdAt,message,messageUser,_id,channel_id}
   const navigate = useNavigate()
   let sentBy = user?._id === messageUser?._id ? 'sent' : 'received'  
   
-  let visitProfileFunc = sentBy ==='received' ? (
-    ()=>navigate(`/user?id=${messageUser?._id}`) 
-  ) : ()=>navigate('/profile')
+  let visitProfileFunc = sentBy ==='received' ? (`/user/${messageUser?._id ?? 'deleted'}` )
+  : ('/profile')
 
 return (
     <div  className={`message ${sentBy}`}>
-         <button onClick={visitProfileFunc} className='show-member-button'>
+        <Link to={visitProfileFunc} className='show-member-button'>
             <img className='message-logo' src={messageUser?.picture ?? userIco} alt="profile-logo" />
-          </button>
+        </Link> 
+         {/* <button onClick={visitProfileFunc} className='show-member-button'> */}
+          {/* </button> */}
       
        <div className="message-wrapper">
-         <span className="message-name">{messageUser?.userName}</span>
+         <span className="message-name">{messageUser?.userName ?? '404'}</span>
          <span className="message-date">{displayDate(createdAt)}</span>
        </div>
        <p className="message-text">{message}</p>

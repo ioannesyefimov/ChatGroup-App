@@ -6,7 +6,8 @@ import SocketStore from '../../SocketStore'
 import './CurrentChannel.scss'
 import MessagesProvider from '../../MessagesWrapper/Context/MessagesContext'
 import MessagesWrapper from '../../MessagesWrapper/MessagesWrapper'
-import { useAuthStore, useChatStore } from '../../../ZustandStore'
+import { useAuthStore } from '../../../ZustandStore'
+import { LoadingFallback } from '../../LoadingFallback/LoadingFallback'
 
 const {certOptions,io,serverUrl} = SocketStore()
 export const channelSocket = io(`${serverUrl}/currentChannel`,{
@@ -17,8 +18,7 @@ const CurrentChannel = () => {
   const user = useAuthStore(state=>state.user)
   const {setServerResponse} = useResponseContext()
   const {channel_id}=useParams()
-  const {currentChannel,setCurrentChannel,addCurrentChannelMessage,currentChannelMessages}=useCurrentChannel(channel_id ?? '',user)
-  const deleteCurrentChannelMessage = useChatStore(s=>s.deleteCurrentChannelMessage)
+  const {currentChannel,setCurrentChannel,addCurrentChannelMessage,currentChannelMessages,deleteCurrentChannelMessage,isLoading}=useCurrentChannel(channel_id ?? '',user)
 
   useEffect(
     ()=>{
@@ -84,7 +84,10 @@ const CurrentChannel = () => {
       <h2 >{currentChannel?.channelName}</h2> 
     </div>
       <MessagesProvider>
-        <MessagesWrapper  currentChannelMessages={currentChannelMessages ?? []} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>
+        {isLoading ? 
+          (<h2>Loading messages...</h2>) : 
+          (<MessagesWrapper  currentChannelMessages={currentChannelMessages ?? []} setCurrentChannel={setCurrentChannel} currentChannel={currentChannel}/>)
+        }
       </MessagesProvider>
     </>
     )

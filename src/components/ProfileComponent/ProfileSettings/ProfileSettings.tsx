@@ -23,6 +23,7 @@ const ProfileSettings = () => {
   const {file,handleUpload}=useUpload()
   const {cookies,clearState,setCookie} = useAuthCookies()
   const user = useAuthStore(s=>s.user)
+  const setUser = useAuthStore(s=>s.setUser)
   const navigate =useNavigate()
   const setLoading = useAuthStore(s=>s.setLoading)
   const serverUrl = useAuthStore(s=>s.serverUrl)
@@ -62,6 +63,7 @@ const ProfileSettings = () => {
      if(response?.data?.accessToken){
       // clearState(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile&loggedThrough=${response?.data?.loggedThrough}`,navigate)
       setCookie('user',response?.data?.user,{path:'/',maxAge:2000})
+      setUser(response?.data?.user)
       // navigate(`/auth/redirect?type=auth/user&accessToken=${response.data.accessToken}&redirectUrl=/profile`)
       navigate(`/profile`)
      }

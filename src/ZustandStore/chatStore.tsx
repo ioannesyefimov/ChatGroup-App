@@ -2,21 +2,26 @@ import {create} from 'zustand'
 import { ChannelType, MessageType } from '../components/types'
 const useChatStore = create<{
     // fetchChannels: (user:UserType)=>Promise<void>
-    channels:ChannelType[] | null;
+    channels:ChannelType[] | [];
     searchedChannels:ChannelType[] | null
     currentChannel: ChannelType | null
     setCurrentChannel: (channel:ChannelType|null)=>void
     setChannels: (channels:ChannelType[])=>void;
     setSearchedChannels:(channels:ChannelType[] | null)=>void
     addCurrentChannelMessage: (message:MessageType)=>any
+    joinChannel: (channel:ChannelType) =>void
+    leaveChannel: (channel_id:string) =>void
+
     deleteCurrentChannelMessage : (message_id:string)=>void
 }>((set,get)=> ({
-    channels:null,
+    channels:[],
     currentChannel:null,
     searchedChannels:null,
     setSearchedChannels: (searchedChannels:ChannelType[] | null)=>set({searchedChannels}),
     setCurrentChannel: (currentChannel:ChannelType | null)=>set({currentChannel}),
     setChannels: (channels) =>set({channels}),
+    joinChannel: (channel:ChannelType) => set((state)=>({channels: [...state?.channels,channel]})),
+    leaveChannel: (channel_id:string) => set((state)=>({channels: state?.channels.filter(channel=>channel._id !== channel_id)})),
     addCurrentChannelMessage: (message:MessageType)=>{
         return set((state:any)=>({currentChannel:{...state.currentChannel,messages:[...state.currentChannel.messages, message]}}))
     },

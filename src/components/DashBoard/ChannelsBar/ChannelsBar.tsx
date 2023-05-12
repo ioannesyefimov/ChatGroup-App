@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { backIco, refreshIco, logoutIco, settingIco, chatifyIco } from '../../../assets'
 import Channels from '../Channels/Channels'
 import './ChannelsBar.scss'
 import Hamburger from '../../HamburgerMenu/Hamburger'
-import {   useHandleChannel } from '../../../hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { ChannelType, UserType } from '../../types'
 import UserBar from '../../UserBar/UserBar'
@@ -11,24 +10,16 @@ import SearchBar from './SearchBar'
 import { Button } from '../..'
 import useFetchChannels from '../../../hooks/useFetchChannels/useFetchChannels'
 import Members from './Members/Members'
-import { useCurrentChannel } from '../../ChatProvider/CurrentChannelProvider'
 import { useChatStore } from '../../../ZustandStore'
 
 const ChannelsBar = ({user}:{user:UserType}) => {
-  // const [searchedChannels,setSearchedChannels] = useState<ChannelType[]>([])
   const [showedBar , setShowedBar]=useState(false)
   const {searchedChannels,setSearchedChannels,currentChannel,setCurrentChannel}=useChatStore()
-  // const {currentChannel,setCurrentChannel}=useCurrentChannel()
   const  location = useLocation()
   const navigate = useNavigate()
-  const {
-    handleLeaveChannel
-  } = useHandleChannel()
-  
   useEffect(
     ()=>{
       // console.log(`channels`,channels);
-      console.log(`RENDERED`);
       
       if(currentChannel?._id){
         setShowedBar(true)
@@ -61,7 +52,6 @@ const ChannelsBar = ({user}:{user:UserType}) => {
 
           </div>
             <Button onClick={()=>navigate('/chat')}  text='leave room' name='leave' img={logoutIco} />
-            {/* <Button onClick={()=>handleLeaveChannel(currentChannel?._id,user)}  text='leave channel' name='leave channel' img={logoutIco} /> */}
 
       </div>
       <UserBar user={user} />

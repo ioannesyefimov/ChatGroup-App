@@ -15,6 +15,7 @@
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0",
+    "simple-zustand-devtools": "^1.1.0",
     "socket.io-client": "^4.6.1",
     "stable-hash": "^0.0.3",
     "swr": "^2.1.5",

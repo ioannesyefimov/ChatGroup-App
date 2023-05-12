@@ -1,10 +1,10 @@
 import {  useCallback, useEffect} from "react"
 import useSWR from 'swr'
-import { APIFetch } from "../../components/utils"
+import { APIFetch, Errors } from "../../components/utils"
 import SocketStore from "../../components/SocketStore"
 import { UserType } from "../../components/types"
 import { channelSocket } from "../../components/DashBoard/CurrentChannel/CurrentChannel"
-import { useChatStore } from "../../ZustandStore"
+import { useAuthStore, useChatStore } from "../../ZustandStore"
 import { useLocation } from "react-router-dom"
  
  const serverUrl = SocketStore().serverUrl
@@ -14,6 +14,10 @@ export default function useCurrentChannel(channel_id:string,user:UserType) {
     const setCurrentChannel=useChatStore(state=>state.setCurrentChannel)  
     const addCurrentChannelMessage = useChatStore(s=>s.addCurrentChannelMessage)
     const currentChannelMessages = useChatStore(s=>s.currentChannel?.messages)
+  const deleteCurrentChannelMessage = useChatStore(s=>s.deleteCurrentChannelMessage)
+
+    const setServerResponse = useAuthStore(s=>s.setServerResponse)
+    const setLoading = useAuthStore(s=>s.setLoading)
     
     const location = useLocation()
       const fetcher = useCallback(
@@ -23,27 +27,34 @@ export default function useCurrentChannel(channel_id:string,user:UserType) {
         ,[channel_id,user?.email]
     )
     const {data:channel,error,isLoading}=useSWR(()=>channel_id ? `/api/channels/channel/${channel_id}` : null,fetcher    )
-
-
+    
+  
     useEffect(
         ()=>{
+            if(isLoading){
+                setLoading(true)
+            }
             console.log(`channelid`,channel_id);
             
-            if(location.pathname ==='/chat') return setCurrentChannel([])
+            if(location.pathname ==='/chat') return setCurrentChannel(null)
+            if (channel?.err){
+                console.error(`error`,error);
+                setServerResponse(channel?.err)
+            }else
             if(channel?.data){
                 console.log(`CURRENT CHANNEL RESPONSE `, channel);
                 let current = channel?.data?.channel
                 if(current?._id){
                     setCurrentChannel(current)
                     channelSocket.emit('join_channel',{room:current?._id})
-
-                }
+                    setLoading(false)
+                } 
                 
             }
-        },[channel?.data,user?.email,location.pathname]
+        },[channel?.data,user?.email,location.pathname,error]
     )
 
     
 
-    return {currentChannel,currentChannelMessages,setCurrentChannel,addCurrentChannelMessage}
+    return {currentChannel,currentChannelMessages,setCurrentChannel,addCurrentChannelMessage,deleteCurrentChannelMessage,isLoading}
 }

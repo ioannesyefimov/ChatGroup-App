@@ -18,7 +18,7 @@ export default function MessagesWrapper({currentChannel,currentChannelMessages,s
     sortedMessages
     ,setSortedMessages
     ,handleSubmitMessage
-    ,handleDeleteMessage,scrollToRef
+    ,scrollToRef
   }=useMessagesContext()!
 
    let initMessages = async()=>{

@@ -1,12 +1,6 @@
-import React, { useEffect } from 'react'
-import { APIFetch, getFirstLetter, throwErr } from '../../utils'
-import useSearchChannels from '../../../hooks/useSearch/useSearch'
-import { Link } from 'react-router-dom'
 import './Channels.scss'
 import { ChannelType, UserType } from '../../types'
 import Channel from '../Channel/Channel'
-import { useAuth, useChat, useHandleChannel } from '../../../hooks'
-import { useUser } from '../../../hooks/useAuthContext/useAuthContext'
 import { useAuthStore } from '../../../ZustandStore'
 type PropsType = {
   type:string 

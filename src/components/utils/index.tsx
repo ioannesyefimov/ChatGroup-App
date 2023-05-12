@@ -16,7 +16,7 @@ export function sortMessagesByDate  (data:MessageType[]){
   } 
   // Sort array of messages from the end message to the latest
   const sortedData = data.sort(sortMessages);
-  // console.log(`SORTED`, sortedData);
+  console.log(`SORTED`, sortedData);
   
   
   // let currentDay = createDate().date;

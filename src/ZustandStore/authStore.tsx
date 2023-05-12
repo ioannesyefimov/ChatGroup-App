@@ -1,6 +1,6 @@
 import {create} from 'zustand'
 import { UserType } from '../components/types'
-
+import { Errors } from '../components/utils';
 const useAuthStore = create<{
     user:UserType;
     serverResponse:any;
@@ -18,5 +18,6 @@ const useAuthStore = create<{
     setLoading: (state:boolean) => set({loading: state}),
     serverUrl:import.meta.env.VITE_IP_ADDRESS ?  'https://192.168.1.102:5050/api' : 'https://localhost:5050/api',
 }))
+
 
 export default useAuthStore
